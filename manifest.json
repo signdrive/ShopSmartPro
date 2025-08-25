@@ -1,0 +1,117 @@
+{
+  "manifest_version": 2,
+  "name": "ShopSmart Pro",
+  "version": "2.32",
+  "description": "Enhances your shopping experience on Amazon and other e-commerce sites",
+  "content_security_policy": "script-src 'self'; object-src 'none'",
+  
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "shopsmart-pro@parkalgo.com",
+      "strict_min_version": "91.0"
+    }
+  },
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "contextMenus",
+    "notifications",
+    "alarms",
+    "webRequest",
+    "*://*.amazon.com/*",
+    "*://*.amazon.ca/*",
+    "*://*.amazon.co.uk/*",
+    "*://*.amazon.de/*",
+    "*://*.amazon.fr/*",
+    "*://*.amazon.it/*",
+    "*://*.amazon.es/*",
+    "*://*.amazon.co.jp/*",
+    "*://*.amazon.com.au/*",
+    "*://*.amazon.com.br/*",
+    "*://*.amazon.com.mx/*",
+    "*://*.amazon.nl/*"
+  ],
+
+  "background": {
+    "scripts": [
+      "lib/chart.min.js",
+      "utils/priceTracker.js",
+      "utils/couponFinder.js",
+      "utils/reviewAnalyzer.js",
+      "utils/searchHistory.js",
+      "utils/analytics.js",
+      "utils/voiceSearch.js",
+      "background.js"
+    ],
+    "persistent": true
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    },
+    "default_popup": "popup/popup.html",
+    "default_title": "ShopSmart Pro"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.amazon.com/*", "*://*.amazon.ca/*", "*://*.amazon.co.uk/*", "*://*.amazon.de/*", "*://*.amazon.fr/*", "*://*.amazon.it/*", "*://*.amazon.es/*", "*://*.amazon.co.jp/*", "*://*.amazon.com.au/*", "*://*.amazon.com.br/*", "*://*.amazon.com.mx/*", "*://*.amazon.nl/*"],
+      "js": ["content.js"],
+      "css": ["popup/popup.css"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+
+  "options_ui": {
+    "page": "settings/settings.html",
+    "open_in_tab": true,
+    "browser_style": true
+  },
+
+  "commands": {
+    "quick-search": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+A",
+        "mac": "Command+Shift+A"
+      },
+      "description": "Quick Amazon Search"
+    },
+    "voice-search": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+V",
+        "mac": "Command+Shift+V"
+      },
+      "description": "Voice Search"
+    }
+  },
+
+  "web_accessible_resources": [
+    "icons/icon-16.png",
+    "icons/icon-32.png",
+    "icons/icon-48.png",
+    "icons/icon-96.png",
+     "icons/*.png",
+    "img/*.png",
+    "about.html",
+    "about.css",
+    "about.js",
+    "documentation.html",
+    "documentation.css",
+    "documentation.js",
+    "privacy.html",
+    "privacy.css",
+    "privacy.js"
+  ]
+}

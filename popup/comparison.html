@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Product Comparison - ShopSmart Pro</title>
+    <link rel="stylesheet" href="comparison.css">
+</head>
+<body>
+    <div class="comparison-container">
+        <h1>Product Comparison Tool</h1>
+        
+        <div class="comparison-grid">
+            <div class="product-slot" data-slot="1">
+                <h3>Product 1</h3>
+                <input type="text" placeholder="Paste Amazon URL" class="product-url">
+                <button class="fetch-btn">Fetch Details</button>
+                <div class="product-details">
+                    <img src="" class="product-image" alt="Product image">
+                    <h4 class="product-title"></h4>
+                    <p class="product-price"></p>
+                    <p class="product-rating"></p>
+                    <p class="product-features"></p>
+                </div>
+            </div>
+            
+            <div class="product-slot" data-slot="2">
+                <h3>Product 2</h3>
+                <input type="text" placeholder="Paste Amazon URL" class="product-url">
+                <button class="fetch-btn">Fetch Details</button>
+                <div class="product-details">
+                    <img src="" class="product-image" alt="Product image">
+                    <h4 class="product-title"></h4>
+                    <p class="product-price"></p>
+                    <p class="product-rating"></p>
+                    <p class="product-features"></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison-results">
+            <h3>Comparison Results</h3>
+            <table id="comparisonTable">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Product 1</th>
+                        <th>Product 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Results will be populated here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="actions">
+            <button id="compareBtn" disabled>Compare Products</button>
+            <button id="clearBtn">Clear All</button>
+            <button id="shareBtn">Share Comparison</button>
+        </div>
+        
+        
+    </div>
+
+
+    <script src="comparison.js"></script>
+</body>
+</html>

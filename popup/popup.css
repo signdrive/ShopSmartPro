@@ -1,0 +1,470 @@
+body {
+    width: 400px;
+    padding: 15px;
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    color: #333;
+}
+
+.container {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.4em;
+    background: linear-gradient(45deg, #FF9900, #FF6B00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex: 1;
+    text-align: center;
+}
+
+.current-country {
+    font-size: 2em;
+    margin-right: 10px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.settings-btn, .help-btn {
+    background: none;
+    border: none;
+    font-size: 1.3em;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.3s;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-btn:hover, .help-btn:hover {
+    background: #f0f0f0;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.quick-actions button {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 10px;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.quick-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(78, 205, 196, 0.3);
+}
+
+.quick-actions button:active {
+    transform: translateY(0);
+}
+
+.search-form {
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9em;
+}
+
+select, input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+select:focus, input[type="text"]:focus {
+    border-color: #FF9900;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
+}
+
+.advanced-options {
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    margin: 0;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 8px;
+    width: auto;
+    transform: scale(1.2);
+}
+
+.search-btn {
+    background: linear-gradient(45deg, #FF9900, #FF6B00);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    font-size: 16px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+}
+
+.search-btn:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 1.2em;
+}
+
+.recent-searches {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.recent-searches h4 {
+    margin: 0 0 10px 0;
+    color: #555;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.search-history {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.history-item {
+    padding: 8px 12px;
+    margin: 5px 0;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.9em;
+    border-left: 3px solid #FF9900;
+}
+
+.history-item:hover {
+    background: #e9ecef;
+    transform: translateX(2px);
+}
+
+.clear-history-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-top: 8px;
+    float: right;
+}
+
+.clear-history-btn:hover {
+    background: #5a6268;
+}
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 12px;
+    background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+    border-radius: 8px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8em;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.stat-value {
+    display: block;
+    font-weight: bold;
+    color: #1976d2;
+    font-size: 1.1em;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.8em;
+}
+
+.affiliate-tag {
+    color: #666;
+    font-weight: bold;
+}
+
+.current-settings {
+    color: #666;
+}
+
+/* Voice Search Modal */
+.voice-search-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.voice-search-modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    width: 350px;
+    max-width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #FF9900;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-modal:hover {
+    color: #000;
+}
+
+.modal-body {
+    text-align: center;
+}
+
+.voice-status {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.voice-btn {
+    background: linear-gradient(45deg, #FF9900, #FF6B00);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: all 0.3s;
+}
+
+.voice-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+}
+
+.voice-btn.listening {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.voice-result {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e7f3ff;
+    border-radius: 8px;
+    border-left: 4px solid #1976d2;
+}
+
+/* Scrollbar styling */
+.search-history::-webkit-scrollbar {
+    width: 4px;
+}
+
+.search-history::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.search-history::-webkit-scrollbar-thumb {
+    background: #FF9900;
+    border-radius: 2px;
+}
+
+.search-history::-webkit-scrollbar-thumb:hover {
+    background: #e68a00;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    body {
+        width: 350px;
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .header h2 {
+        font-size: 1.2em;
+    }
+    
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .quick-actions button {
+        font-size: 1.1em;
+        padding: 8px;
+    }
+    
+    .advanced-options {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .footer {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+}
+
+/* Remove any analytics-specific styles and update quick-actions grid */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Changed from 4 to 3 columns */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Update the quick-stats to show trackers instead of savings */
+.quick-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 12px;
+    background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+    border-radius: 8px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8em;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.stat-value {
+    display: block;
+    font-weight: bold;
+    color: #1976d2;
+    font-size: 1.1em;
+}

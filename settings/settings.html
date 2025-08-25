@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Settings - ShopSmart Pro</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+    <div class="settings-container">
+        <h1>ShopSmart Pro Settings</h1>
+        
+        <div class="settings-tabs">
+            <button class="tab-btn active" data-tab="general">General</button>
+            <button class="tab-btn" data-tab="notifications">Notifications</button>
+            <button class="tab-btn" data-tab="advanced">Advanced</button>
+        </div>
+
+        <div class="tab-content">
+            <!-- General Settings -->
+            <div id="general-tab" class="tab-pane active">
+                <div class="setting-group">
+                    <label for="countrySelect">Default Country:</label>
+                    <select id="countrySelect">
+                        <option value="ca">Amazon Canada (.ca)</option>
+                        <option value="com">Amazon USA (.com)</option>
+                        <option value="co.uk">Amazon UK (.co.uk)</option>
+                        <option value="de">Amazon Germany (.de)</option>
+                        <option value="fr">Amazon France (.fr)</option>
+                        <option value="it">Amazon Italy (.it)</option>
+                        <option value="es">Amazon Spain (.es)</option>
+                        <option value="co.jp">Amazon Japan (.co.jp)</option>
+                        <option value="com.au">Amazon Australia (.com.au)</option>
+                        <option value="com.br">Amazon Brazil (.com.br)</option>
+                        <option value="com.mx">Amazon Mexico (.com.mx)</option>
+                        <option value="nl">Amazon Netherlands (.nl)</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label for="defaultCategory">Default Category:</label>
+                    <select id="defaultCategory">
+                        <option value="search-alias=aps">All Departments</option>
+                        <option value="search-alias=alexa-skills">Alexa Skills</option>
+                        <option value="search-alias=amazon-devices">Amazon Devices</option>
+                        <option value="search-alias=warehouse-deals">Amazon Warehouse Deals</option>
+                        <option value="search-alias=mobile-apps">Apps & Games</option>
+                        <option value="search-alias=automotive">Automotive</option>
+                        <option value="search-alias=baby">Baby</option>
+                        <option value="search-alias=beauty">Beauty</option>
+                        <option value="search-alias=apparel">Clothing & Accessories</option>
+                        <option value="search-alias=stripbooks">Books</option>
+                        <option value="search-alias=electronics">Electronics</option>
+                        <option value="search-alias=gift-cards">Gift Cards</option>
+                        <option value="search-alias=grocery">Grocery</option>
+                        <option value="search-alias=handmade">Handmade</option>
+                        <option value="search-alias=hpc">Health & Personal Care</option>
+                        <option value="search-alias=kitchen">Home & Kitchen</option>
+                        <option value="search-alias=industrial">Industrial & Scientific</option>
+                        <option value="search-alias=jewelry">Jewelry</option>
+                        <option value="search-alias=digital-text">Kindle Store</option>
+                        <option value="search-alias=french-books">Livres en français</option>
+                        <option value="search-alias=luggage">Luggage & Bags</option>
+                        <option value="search-alias=luxury-beauty">Luxury Beauty</option>
+                        <option value="search-alias=dvd">Movies & TV</option>
+                        <option value="search-alias=popular">Music</option>
+                        <option value="search-alias=mi">Musical Instruments, Stage & Studio</option>
+                        <option value="search-alias=office-products">Office Products</option>
+                        <option value="search-alias=lawngarden">Patio, Lawn & Garden</option>
+                        <option value="search-alias=pets">Pet Supplies</option>
+                        <option value="search-alias=shoes">Shoes & Handbags</option>
+                        <option value="search-alias=software">Software</option>
+                        <option value="search-alias=sporting">Sports & Outdoors</option>
+                        <option value="search-alias=tools">Tools & Home Improvement</option>
+                        <option value="search-alias=toys">Toys & Games</option>
+                        <option value="search-alias=videogames">Video Games</option>
+                        <option value="search-alias=watches">Watches</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="autoRedirect"> Auto-redirect to Amazon
+                    </label>
+                    <small>Automatically redirect when searching from popup</small>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="saveHistory"> Save search history
+                    </label>
+                    <small>Remember your recent searches</small>
+                </div>
+
+                <div class="affiliate-info">
+                    <h3>Affiliate Information</h3>
+                    <p>Yes! The extension is completely free. It's supported through affiliate program, which doesn't cost you anything extra.</p>
+                    
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div id="notifications-tab" class="tab-pane">
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="priceAlerts"> Price drop alerts
+                    </label>
+                    <small>Get notified when tracked products drop in price</small>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="dealAlerts"> Deal notifications
+                    </label>
+                    <small>Receive notifications for lightning deals</small>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="couponAlerts"> Coupon alerts
+                    </label>
+                    <small>Notify when coupons are available for products</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="notificationFrequency">Notification Frequency:</label>
+                    <select id="notificationFrequency">
+                        <option value="instant">Instant</option>
+                        <option value="hourly">Hourly Digest</option>
+                        <option value="daily">Daily Digest</option>
+                    </select>
+                </div>
+                <!-- Add this to your settings container -->
+                <div class="settings-actions">
+                    <!-- ... existing buttons ... -->
+                    <button id="helpButton" class="help-btn">📖 Help & Documentation</button>
+                    <button id="aboutButton" class="about-btn">ℹ️ About</button>
+
+                </div>
+            </div>
+
+            <!-- Advanced Settings -->
+            <div id="advanced-tab" class="tab-pane">
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="enhancePages"> Enhance pages
+                    </label>
+                    <small>Add extra features to product pages</small>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="voiceSearch"> Enable voice search
+                    </label>
+                    <small>Allow voice input for searches</small>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="analytics"> Enable analytics
+                    </label>
+                    <small>Track your affiliate performance</small>
+                </div>
+
+                <div class="setting-group">
+                    <label for="dataRetention">Data Retention:</label>
+                    <select id="dataRetention">
+                        <option value="7">7 days</option>
+                        <option value="30">30 days</option>
+                        <option value="90">90 days</option>
+                        <option value="365">1 year</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <button id="clearDataBtn" class="danger-btn">Clear All Data</button>
+                    <small>Remove all stored data and reset to defaults</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-actions">
+            <button id="saveButton">Save Settings</button>
+            <button id="resetButton">Reset to Defaults</button>
+            <button id="exportSettingsBtn">Export Settings</button>
+            <button id="importSettingsBtn">Import Settings</button>
+            <input type="file" id="importSettingsFile" accept=".json" style="display: none;">
+        </div>
+
+        <div id="statusMessage"></div>
+
+        <div class="debug-section">
+            <h3>Debug Information</h3>
+            <button id="debugButton">Show Debug Info</button>
+            <div id="debugInfo" style="display: none;">
+                <pre id="debugContent"></pre>
+            </div>
+        </div>
+    </div>
+    <!-- Add privacy settings section -->
+    <div class="setting-group">
+        <label>
+            <input type="checkbox" id="usageStatistics"> 
+            Help improve ShopSmart Pro
+        </label>
+        <small>Allow anonymous usage statistics to help us improve the extension (recommended)</small>
+    </div>
+
+    <div class="setting-group">
+        <label>
+            <input type="checkbox" id="errorReporting"> 
+            Automatic error reporting
+        </label>
+        <small>Send error reports to help fix issues faster</small>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>

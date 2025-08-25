@@ -1,0 +1,7 @@
+Privacy Policy for Amazon Search Pro
+
+This extension does not collect, store, or transmit any personal user data. 
+All search history, preferences, and deal tracking data are stored locally 
+on the user's device using Chrome's storage API.
+
+No data is shared with third parties or external servers.

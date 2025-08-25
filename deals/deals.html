@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Deals Browser - ShopSmart Pro</title>
+    <link rel="stylesheet" href="deals.css">
+</head>
+<body>
+    <div class="deals-container">
+       <h1>🔥 Lightning Deals Browser</h1>  
+        
+        <div class="controls">
+            <div class="filter-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="home">Home & Kitchen</option>
+                    <option value="books">Books</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="sports">Sports & Outdoors</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="sortFilter">Sort by:</label>
+                <select id="sortFilter">
+                    <option value="discount">Highest Discount</option>
+                    <option value="price">Lowest Price</option>
+                    <option value="time">Ending Soonest</option>
+                </select>
+            </div>
+            
+            <button id="refreshBtn" class="refresh-btn">🔄 Refresh Deals</button>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-label">Active Deals:</span>
+                <span class="stat-value" id="activeDealsCount">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Total Savings:</span>
+                <span class="stat-value" id="totalSavings">$0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Avg Discount:</span>
+                <span class="stat-value" id="avgDiscount">0%</span>
+            </div>
+        </div>
+
+        <div class="deals-grid" id="dealsGrid">
+            <div class="loading">Loading deals...</div>
+        </div>
+
+        <div class="deal-alerts">
+            <h3>💡 Deal Alerts</h3>
+            <div class="alert-settings">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enableAlerts">
+                    <span class="checkmark"></span>
+                    Enable deal notifications
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="soundAlerts">
+                    <span class="checkmark"></span>
+                    Play sound for deals
+                </label>
+                <div class="alert-categories">
+                    <h4>Notify for:</h4>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="electronics" checked>
+                        <span class="checkmark"></span>
+                        Electronics
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="home" checked>
+                        <span class="checkmark"></span>
+                        Home
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="books">
+                        <span class="checkmark"></span>
+                        Books
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="fashion">
+                        <span class="checkmark"></span>
+                        Fashion
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="affiliate-notice">
+            <p>🔗 All deals include affiliate tag: <strong>elise200f-20</strong></p>
+            <p><small>Purchases made through these links support the extension development</small></p>
+        </div>
+    </div>
+
+    <script src="deals.js"></script>
+</body>
+</html>

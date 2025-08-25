@@ -1,0 +1,261 @@
+body {
+    font-family: "Trebuchet MS", sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+    min-width: 600px;
+}
+
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #333;
+    margin-top: 0;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+.settings-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.tab-btn {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover {
+    color: #FF9900;
+}
+
+.tab-btn.active {
+    color: #FF9900;
+    border-bottom-color: #FF9900;
+}
+
+.tab-pane {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.setting-group {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.setting-group select,
+.setting-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.setting-group select:focus,
+.setting-group input[type="text"]:focus {
+    border-color: #FF9900;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
+}
+
+.setting-group input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.setting-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 12px;
+}
+
+.affiliate-info {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f0f8ff;
+    border-radius: 8px;
+    border-left: 4px solid #0073bb;
+}
+
+.affiliate-info h3 {
+    margin-top: 0;
+    color: #0073bb;
+}
+
+.affiliate-info p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.affiliate-info strong {
+    color: #B12704;
+    font-size: 16px;
+}
+
+.settings-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.settings-actions button {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+#saveButton {
+    background: #28a745;
+    color: white;
+}
+
+#saveButton:hover {
+    background: #218838;
+}
+
+#resetButton {
+    background: #6c757d;
+    color: white;
+}
+
+#resetButton:hover {
+    background: #5a6268;
+}
+
+#exportSettingsBtn {
+    background: #17a2b8;
+    color: white;
+}
+
+#exportSettingsBtn:hover {
+    background: #138496;
+}
+
+#importSettingsBtn {
+    background: #ffc107;
+    color: #212529;
+}
+
+#importSettingsBtn:hover {
+    background: #e0a800;
+}
+
+.danger-btn {
+    background: #dc3545 !important;
+    color: white !important;
+}
+
+.danger-btn:hover {
+    background: #c82333 !important;
+}
+
+#statusMessage {
+    margin: 15px 0;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#statusMessage.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+#statusMessage.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.debug-section {
+    margin: 25px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.debug-section h3 {
+    margin-top: 0;
+    color: #495057;
+}
+
+#debugInfo {
+    margin-top: 15px;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 12px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#debugButton {
+    padding: 8px 15px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#debugButton:hover {
+    background: #5a6268;
+}
+.help-btn {
+    background: #17a2b8 !important;
+    color: white !important;
+}
+
+.about-btn {
+    background: #6c757d !important;
+    color: white !important;
+}
+
+.help-btn:hover {
+    background: #138496 !important;
+}
+
+.about-btn:hover {
+    background: #5a6268 !important;
+}
