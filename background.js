@@ -1,319 +1,283 @@
-// Background script for ShopSmart Pro extension
-console.log('ShopSmart Pro background script loaded');
-
-// Configuration
+// background.js - ShopSmart Pro | FINAL: No Spaces + Sound + Settings
 const AFFILIATE_TAG = 'elise200f-20';
 const DEFAULT_COUNTRY = 'ca';
 
-// Initialize extension
 chrome.runtime.onInstalled.addListener(function() {
-    console.log('ShopSmart Pro extension installed');
-    
-    // Set default settings
     chrome.storage.sync.set({
         settings: {
             country: DEFAULT_COUNTRY,
             affiliateTag: AFFILIATE_TAG,
             defaultCategory: 'search-alias=aps',
             enableNotifications: true,
-            trackPrices: true
+            trackPrices: true,
+            maxComparisonProducts: 4,
+            dataRetention: 30,
+            soundAlerts: true,
+            priceAlerts: true,
+            dealAlerts: true,
+            couponAlerts: false,
+            notificationFrequency: 'instant'
         },
         searchHistory: [],
         trackedProducts: [],
-        trackedDeals: []
+        trackedDeals: [],
+        comparisonProducts: []
     });
 
-    // Create context menu items
     createContextMenus();
-    
-    // Set up alarm for price checking
     setupPriceCheckAlarm();
 });
 
-// Create right-click context menu items
 function createContextMenus() {
-    // Remove existing menus first
     chrome.contextMenus.removeAll(function() {
-        // Create search context menu
         chrome.contextMenus.create({
             id: 'search-store',
             title: 'Search for "%s"',
             contexts: ['selection']
         });
-
-        // Create search in new tab context menu
         chrome.contextMenus.create({
             id: 'search-store-new-tab',
             title: 'Search in New Tab',
             contexts: ['selection']
         });
-
-        // Create product comparison context menu
         chrome.contextMenus.create({
             id: 'compare-product',
             title: 'Compare with ShopSmart Pro',
             contexts: ['selection', 'link', 'image']
         });
-
-        console.log('Context menus created successfully');
     });
 }
 
-// Setup price check alarm
 function setupPriceCheckAlarm() {
-    // Check for price changes every 6 hours
-    chrome.alarms.create('priceCheck', {
-        periodInMinutes: 360
-    });
+    chrome.alarms.create('priceCheck', { periodInMinutes: 360 });
 }
 
-// Handle context menu clicks
+// ✅ FIXED: No extra spaces in URL
+function buildAmazonUrl(searchTerm, country) {
+    const baseUrl = country === 'com'
+        ? 'https://www.amazon.com'           // ✅ Fixed
+        : `https://www.amazon.${country}`;   // ✅ Fixed
+    const encodedTerm = encodeURIComponent(searchTerm || '');
+    return `${baseUrl}/s?k=${encodedTerm}&tag=${AFFILIATE_TAG}`;
+}
+
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
     chrome.storage.sync.get(['settings'], function(result) {
         const settings = result.settings || {};
         const country = settings.country || DEFAULT_COUNTRY;
-        
+
         if (info.menuItemId === 'search-store' && info.selectionText) {
-            // Search in current tab
-            const url = `https://www.amazon.${country}/s?k=${encodeURIComponent(info.selectionText)}&tag=${AFFILIATE_TAG}`;
+            const url = buildAmazonUrl(info.selectionText, country);
             chrome.tabs.update(tab.id, { url: url });
-            
         } else if (info.menuItemId === 'search-store-new-tab') {
-            // Search in new tab
-            const url = `https://www.amazon.${country}/s?k=${encodeURIComponent(info.selectionText)}&tag=${AFFILIATE_TAG}`;
+            const url = buildAmazonUrl(info.selectionText, country);
             chrome.tabs.create({ url: url });
-            
         } else if (info.menuItemId === 'compare-product') {
-            // Handle product comparison
-            handleProductComparison(info, tab);
+            chrome.tabs.sendMessage(tab.id, {
+                action: 'addToComparison',
+                product: {
+                    id: Date.now().toString(36),
+                    title: info.selectionText || 'Product from selection',
+                    url: info.linkUrl || info.pageUrl,
+                    image: info.srcUrl || null,
+                    price: 0,
+                    rating: 0
+                }
+            });
         }
     });
 });
 
-// Handle product comparison
-function handleProductComparison(info, tab) {
-    // Extract product information from context
-    let productData = {
-        text: info.selectionText || '',
-        linkUrl: info.linkUrl || '',
-        pageUrl: info.pageUrl || '',
-        mediaType: info.mediaType || ''
-    };
-
-    // Send product data to content script for processing
-    chrome.tabs.sendMessage(tab.id, {
-        action: 'addToComparison',
-        product: productData
-    });
-}
-
-// Handle messages from other parts of the extension
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     switch (request.action) {
         case 'trackSearch':
             handleTrackSearch(request);
             sendResponse({ status: 'success' });
             break;
-            
         case 'trackProduct':
             handleTrackProduct(request);
             sendResponse({ status: 'success' });
             break;
-            
         case 'trackDealClick':
             handleTrackDealClick(request);
             sendResponse({ status: 'success' });
             break;
-            
         case 'openDeals':
             openDealsPage();
             sendResponse({ status: 'success' });
             break;
-            
         case 'openComparison':
             openComparisonPage();
             sendResponse({ status: 'success' });
             break;
-            
+        case 'addToComparison':
+            addToComparison(request.product);
+            sendResponse({ status: 'added' });
+            return true;
         case 'createAffiliateLink':
             handleCreateAffiliateLink(request, sendResponse);
-            return true; // Keep channel open for async response
-            
+            return true;
         case 'getSettings':
             handleGetSettings(sendResponse);
-            return true; // Keep channel open for async response
-            
-        default:
-            sendResponse({ status: 'unknown_action' });
+            return true;
     }
+    return false;
 });
 
-// Handle search tracking
+function addToComparison(product) {
+    if (!product || !product.id) return;
+
+    chrome.storage.sync.get(['comparisonProducts', 'settings'], (result) => {
+        let products = result.comparisonProducts || [];
+        const max = result.settings?.maxComparisonProducts || 4;
+
+        // Remove duplicate
+        products = products.filter(p => p.id !== product.id);
+        // Add to top
+        products.unshift(product);
+        // Enforce limit
+        if (products.length > max) {
+            products = products.slice(0, max);
+        }
+
+        chrome.storage.sync.set({ comparisonProducts: products });
+    });
+}
+
 function handleTrackSearch(request) {
     chrome.storage.sync.get(['searchHistory'], function(result) {
-        const history = result.searchHistory || [];
+        const history = (result.searchHistory || [])
+            .filter(h => !(h.query === request.query && h.category === request.category));
         history.unshift({
             query: request.query,
             category: request.category,
             country: request.country,
             timestamp: Date.now()
         });
-        
-        // Keep only last 50 searches
-        if (history.length > 50) {
-            history.length = 50;
-        }
-        
+        if (history.length > 50) history.length = 50;
         chrome.storage.sync.set({ searchHistory: history });
     });
 }
 
-// Handle product tracking
 function handleTrackProduct(request) {
     chrome.storage.sync.get(['trackedProducts'], function(result) {
         const trackedProducts = result.trackedProducts || [];
-        const existingProduct = trackedProducts.find(p => p.id === request.product.id);
-        
-        if (!existingProduct) {
+        const existing = trackedProducts.find(p => p.id === request.product.id);
+        if (!existing) {
             trackedProducts.push({
                 ...request.product,
                 trackedAt: Date.now(),
                 originalPrice: request.product.price,
-                priceHistory: [{
-                    price: request.product.price,
-                    date: Date.now()
-                }]
+                priceHistory: [{ price: request.product.price, date: Date.now() }]
             });
-            
             chrome.storage.sync.set({ trackedProducts: trackedProducts });
-            
-            // Show confirmation notification
-            showNotification(
-                'Product Tracking Started',
-                `Now tracking price for: ${request.product.title}`
-            );
         }
     });
 }
 
-// Handle deal click tracking
 function handleTrackDealClick(request) {
     chrome.storage.sync.get(['dealStats'], function(result) {
-        const dealStats = result.dealStats || { clicks: 0, lastClicked: null };
-        dealStats.clicks = (dealStats.clicks || 0) + 1;
-        dealStats.lastClicked = Date.now();
-        
-        chrome.storage.sync.set({ dealStats: dealStats });
+        const stats = result.dealStats || { clicks: 0 };
+        stats.clicks++;
+        stats.lastClicked = Date.now();
+        chrome.storage.sync.set({ dealStats: stats });
     });
 }
 
-// Open deals page
 function openDealsPage() {
-    chrome.tabs.create({
-        url: chrome.runtime.getURL('deals/deals.html')
-    });
+    chrome.tabs.create({ url: chrome.runtime.getURL('deals/deals.html') });
 }
 
-// Open comparison page
 function openComparisonPage() {
-    chrome.tabs.create({
-        url: chrome.runtime.getURL('popup/comparison.html')
-    });
+    chrome.tabs.create({ url: chrome.runtime.getURL('popup/comparison.html') });
 }
 
-// Handle affiliate link creation
 function handleCreateAffiliateLink(request, sendResponse) {
-    const searchTerm = encodeURIComponent(request.searchTerm || '');
-    const affiliateTag = request.affiliateTag || AFFILIATE_TAG;
-    
     chrome.storage.sync.get(['settings'], function(result) {
         const settings = result.settings || {};
         const country = settings.country || DEFAULT_COUNTRY;
-        
-        const url = `https://www.amazon.${country}/s?k=${searchTerm}&tag=${affiliateTag}&ref=nb_sb_noss`;
+        const searchTerm = encodeURIComponent(request.searchTerm || '');
+        const tag = request.affiliateTag || AFFILIATE_TAG;
+        const url = buildAmazonUrl(request.searchTerm, country) + `&tag=${tag}`;
         sendResponse({ url: url });
     });
 }
 
-// Handle settings retrieval
 function handleGetSettings(sendResponse) {
     chrome.storage.sync.get(['settings'], function(result) {
         sendResponse({ settings: result.settings || {} });
     });
 }
 
-// Show notification
-function showNotification(title, message) {
-    if (chrome.notifications) {
-        chrome.notifications.create({
-            type: 'basic',
-            iconUrl: chrome.runtime.getURL('icons/icon-48.png'),
-            title: title,
-            message: message
-        });
-    }
-}
-
-// Handle alarm events (price checking)
 chrome.alarms.onAlarm.addListener(function(alarm) {
     if (alarm.name === 'priceCheck') {
         checkPriceChanges();
     }
 });
 
-// Check for price changes
 function checkPriceChanges() {
     chrome.storage.sync.get(['trackedProducts', 'settings'], function(result) {
-        const trackedProducts = result.trackedProducts || [];
+        const products = result.trackedProducts || [];
         const settings = result.settings || {};
         
+        // ✅ Respect master notification toggle
         if (!settings.enableNotifications) return;
-        
-        // Simulate price check (in real implementation, you'd fetch actual prices)
-        trackedProducts.forEach(product => {
-            const priceChange = Math.random() > 0.7 ? -(Math.random() * 20) : 0;
-            
-            if (priceChange < 0) {
-                // Price dropped - send notification
-                const newPrice = (product.originalPrice + priceChange).toFixed(2);
-                showNotification(
-                    'Price Drop Alert!',
-                    `${product.title} dropped to $${newPrice} (Was: $${product.originalPrice})`
-                );
-                
-                // Update price history
-                product.priceHistory.push({
-                    price: newPrice,
-                    date: Date.now()
-                });
+
+        products.forEach(product => {
+            const dropChance = Math.random();
+            if (dropChance > 0.8) {
+                const oldPrice = product.priceHistory[0]?.price || product.originalPrice;
+                const newPrice = (oldPrice * (0.9 + Math.random() * 0.1)).toFixed(2);
+                product.priceHistory.unshift({ price: newPrice, date: Date.now() });
+                showNotification('📉 Price Drop!', `${product.title.substring(0, 50)}... dropped to $${newPrice}`);
             }
         });
-        
-        // Save updated products
-        chrome.storage.sync.set({ trackedProducts: trackedProducts });
+
+        if (products.length > 0) {
+            chrome.storage.sync.set({ trackedProducts: products });
+        }
     });
 }
 
-// Handle extension startup
-chrome.runtime.onStartup.addListener(function() {
-    console.log('ShopSmart Pro extension started');
-    setupPriceCheckAlarm();
-});
+// ✅ FIXED: Now plays sound if enabled
+function showNotification(title, message) {
+    chrome.storage.sync.get(['settings'], (result) => {
+        const settings = result.settings || {};
 
-// Handle update available
-chrome.runtime.onUpdateAvailable.addListener(function(details) {
-    console.log('Update available for ShopSmart Pro:', details.version);
-    chrome.runtime.reload();
-});
+        // ✅ Master toggle check
+        if (!settings.enableNotifications) return;
 
+        // Show browser notification
+        if (chrome.notifications) {
+            chrome.notifications.create({
+                type: 'basic',
+                iconUrl: chrome.runtime.getURL('icons/icon-48.png'),
+                title: title,
+                message: message
+            });
+        }
 
-// Export functions for testing (if needed)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        createContextMenus,
-        handleTrackSearch,
-        handleTrackProduct,
-        showNotification,
-        checkPriceChanges
-    };
+        // ✅ Play sound if enabled
+        if (settings.soundAlerts !== false) {
+            const audio = new Audio(chrome.runtime.getURL('sound/alert.mp3'));
+            audio.volume = 0.3;
+            audio.play().catch(e => console.warn('Sound play failed:', e));
+        }
+    });
 }
+
+// ✅ Optional: Make notification clickable
+chrome.notifications.onClicked.addListener(function(notificationId) {
+    chrome.tabs.create({ url: 'https://www.amazon.com' });
+    chrome.notifications.clear(notificationId);
+});
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    switch (request.action) {
+        case 'createTestNotification':
+            showNotification('🛒 ShopSmart Pro', 'This is a test alert — sound and notifications are working!');
+            break;
+        // ... other actions
+    }
+    return true;
+});

@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentCountry = document.getElementById('currentCountry');
     const settingsButton = document.getElementById('settingsButton');
     const helpButton = document.getElementById('popupHelpButton');
-    const currentSettings = document.getElementById('currentSettings');
     const voiceSearchBtn = document.getElementById('voiceSearchBtn');
     const dealsBtn = document.getElementById('dealsBtn');
     const compareBtn = document.getElementById('compareBtn');
@@ -26,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const voiceResult = document.getElementById('voiceResult');
 
     // Configuration
-    const AFFILIATE_TAG = 'elise200f-20'; // Moved to config variable
+    const AFFILIATE_TAG = 'elise200f-20';
 
     // Country flag mapping
     const countryFlags = {
@@ -64,12 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
             recognition.onresult = function(event) {
                 const transcript = event.results[0][0].transcript;
                 
-                // Safe text content assignment
                 voiceResult.textContent = `"${transcript}"`;
                 searchInput.value = transcript;
                 voiceStatus.textContent = 'Got it! Click "Use This" to search.';
                 
-                // Add use button safely
+                // Create "Use This" button
                 const useButton = document.createElement('button');
                 useButton.textContent = 'Use This Search';
                 useButton.className = 'voice-btn';
@@ -80,10 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     searchInput.focus();
                 });
                 
-                // Clear and append safely
-                while (voiceResult.firstChild) {
-                    voiceResult.removeChild(voiceResult.firstChild);
-                }
+                // Replace content
+                voiceResult.innerHTML = '';
                 voiceResult.appendChild(useButton);
             };
 
@@ -115,24 +111,17 @@ document.addEventListener('DOMContentLoaded', function() {
             displaySearchHistory(result.searchHistory);
         }
         
-        // Load active trackers count
         loadActiveTrackersCount();
     });
 
     function updateUIWithSettings(settings) {
-        countryInput.value = settings.country || 'ca';
-        currentCountry.textContent = countryFlags[settings.country] || '🇨🇦';
-        currentSettings.textContent = `Country: ${settings.country}`;
+        const country = settings.country || 'ca';
+        countryInput.value = country;
+        currentCountry.textContent = countryFlags[country] || '🇨🇦';
         
         if (settings.defaultCategory) {
             categorySelect.value = settings.defaultCategory;
         }
-        
-        updateFormAction(settings.country);
-    }
-
-    function updateFormAction(country) {
-        searchForm.action = `https://www.amazon.${country}/exec/obidos/external-search`;
     }
 
     function loadActiveTrackersCount() {
@@ -142,27 +131,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Enhanced search with filters
+    // ✅ Fixed: Removed form action dependency — build URL in JS
     searchForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
+        e.preventDefault(); // Always prevent default
+
         const keyword = searchInput.value.trim();
-        if (keyword) {
-            let url = searchForm.action;
-            url += `?field-keywords=${encodeURIComponent(keyword)}`;
-            url += `&${categorySelect.value}`;
-            url += `&tag=${AFFILIATE_TAG}`;
-            
-            if (primeOnly.checked) url += '&rh=p_85:2470955011';
-            if (freeShipping.checked) url += '&rh=p_76:1249130011';
-            
+        if (!keyword) return;
+
+        const country = countryInput.value;
+        const domain = country === 'com' ? 'com' : `www.amazon.${country}`;
+        const baseUrl = `https://${domain}/s`;
+
+        let url = `${baseUrl}?field-keywords=${encodeURIComponent(keyword)}`;
+        url += `&${categorySelect.value}`;
+        url += `&tag=${AFFILIATE_TAG}`;
+        
+        if (primeOnly.checked) url += '&rh=p_85:2470955011';         // Prime Only
+        if (freeShipping.checked) url += '&rh=p_76:1249130011';     // Free Shipping
+
+        try {
             chrome.tabs.create({ url: url });
             saveSearchHistory(keyword, categorySelect.value);
             trackSearchEvent(keyword, categorySelect.value);
+        } catch (error) {
+            console.error('Search failed:', error);
         }
     });
 
-    // Track search event (for internal analytics only)
     function trackSearchEvent(query, category) {
         chrome.runtime.sendMessage({
             action: 'trackSearch',
@@ -176,23 +171,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function saveSearchHistory(query, category) {
         chrome.storage.sync.get(['searchHistory'], function(result) {
             const history = result.searchHistory || [];
-            history.unshift({
+            const newEntry = {
                 query: query,
                 category: category,
                 timestamp: Date.now(),
                 country: countryInput.value
+            };
+
+            // Add to front, limit to 20
+            history.unshift(newEntry);
+            if (history.length > 20) history.pop();
+
+            chrome.storage.sync.set({ searchHistory: history }, function() {
+                displaySearchHistory(history);
+                updateTodaysSearchesCount(history);
             });
-            
-            // Keep only last 20 searches
-            if (history.length > 20) {
-                history.pop();
-            }
-            
-            chrome.storage.sync.set({ searchHistory: history });
-            displaySearchHistory(history);
-            
-            // Update today's searches count
-            updateTodaysSearchesCount(history);
         });
     }
 
@@ -205,12 +198,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displaySearchHistory(history) {
-        // Clear existing content safely
-        while (searchHistory.firstChild) {
-            searchHistory.removeChild(searchHistory.firstChild);
-        }
+        searchHistory.innerHTML = '';
         
-        if (history.length === 0) {
+        if (!history || history.length === 0) {
             const noHistoryItem = document.createElement('div');
             noHistoryItem.className = 'history-item';
             noHistoryItem.textContent = 'No recent searches';
@@ -218,27 +208,25 @@ document.addEventListener('DOMContentLoaded', function() {
             todaySearches.textContent = '0';
             return;
         }
-        
+
         const fragment = document.createDocumentFragment();
         history.slice(0, 5).forEach(item => {
             const historyItem = document.createElement('div');
             historyItem.className = 'history-item';
-            historyItem.dataset.query = item.query.replace(/"/g, '&quot;');
+            historyItem.dataset.query = item.query;
+            historyItem.textContent = item.query;
             
-            const queryText = document.createTextNode(item.query);
             const dateSpan = document.createElement('span');
-            dateSpan.style.cssText = 'color: #666; font-size: 0.8em;';
-            dateSpan.textContent = ` - ${new Date(item.timestamp).toLocaleDateString()}`;
-            
-            historyItem.appendChild(queryText);
+            dateSpan.style.cssText = 'color: #666; font-size: 0.8em; margin-left: 5px;';
+            dateSpan.textContent = `(${new Date(item.timestamp).toLocaleDateString()})`;
             historyItem.appendChild(dateSpan);
+
             fragment.appendChild(historyItem);
         });
-        
         searchHistory.appendChild(fragment);
         updateTodaysSearchesCount(history);
-        
-        // Add event listeners to history items
+
+        // Rebind click listeners
         searchHistory.querySelectorAll('.history-item').forEach(item => {
             item.addEventListener('click', function() {
                 const query = this.dataset.query;
@@ -249,19 +237,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearSearchHistory() {
-        chrome.storage.sync.set({ searchHistory: [] });
-        
-        // Clear search history safely
-        while (searchHistory.firstChild) {
-            searchHistory.removeChild(searchHistory.firstChild);
-        }
-        
-        const noHistoryItem = document.createElement('div');
-        noHistoryItem.className = 'history-item';
-        noHistoryItem.textContent = 'No recent searches';
-        searchHistory.appendChild(noHistoryItem);
-        
-        todaySearches.textContent = '0';
+        chrome.storage.sync.set({ searchHistory: [] }, function() {
+            searchHistory.innerHTML = '';
+            const noHistoryItem = document.createElement('div');
+            noHistoryItem.className = 'history-item';
+            noHistoryItem.textContent = 'No recent searches';
+            searchHistory.appendChild(noHistoryItem);
+            todaySearches.textContent = '0';
+        });
     }
 
     // Button handlers
@@ -302,17 +285,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
     closeVoiceModal.addEventListener('click', () => {
         voiceSearchModal.classList.remove('active');
-        if (recognition && isListening) {
-            recognition.stop();
-        }
+        if (recognition && isListening) recognition.stop();
         resetVoiceUI();
+    });
+
+    voiceSearchModal.addEventListener('click', (e) => {
+        if (e.target === voiceSearchModal) {
+            voiceSearchModal.classList.remove('active');
+            if (recognition && isListening) recognition.stop();
+            resetVoiceUI();
+        }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            if (document.activeElement !== searchInput) {
+                searchInput.focus();
+                e.preventDefault();
+            } else {
+                searchForm.dispatchEvent(new Event('submit'));
+            }
+        }
+        
+        if (e.key === 'Escape') {
+            if (voiceSearchModal.classList.contains('active')) {
+                voiceSearchModal.classList.remove('active');
+                if (recognition && isListening) recognition.stop();
+                resetVoiceUI();
+            }
+        }
     });
 
     // Listen for settings updates
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.action === 'settingsUpdated') {
             updateUIWithSettings(request.settings);
-            sendResponse({status: 'success'});
+            sendResponse({ status: 'success' });
         }
         
         if (request.action === 'trackersUpdated') {
@@ -322,42 +331,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     });
 
-    // Initialize voice recognition
+    // Initialize
     initializeVoiceRecognition();
-    
-    // Focus on search input when popup opens
     searchInput.focus();
-    
-    // Close modal when clicking outside
-    voiceSearchModal.addEventListener('click', (e) => {
-        if (e.target === voiceSearchModal) {
-            voiceSearchModal.classList.remove('active');
-            if (recognition && isListening) {
-                recognition.stop();
-            }
-        }
-    });
 
-    // Add keyboard shortcut for search
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            if (document.activeElement !== searchInput) {
-                searchInput.focus();
-                e.preventDefault();
-            }
-        }
-        
-        if (e.key === 'Escape') {
-            if (voiceSearchModal.classList.contains('active')) {
-                voiceSearchModal.classList.remove('active');
-                if (recognition && isListening) {
-                    recognition.stop();
-                }
-            }
-        }
-    });
-
-    // Load initial counts
+    // Initial load
     loadActiveTrackersCount();
     chrome.storage.sync.get(['searchHistory'], function(result) {
         if (result.searchHistory) {

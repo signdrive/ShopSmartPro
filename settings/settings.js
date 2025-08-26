@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabPanes = document.querySelectorAll('.tab-pane');
     const countrySelect = document.getElementById('countrySelect');
     const defaultCategory = document.getElementById('defaultCategory');
+    const maxComparisonProducts = document.getElementById('maxComparisonProducts');
     const saveButton = document.getElementById('saveButton');
     const resetButton = document.getElementById('resetButton');
     const exportSettingsBtn = document.getElementById('exportSettingsBtn');
@@ -16,34 +17,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fixed affiliate tag - cannot be changed by users
     const fixedAffiliateTag = 'elise200f-20';
-    
+
     // Default settings
-   const defaultSettings = {
-    country: 'ca',
-    affiliateTag: fixedAffiliateTag,
-    defaultCategory: 'search-alias=aps',
-    autoRedirect: false,
-    saveHistory: true,
-    priceAlerts: true,
-    dealAlerts: true,
-    couponAlerts: false,
-    notificationFrequency: 'instant',
-    enhancePages: true,
-    voiceSearch: false,
-    dataRetention: 30,
-    usageStatistics: true,  // Added
-    errorReporting: true    // Added
-};
+    const defaultSettings = {
+        country: 'ca',
+        affiliateTag: fixedAffiliateTag,
+        defaultCategory: 'search-alias=aps',
+        autoRedirect: false,
+        saveHistory: true,
+        enableNotifications: true,     // ✅ Master toggle
+        priceAlerts: true,
+        dealAlerts: true,
+        couponAlerts: false,
+        soundAlerts: true,             // ✅ Play sound by default
+        notificationFrequency: 'instant',
+        enhancePages: true,
+        voiceSearch: false,
+        analytics: true,
+        dataRetention: 30,
+        usageStatistics: true,
+        errorReporting: true,
+        maxComparisonProducts: 4
+    };
 
     // Tab switching functionality
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
             const tab = button.dataset.tab;
-            
+
             // Update active tab button
             tabButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            
+
             // Show corresponding tab pane
             tabPanes.forEach(pane => pane.classList.remove('active'));
             document.getElementById(`${tab}-tab`).classList.add('active');
@@ -53,15 +58,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load saved settings
     chrome.storage.sync.get(['settings'], function(result) {
         console.log('Loading settings from storage:', result);
-        
-        let settings = result.settings || defaultSettings;
-        
+
+        let settings = result.settings || {};
+
         // Ensure affiliate tag is always fixed
         settings.affiliateTag = fixedAffiliateTag;
-        
+
+        // Backfill missing settings with defaults
+        Object.keys(defaultSettings).forEach(key => {
+            if (settings[key] === undefined) {
+                settings[key] = defaultSettings[key];
+            }
+        });
+
         // Update UI with loaded settings
         updateUIWithSettings(settings);
-        
+
         showStatus('Settings loaded successfully.', 'success');
     });
 
@@ -69,54 +81,66 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateUIWithSettings(settings) {
         countrySelect.value = settings.country || 'ca';
         defaultCategory.value = settings.defaultCategory || 'search-alias=aps';
-        
-        // Checkboxes
-        document.getElementById('autoRedirect').checked = settings.autoRedirect || false;
+        maxComparisonProducts.value = settings.maxComparisonProducts || 4;
+
+        // General checkboxes
+        document.getElementById('autoRedirect').checked = !!settings.autoRedirect;
         document.getElementById('saveHistory').checked = settings.saveHistory !== false;
-        document.getElementById('priceAlerts').checked = settings.priceAlerts || false;
-        document.getElementById('dealAlerts').checked = settings.dealAlerts || false;
-        document.getElementById('couponAlerts').checked = settings.couponAlerts || false;
+
+        // Notification toggles
+        document.getElementById('enableNotifications').checked = settings.enableNotifications !== false;
+        document.getElementById('priceAlerts').checked = settings.priceAlerts !== false;
+        document.getElementById('dealAlerts').checked = settings.dealAlerts !== false;
+        document.getElementById('couponAlerts').checked = settings.couponAlerts !== false;
+        document.getElementById('soundAlerts').checked = settings.soundAlerts !== false;
+
+        // Features
         document.getElementById('enhancePages').checked = settings.enhancePages !== false;
-        document.getElementById('voiceSearch').checked = settings.voiceSearch || false;
+        document.getElementById('voiceSearch').checked = settings.voiceSearch !== false;
         document.getElementById('analytics').checked = settings.analytics !== false;
-        
+
         // Selects
         document.getElementById('notificationFrequency').value = settings.notificationFrequency || 'instant';
         document.getElementById('dataRetention').value = settings.dataRetention || 30;
-        // Add privacy settings handling in updateUIWithSettings
+
+        // Privacy
         document.getElementById('usageStatistics').checked = settings.usageStatistics !== false;
         document.getElementById('errorReporting').checked = settings.errorReporting !== false;
     }
 
     // Save settings
     saveButton.addEventListener('click', function() {
-       const newSettings = {
+        const newSettings = {
             country: countrySelect.value,
             affiliateTag: fixedAffiliateTag,
             defaultCategory: defaultCategory.value,
             autoRedirect: document.getElementById('autoRedirect').checked,
             saveHistory: document.getElementById('saveHistory').checked,
+            enableNotifications: document.getElementById('enableNotifications').checked, // ✅
             priceAlerts: document.getElementById('priceAlerts').checked,
             dealAlerts: document.getElementById('dealAlerts').checked,
             couponAlerts: document.getElementById('couponAlerts').checked,
+            soundAlerts: document.getElementById('soundAlerts').checked, // ✅
             notificationFrequency: document.getElementById('notificationFrequency').value,
             enhancePages: document.getElementById('enhancePages').checked,
             voiceSearch: document.getElementById('voiceSearch').checked,
+            analytics: document.getElementById('analytics').checked,
             dataRetention: parseInt(document.getElementById('dataRetention').value),
-            usageStatistics: document.getElementById('usageStatistics').checked,  // Added
-            errorReporting: document.getElementById('errorReporting').checked     // Added
+            usageStatistics: document.getElementById('usageStatistics').checked,
+            errorReporting: document.getElementById('errorReporting').checked,
+            maxComparisonProducts: parseInt(maxComparisonProducts.value) || 4
         };
 
         console.log('Saving settings:', newSettings);
-        
+
         chrome.storage.sync.set({ settings: newSettings }, function() {
             if (chrome.runtime.lastError) {
                 showStatus('Error saving settings: ' + chrome.runtime.lastError.message, 'error');
                 return;
             }
-            
+
             showStatus('Settings saved successfully!', 'success');
-            
+
             // Notify other parts of the extension
             chrome.runtime.sendMessage({
                 action: 'settingsUpdated',
@@ -140,15 +164,15 @@ document.addEventListener('DOMContentLoaded', function() {
         chrome.storage.sync.get(['settings'], function(result) {
             const settings = result.settings || defaultSettings;
             const dataStr = JSON.stringify(settings, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = 'amazon-search-pro-settings.json';
-            
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+            const exportFileDefaultName = 'shopsmart-pro-settings.json';
+
             const linkElement = document.createElement('a');
             linkElement.setAttribute('href', dataUri);
             linkElement.setAttribute('download', exportFileDefaultName);
             linkElement.click();
-            
+
             showStatus('Settings exported successfully.', 'success');
         });
     });
@@ -165,10 +189,17 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = function(e) {
                 try {
                     const importedSettings = JSON.parse(e.target.result);
-                    
-                    // Ensure affiliate tag remains fixed
+
+                    // Preserve critical settings
                     importedSettings.affiliateTag = fixedAffiliateTag;
-                    
+
+                    // Backfill any missing new settings
+                    Object.keys(defaultSettings).forEach(key => {
+                        if (importedSettings[key] === undefined) {
+                            importedSettings[key] = defaultSettings[key];
+                        }
+                    });
+
                     chrome.storage.sync.set({ settings: importedSettings }, function() {
                         updateUIWithSettings(importedSettings);
                         showStatus('Settings imported successfully.', 'success');
@@ -198,9 +229,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (debugInfo.style.display === 'none') {
             chrome.storage.sync.get(null, function(syncResult) {
                 chrome.storage.local.get(null, function(localResult) {
-                    debugContent.textContent = 'Sync Storage:\n' + 
-                        JSON.stringify(syncResult, null, 2) + 
-                        '\n\nLocal Storage:\n' + 
+                    debugContent.textContent = 'Sync Storage:\n' +
+                        JSON.stringify(syncResult, null, 2) +
+                        '\n\nLocal Storage:\n' +
                         JSON.stringify(localResult, null, 2);
                     debugInfo.style.display = 'block';
                     debugButton.textContent = 'Hide Debug Info';
@@ -212,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-        // Add to your event listeners
+    // Help & About buttons
     document.getElementById('helpButton').addEventListener('click', function() {
         chrome.tabs.create({
             url: chrome.runtime.getURL('documentation.html')
@@ -234,4 +265,11 @@ document.addEventListener('DOMContentLoaded', function() {
             statusMessage.className = '';
         }, 5000);
     }
+});
+
+document.getElementById('testNotificationBtn').addEventListener('click', () => {
+    chrome.runtime.sendMessage({
+        action: 'createTestNotification'
+    });
+    showStatus('Test notification sent!', 'success');
 });

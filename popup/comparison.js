@@ -1,7 +1,10 @@
+// popup/comparison.js - ShopSmart Pro | Final: No innerHTML, CSP-Compliant, Secure
 class ProductComparison {
     constructor() {
         this.products = [];
         this.initializeElements();
+        this.loadTheme();
+        this.loadSettings();
         this.setupEventListeners();
         this.loadComparison();
     }
@@ -10,6 +13,44 @@ class ProductComparison {
         this.comparisonResults = document.getElementById('comparisonResults');
         this.clearBtn = document.getElementById('clearComparison');
         this.closeBtn = document.getElementById('closeComparison');
+        this.darkModeToggle = document.getElementById('darkModeToggle');
+        this.exportCsvBtn = document.getElementById('exportCsv');
+        this.saveListBtn = document.getElementById('saveList');
+        this.listNameInput = document.getElementById('listName');
+
+        if (!this.comparisonResults) {
+            console.error('❌ #comparisonResults not found');
+            this.showError('UI Error: Missing container');
+        }
+    }
+
+    async loadSettings() {
+        try {
+            const result = await new Promise(resolve => {
+                chrome.storage.sync.get(['settings'], res => resolve(res));
+            });
+            this.maxProducts = result.settings?.maxComparisonProducts || 4;
+        } catch (e) {
+            this.maxProducts = 4;
+        }
+    }
+
+    async loadTheme() {
+        try {
+            const result = await new Promise(resolve => {
+                chrome.storage.sync.get(['darkMode'], res => resolve(res));
+            });
+            if (result.darkMode) {
+                document.body.classList.replace('light-mode', 'dark-mode');
+                this.darkModeToggle.textContent = '☀️ Light Mode';
+            }
+        } catch (e) {}
+    }
+
+    saveTheme(isDark) {
+        try {
+            chrome.storage.sync.set({ darkMode: isDark });
+        } catch (e) {}
     }
 
     setupEventListeners() {
@@ -21,11 +62,42 @@ class ProductComparison {
             this.closeBtn.addEventListener('click', () => window.close());
         }
 
-        // Listen for messages from content script
+        if (this.darkModeToggle) {
+            this.darkModeToggle.addEventListener('click', () => {
+                const isDark = document.body.classList.contains('light-mode');
+                document.body.classList.toggle('light-mode');
+                document.body.classList.toggle('dark-mode');
+                this.darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌓 Dark Mode';
+                this.saveTheme(isDark);
+            });
+        }
+
+        const shareBtn = document.getElementById('shareBtn');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', () => {
+                const url = chrome.runtime.getURL('popup/comparison.html');
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        alert('🔗 Comparison link copied to clipboard!');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy link:', err);
+                        alert('❌ Could not copy link. Please try again.');
+                    });
+            });
+        }
+
+        if (this.exportCsvBtn) {
+            this.exportCsvBtn.addEventListener('click', () => this.exportToCsv());
+        }
+
+        if (this.saveListBtn) {
+            this.saveListBtn.addEventListener('click', () => this.saveCurrentList());
+        }
+
         chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-            if (request.action === 'addToComparison') {
-                this.addProduct(request.product);
-                sendResponse({ status: 'added' });
+            if (request.action === 'comparisonUpdated') {
+                this.loadComparison();
             }
             return true;
         });
@@ -33,38 +105,58 @@ class ProductComparison {
 
     async loadComparison() {
         try {
-            const result = await chrome.storage.sync.get('comparisonProducts');
+            const result = await new Promise((resolve) => {
+                chrome.storage.sync.get(['comparisonProducts'], (res) => {
+                    resolve({
+                        comparisonProducts: Array.isArray(res?.comparisonProducts) ? res.comparisonProducts : []
+                    });
+                });
+            });
+
             this.products = result.comparisonProducts || [];
             this.renderComparison();
         } catch (error) {
-            this.showError('Failed to load comparison');
+            console.error('Failed to load comparison:', error);
+            this.showError('Failed to load saved products');
+            this.products = [];
+            this.renderComparison();
         }
     }
 
     async saveComparison() {
         try {
-            await chrome.storage.sync.set({ comparisonProducts: this.products });
+            await new Promise((resolve, reject) => {
+                chrome.storage.sync.set({ comparisonProducts: this.products }, () => {
+                    if (chrome.runtime.lastError) {
+                        reject(new Error(chrome.runtime.lastError.message));
+                    } else {
+                        resolve();
+                    }
+                });
+            });
         } catch (error) {
-            this.showError('Failed to save comparison');
+            console.error('Failed to save comparison:', error);
+            this.showError('Failed to save products');
         }
     }
 
     addProduct(product) {
-        // Check if product already exists
-        const existingIndex = this.products.findIndex(p => p.id === product.id);
-        
-        if (existingIndex === -1) {
-            this.products.push(product);
-            if (this.products.length > 4) {
-                this.products.shift(); // Keep only last 4 products
-            }
-            this.saveComparison();
-            this.renderComparison();
+        if (!product || !product.id) return;
+        const exists = this.products.some(p => p.id === product.id);
+        if (exists) return;
+
+        this.products.unshift(product);
+
+        if (this.products.length > (this.maxProducts || 4)) {
+            this.products.pop();
         }
+
+        this.saveComparison();
+        this.renderComparison();
     }
 
     removeProduct(productId) {
-        this.products = this.products.filter(product => product.id !== productId);
+        this.products = this.products.filter(p => p.id !== productId);
         this.saveComparison();
         this.renderComparison();
     }
@@ -76,279 +168,272 @@ class ProductComparison {
     }
 
     renderComparison() {
-        // Clear existing content safely
-        while (this.comparisonResults.firstChild) {
-            this.comparisonResults.removeChild(this.comparisonResults.firstChild);
-        }
+        if (!this.comparisonResults) return;
+        this.comparisonResults.innerHTML = '';
 
         if (this.products.length === 0) {
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'loading';
-            
-            const mainText = document.createElement('div');
-            mainText.textContent = 'Select products to compare from search results';
-            
-            const smallText = document.createElement('small');
-            smallText.textContent = 'Right-click on products and choose "Compare with ShopSmart Pro"';
-            
-            loadingDiv.appendChild(mainText);
-            loadingDiv.appendChild(smallText);
-            this.comparisonResults.appendChild(loadingDiv);
+            const empty = document.createElement('div');
+            empty.className = 'loading';
+
+            const text = document.createElement('div');
+            text.textContent = 'Select products to compare';
+            empty.appendChild(text);
+
+            const hint = document.createElement('small');
+            hint.textContent = 'Click "Compare" on any product listing';
+            empty.appendChild(hint);
+
+            this.comparisonResults.appendChild(empty);
             return;
         }
 
-        const comparisonGrid = document.createElement('div');
-        comparisonGrid.className = 'comparison-grid';
-        
+        // ✅ Warning for 5+ products — Safe DOM creation
+        if (this.products.length > 4) {
+            const warning = document.createElement('div');
+            warning.className = 'warning';
+
+            const strong = document.createElement('strong');
+            strong.textContent = '⚠️ Too Many Products';
+
+            const small = document.createElement('small');
+            small.textContent = 'For best experience, keep comparisons under 5 products.';
+
+            warning.appendChild(strong);
+            warning.appendChild(document.createElement('br'));
+            warning.appendChild(small);
+
+            this.comparisonResults.appendChild(warning);
+        }
+
+        const grid = document.createElement('div');
+        grid.className = 'comparison-grid';
+
         const productsRow = document.createElement('div');
         productsRow.className = 'products-row';
-        
-        // Create product cards safely
+
         this.products.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card';
-            productCard.dataset.productId = product.id;
-            
-            const productImage = document.createElement('img');
-            productImage.src = product.image;
-            productImage.alt = product.title;
-            productImage.className = 'product-image';
-            productImage.onerror = function() {
-                this.src = 'https://via.placeholder.com/100x100?text=Product';
-            };
-            
-            const productTitle = document.createElement('h3');
-            productTitle.className = 'product-title';
-            productTitle.textContent = product.title;
-            
-            const productPrice = document.createElement('div');
-            productPrice.className = 'product-price';
-            productPrice.textContent = `$${product.price}`;
-            
-            const productRating = document.createElement('div');
-            productRating.className = 'product-rating';
-            productRating.textContent = `⭐ ${product.rating || 'N/A'}`;
-            
-            const actionButtons = document.createElement('div');
-            actionButtons.className = 'action-buttons';
-            
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.dataset.id = product.id;
+
+            const img = document.createElement('img');
+            img.src = product.image || 'https://via.placeholder.com/100x100?text=No+Image';
+            img.alt = product.title;
+            img.className = 'product-image';
+            img.onerror = () => { img.src = 'https://via.placeholder.com/100x100?text=Product'; };
+
+            const title = document.createElement('h3');
+            title.className = 'product-title';
+            title.textContent = product.title;
+
+            const price = document.createElement('div');
+            price.className = 'product-price';
+            price.textContent = `$${product.price?.toFixed(2) || 'N/A'}`;
+
+            const rating = document.createElement('div');
+            rating.className = 'product-rating';
+            rating.textContent = `⭐ ${product.rating || 'N/A'}`;
+
+            const actions = document.createElement('div');
+            actions.className = 'action-buttons';
+
             const viewBtn = document.createElement('button');
             viewBtn.className = 'action-btn view-btn';
-            viewBtn.dataset.productUrl = product.url;
-            viewBtn.textContent = 'View Product';
-            
+            viewBtn.dataset.url = product.url;
+            viewBtn.textContent = 'View';
+
             const trackBtn = document.createElement('button');
             trackBtn.className = 'action-btn track-btn';
-            trackBtn.dataset.productId = product.id;
-            trackBtn.textContent = 'Track Price';
-            
+            trackBtn.dataset.id = product.id;
+            trackBtn.textContent = 'Track';
+
             const removeBtn = document.createElement('button');
             removeBtn.className = 'action-btn remove-btn';
-            removeBtn.dataset.productId = product.id;
+            removeBtn.dataset.id = product.id;
             removeBtn.textContent = 'Remove';
-            
-            actionButtons.appendChild(viewBtn);
-            actionButtons.appendChild(trackBtn);
-            actionButtons.appendChild(removeBtn);
-            
-            productCard.appendChild(productImage);
-            productCard.appendChild(productTitle);
-            productCard.appendChild(productPrice);
-            productCard.appendChild(productRating);
-            productCard.appendChild(actionButtons);
-            
-            productsRow.appendChild(productCard);
-        });
-        
-        comparisonGrid.appendChild(productsRow);
-        
-        // Add comparison table if we have at least 2 products
-        if (this.products.length >= 2) {
-            const comparisonTable = this.createComparisonTable();
-            comparisonGrid.appendChild(comparisonTable);
-        }
-        
-        this.comparisonResults.appendChild(comparisonGrid);
 
-        // Add event listeners to buttons
+            actions.append(viewBtn, trackBtn, removeBtn);
+            card.append(img, title, price, rating, actions);
+            productsRow.appendChild(card);
+        });
+
+        grid.appendChild(productsRow);
+
+        if (this.products.length >= 2) {
+            grid.appendChild(this.createComparisonTable());
+        }
+
+        this.comparisonResults.appendChild(grid);
         this.addProductEventListeners();
     }
 
     createComparisonTable() {
-        const features = ['price', 'rating', 'shipping', 'prime'];
-        
-        const comparisonSection = document.createElement('div');
-        comparisonSection.className = 'comparison-section';
-        
-        const tableHeading = document.createElement('h3');
-        tableHeading.textContent = '📊 Feature Comparison';
-        comparisonSection.appendChild(tableHeading);
-        
-        const comparisonTable = document.createElement('table');
-        comparisonTable.className = 'comparison-table';
-        
-        // Create table header
+        const features = ['price', 'rating'];
+        const tableSection = document.createElement('div');
+        tableSection.className = 'comparison-section';
+
+        const heading = document.createElement('h3');
+        heading.textContent = '📊 Feature Comparison';
+        tableSection.appendChild(heading);
+
+        const table = document.createElement('table');
+        table.className = 'comparison-table';
+
         const thead = document.createElement('thead');
-        const headerRow = document.createElement('tr');
-        
-        const featureHeader = document.createElement('th');
-        featureHeader.textContent = 'Feature';
-        headerRow.appendChild(featureHeader);
-        
-        this.products.forEach((_, index) => {
-            const productHeader = document.createElement('th');
-            productHeader.textContent = `Product ${index + 1}`;
-            headerRow.appendChild(productHeader);
+        const hRow = document.createElement('tr');
+
+        const thFeature = document.createElement('th');
+        thFeature.textContent = 'Feature';
+        hRow.appendChild(thFeature);
+
+        this.products.forEach((_, i) => {
+            const th = document.createElement('th');
+            th.textContent = `Product ${i+1}`;
+            hRow.appendChild(th);
         });
-        
-        thead.appendChild(headerRow);
-        comparisonTable.appendChild(thead);
-        
-        // Create table body
+
+        thead.appendChild(hRow);
+        table.appendChild(thead);
+
         const tbody = document.createElement('tbody');
-        
         features.forEach(feature => {
-            const featureRow = document.createElement('tr');
-            
-            const featureNameCell = document.createElement('td');
-            featureNameCell.textContent = this.formatFeatureName(feature);
-            featureRow.appendChild(featureNameCell);
-            
+            const row = document.createElement('tr');
+
+            const tdFeature = document.createElement('td');
+            tdFeature.textContent = this.formatFeatureName(feature);
+            row.appendChild(tdFeature);
+
             this.products.forEach(product => {
-                const featureValueCell = document.createElement('td');
-                const featureClass = this.getFeatureClass(feature, product);
-                if (featureClass) {
-                    featureValueCell.className = featureClass;
-                }
-                featureValueCell.textContent = this.formatFeatureValue(feature, product);
-                featureRow.appendChild(featureValueCell);
+                const td = document.createElement('td');
+                td.textContent = this.formatFeatureValue(feature, product);
+                const cls = this.getFeatureClass(feature, product);
+                td.className = cls;
+                row.appendChild(td);
             });
-            
-            tbody.appendChild(featureRow);
+
+            tbody.appendChild(row);
         });
-        
-        comparisonTable.appendChild(tbody);
-        comparisonSection.appendChild(comparisonTable);
-        
-        return comparisonSection;
+
+        table.appendChild(tbody);
+        tableSection.appendChild(table);
+        return tableSection;
     }
 
-    formatFeatureName(feature) {
-        const names = {
-            'price': '💰 Price',
-            'rating': '⭐ Rating',
-            'shipping': '🚚 Shipping',
-            'prime': '🎯 Prime'
-        };
-        return names[feature] || feature;
+    formatFeatureName(f) {
+        return { price: '💰 Price', rating: '⭐ Rating' }[f] || f;
     }
 
-    formatFeatureValue(feature, product) {
-        switch (feature) {
-            case 'price':
-                return product.price ? `$${product.price}` : 'N/A';
-            case 'rating':
-                return product.rating || 'N/A';
-            case 'shipping':
-                return product.freeShipping ? 'Free' : 'Paid';
-            case 'prime':
-                return product.primeEligible ? 'Yes' : 'No';
-            default:
-                return product[feature] || 'N/A';
-        }
+    formatFeatureValue(f, p) {
+        if (f === 'price') return p.price ? `$${p.price.toFixed(2)}` : 'N/A';
+        if (f === 'rating') return p.rating ? `⭐ ${p.rating}` : 'N/A';
+        return 'N/A';
     }
 
     getFeatureClass(feature, product) {
-        if (!product[feature]) return '';
-        
-        const values = this.products.map(p => {
-            switch (feature) {
-                case 'price':
-                    return parseFloat(p.price) || Infinity;
-                case 'rating':
-                    return parseFloat(p.rating) || 0;
-                case 'shipping':
-                    return p.freeShipping ? 1 : 0;
-                case 'prime':
-                    return p.primeEligible ? 1 : 0;
-                default:
-                    return 0;
-            }
-        });
-
-        const currentValue = values[this.products.indexOf(product)];
-        const bestValue = feature === 'price' ? Math.min(...values) : Math.max(...values);
-
-        if (currentValue === bestValue) return 'feature-better';
-        if (currentValue === (feature === 'price' ? Math.max(...values) : Math.min(...values))) return 'feature-worse';
-        return 'feature-equal';
+        const values = this.products.map(p => p[feature] || 0);
+        const current = product[feature] || 0;
+        const best = feature === 'price' ? Math.min(...values) : Math.max(...values);
+        const worst = feature === 'price' ? Math.max(...values) : Math.min(...values);
+        return current === best ? 'feature-better' : current === worst ? 'feature-worse' : 'feature-equal';
     }
 
     addProductEventListeners() {
-        // View product buttons
         document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const url = e.target.dataset.productUrl;
+            btn.onclick = () => {
+                const url = btn.dataset.url;
                 if (url) {
-                    chrome.tabs.create({ url: url });
+                    const affiliateUrl = new URL(url, location.origin);
+                    affiliateUrl.searchParams.set('tag', 'elise200f-20');
+                    chrome.tabs.create({ url: affiliateUrl.toString() });
                 }
-            });
+            };
         });
 
-        // Track price buttons
         document.querySelectorAll('.track-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const productId = e.target.dataset.productId;
-                this.trackProduct(productId);
-            });
+            btn.onclick = () => {
+                const id = btn.dataset.id;
+                const product = this.products.find(p => p.id === id);
+                if (product) {
+                    chrome.runtime.sendMessage({ action: 'trackProduct', product });
+                    btn.textContent = '✅ Tracking';
+                    btn.disabled = true;
+                }
+            };
         });
 
-        // Remove product buttons
         document.querySelectorAll('.remove-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const productId = e.target.dataset.productId;
-                this.removeProduct(productId);
+            btn.onclick = () => {
+                this.removeProduct(btn.dataset.id);
+            };
+        });
+    }
+
+    exportToCsv() {
+        if (this.products.length === 0) {
+            alert('No products to export.');
+            return;
+        }
+
+        const headers = ['Title', 'Price', 'Rating', 'URL'];
+        const rows = this.products.map(p => [
+            p.title,
+            `$${p.price.toFixed(2)}`,
+            p.rating,
+            p.url
+        ]);
+
+        let csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `shopsmart-comparison-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+
+        URL.revokeObjectURL(url);
+    }
+
+    saveCurrentList() {
+        if (this.products.length === 0) {
+            alert('No products to save.');
+            return;
+        }
+
+        const name = this.listNameInput?.value.trim() || `Comparison ${new Date().toLocaleDateString()}`;
+
+        const list = {
+            name,
+            products: this.products,
+            date: Date.now()
+        };
+
+        chrome.storage.sync.get(['savedComparisons'], (result) => {
+            let lists = result.savedComparisons || [];
+            lists = lists.filter(l => l.name !== name);
+            lists.unshift(list);
+            chrome.storage.sync.set({ savedComparisons: lists }, () => {
+                alert(`✅ Saved as "${name}"`);
+                if (this.listNameInput) this.listNameInput.value = '';
             });
         });
     }
 
-    trackProduct(productId) {
-        const product = this.products.find(p => p.id === productId);
-        if (product) {
-            chrome.runtime.sendMessage({
-                action: 'trackProduct',
-                product: product
-            });
-
-            // Update button to show tracking status
-            const button = document.querySelector(`.track-btn[data-product-id="${productId}"]`);
-            if (button) {
-                button.textContent = '✅ Tracking';
-                button.disabled = true;
-            }
-        }
-    }
-
-    showError(message) {
-        // Clear existing content safely
-        while (this.comparisonResults.firstChild) {
-            this.comparisonResults.removeChild(this.comparisonResults.firstChild);
-        }
+    showError(msg) {
+        if (!this.comparisonResults) return;
+        this.comparisonResults.innerHTML = '';
 
         const errorDiv = document.createElement('div');
-        errorDiv.className = 'loading';
-        errorDiv.style.color = '#dc3545';
-        
-        const errorIcon = document.createTextNode('❌ ');
-        const errorText = document.createTextNode(message);
-        
-        errorDiv.appendChild(errorIcon);
-        errorDiv.appendChild(errorText);
+        errorDiv.style.cssText = 'color: #dc3545; text-align: center; padding: 20px; font-size: 0.9rem;';
+
+        const text = document.createTextNode(`❌ ${msg}`);
+        errorDiv.appendChild(text);
+
         this.comparisonResults.appendChild(errorDiv);
     }
 }
 
-// Initialize the comparison manager
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     new ProductComparison();
 });

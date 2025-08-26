@@ -1,17 +1,20 @@
 {
   "manifest_version": 2,
   "name": "ShopSmart Pro",
-  "version": "2.32",
-  "description": "Enhances your shopping experience on Amazon and other e-commerce sites",
+  "version": "2.33",
+  "description": "Enhances your shopping experience on Amazon with price tracking, comparisons, and deal alerts",
+  "author": "ShopSmart Team",
+  "homepage_url": "https://www.shopsamrtpro.com",
+
   "content_security_policy": "script-src 'self'; object-src 'none'",
-  
+
   "browser_specific_settings": {
     "gecko": {
       "id": "shopsmart-pro@parkalgo.com",
       "strict_min_version": "91.0"
     }
   },
-  
+
   "permissions": [
     "activeTab",
     "storage",
@@ -36,13 +39,6 @@
 
   "background": {
     "scripts": [
-      "lib/chart.min.js",
-      "utils/priceTracker.js",
-      "utils/couponFinder.js",
-      "utils/reviewAnalyzer.js",
-      "utils/searchHistory.js",
-      "utils/analytics.js",
-      "utils/voiceSearch.js",
       "background.js"
     ],
     "persistent": true
@@ -60,9 +56,22 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.amazon.com/*", "*://*.amazon.ca/*", "*://*.amazon.co.uk/*", "*://*.amazon.de/*", "*://*.amazon.fr/*", "*://*.amazon.it/*", "*://*.amazon.es/*", "*://*.amazon.co.jp/*", "*://*.amazon.com.au/*", "*://*.amazon.com.br/*", "*://*.amazon.com.mx/*", "*://*.amazon.nl/*"],
+      "matches": [
+        "*://*.amazon.com/*",
+        "*://*.amazon.ca/*",
+        "*://*.amazon.co.uk/*",
+        "*://*.amazon.de/*",
+        "*://*.amazon.fr/*",
+        "*://*.amazon.it/*",
+        "*://*.amazon.es/*",
+        "*://*.amazon.co.jp/*",
+        "*://*.amazon.com.au/*",
+        "*://*.amazon.com.br/*",
+        "*://*.amazon.com.mx/*",
+        "*://*.amazon.nl/*"
+      ],
       "js": ["content.js"],
-      "css": ["popup/popup.css"],
+      "css": ["content.css"],
       "run_at": "document_idle"
     }
   ],
@@ -86,14 +95,14 @@
         "default": "Ctrl+Shift+A",
         "mac": "Command+Shift+A"
       },
-      "description": "Quick Amazon Search"
+      "description": "Open quick Amazon search"
     },
     "voice-search": {
       "suggested_key": {
         "default": "Ctrl+Shift+V",
         "mac": "Command+Shift+V"
       },
-      "description": "Voice Search"
+      "description": "Start voice search"
     }
   },
 
@@ -102,8 +111,7 @@
     "icons/icon-32.png",
     "icons/icon-48.png",
     "icons/icon-96.png",
-     "icons/*.png",
-    "img/*.png",
+    "sound/alert.mp3",
     "about.html",
     "about.css",
     "about.js",
@@ -112,6 +120,12 @@
     "documentation.js",
     "privacy.html",
     "privacy.css",
-    "privacy.js"
+    "privacy.js",
+    "popup/comparison.html",
+    "popup/comparison.css",
+    "popup/comparison.js",
+    "deals/deals.html",
+    "deals/deals.css",
+    "deals/deals.js"
   ]
 }

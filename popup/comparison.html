@@ -1,68 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Product Comparison - ShopSmart Pro</title>
-    <link rel="stylesheet" href="comparison.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🛒 Product Comparison - ShopSmart Pro</title>
+    <link rel="stylesheet" href="comparison.css" />
 </head>
-<body>
-    <div class="comparison-container">
-        <h1>Product Comparison Tool</h1>
-        
-        <div class="comparison-grid">
-            <div class="product-slot" data-slot="1">
-                <h3>Product 1</h3>
-                <input type="text" placeholder="Paste Amazon URL" class="product-url">
-                <button class="fetch-btn">Fetch Details</button>
-                <div class="product-details">
-                    <img src="" class="product-image" alt="Product image">
-                    <h4 class="product-title"></h4>
-                    <p class="product-price"></p>
-                    <p class="product-rating"></p>
-                    <p class="product-features"></p>
-                </div>
+<body class="light-mode">
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🛒 Product Comparison</h1>
+            <p class="subtitle">Compare prices, ratings, and features at a glance</p>
+            <button id="darkModeToggle" class="btn btn-icon" aria-label="Toggle dark mode">
+                🌓 Dark Mode
+            </button>
+        </header>
+
+        <!-- Results Grid -->
+        <main id="comparisonResults" class="results">
+            <div class="empty-state">
+                <p>🔍 No products added yet.</p>
+                <p class="hint">Click “Compare” on any product listing to add items here.</p>
             </div>
-            
-            <div class="product-slot" data-slot="2">
-                <h3>Product 2</h3>
-                <input type="text" placeholder="Paste Amazon URL" class="product-url">
-                <button class="fetch-btn">Fetch Details</button>
-                <div class="product-details">
-                    <img src="" class="product-image" alt="Product image">
-                    <h4 class="product-title"></h4>
-                    <p class="product-price"></p>
-                    <p class="product-rating"></p>
-                    <p class="product-features"></p>
-                </div>
+        </main>
+
+        <!-- Action Footer -->
+        <footer class="actions">
+            <!-- Load Saved List -->
+            <div class="saved-lists-control">
+                <label for="loadList" class="sr-only">Load a saved comparison</label>
+                <select id="loadList" class="load-list-select" aria-label="Select a saved list">
+                    <option value="">💾 Load Saved Comparison</option>
+                </select>
+                <button id="deleteList" class="btn btn-danger btn-sm" title="Delete selected list">🗑️</button>
             </div>
-        </div>
-        
-        <div class="comparison-results">
-            <h3>Comparison Results</h3>
-            <table id="comparisonTable">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Product 1</th>
-                        <th>Product 2</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Results will be populated here -->
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="actions">
-            <button id="compareBtn" disabled>Compare Products</button>
-            <button id="clearBtn">Clear All</button>
-            <button id="shareBtn">Share Comparison</button>
-        </div>
-        
-        
+
+            <!-- Save List -->
+            <input 
+                type="text" 
+                id="listName" 
+                placeholder="e.g., My Home Office Setup" 
+                class="save-list-input" 
+                aria-label="Name this comparison list"
+            />
+
+            <!-- Buttons -->
+            <button id="saveList" class="btn btn-primary btn-block">💾 Save List</button>
+            <button id="exportCsv" class="btn btn-secondary btn-block">📤 Export to CSV</button>
+            <button id="shareBtn" class="btn btn-secondary btn-block">🔗 Share Link</button>
+            <button id="clearComparison" class="btn btn-danger btn-block">🗑️ Clear All</button>
+            <button id="closeComparison" class="btn btn-primary btn-block">✕ Close</button>
+        </footer>
     </div>
 
-
+    <!-- External JS (CSP-compliant) -->
     <script src="comparison.js"></script>
 </body>
 </html>

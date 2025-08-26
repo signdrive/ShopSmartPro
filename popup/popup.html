@@ -4,9 +4,11 @@
     <meta charset="utf-8">
     <title>ShopSmart Pro</title>
     <link rel="stylesheet" href="popup.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
             <span class="current-country" id="currentCountry">🇨🇦</span>
             <h2>ShopSmart Pro</h2>
@@ -16,16 +18,20 @@
             </div>
         </div>
 
+        <!-- Quick Actions -->
         <div class="quick-actions">
             <button id="voiceSearchBtn" title="Voice Search">🎤</button>
             <button id="dealsBtn" title="Today's Deals">🔥</button>
             <button id="compareBtn" title="Compare Products">⚖️</button>
         </div>
 
-        <form class="search-form" id="searchForm">
+        <!-- Search Form -->
+        <form class="search-form" id="searchForm" novalidate>
+            <!-- Hidden inputs -->
             <input type="hidden" name="country" id="country" value="ca">
-            <input type="hidden" name="tag" value="elise200f-20">
-            
+            <!-- Affiliate tag is now handled in JS -->
+
+            <!-- Category Select -->
             <div class="form-group">
                 <label for="categorySelect">Category:</label>
                 <select name="url" id="categorySelect">
@@ -53,7 +59,7 @@
                     <option value="search-alias=luxury-beauty">Luxury Beauty</option>
                     <option value="search-alias=dvd">Movies & TV</option>
                     <option value="search-alias=popular">Music</option>
-                    <option value="search-alias=mi">Musical Instruments, Stage & Studio</option>
+                    <option value="search-alias=mi">Musical Instruments</option>
                     <option value="search-alias=office-products">Office Products</option>
                     <option value="search-alias=lawngarden">Patio, Lawn & Garden</option>
                     <option value="search-alias=pets">Pet Supplies</option>
@@ -66,15 +72,22 @@
                     <option value="search-alias=watches">Watches</option>
                 </select>
             </div>
-            
+
+            <!-- Keywords Input -->
             <div class="form-group">
                 <label for="searchInput">Keywords:</label>
-                <input type="text" name="keyword" id="searchInput" placeholder="What are you looking for?">
+                <input 
+                    type="text" 
+                    name="keyword" 
+                    id="searchInput" 
+                    placeholder="What are you looking for?" 
+                    autocomplete="off">
             </div>
-            
+
+            <!-- Advanced Filters -->
             <div class="advanced-options">
                 <label class="checkbox-label">
-                    <input type="checkbox" id="primeOnly"> 
+                    <input type="checkbox" id="primeOnly">
                     <span class="checkmark"></span>
                     Prime Only
                 </label>
@@ -84,19 +97,22 @@
                     Free Shipping
                 </label>
             </div>
-            
+
+            <!-- Submit Button -->
             <button type="submit" class="search-btn" id="searchButton">
                 <span class="btn-icon">🔍</span>
                 Search Store
             </button>
         </form>
 
+        <!-- Recent Searches -->
         <div class="recent-searches" id="recentSearchesSection">
             <h4>Recent Searches</h4>
             <div class="search-history" id="searchHistory"></div>
             <button id="clearHistoryBtn" class="clear-history-btn">Clear History</button>
         </div>
 
+        <!-- Quick Stats -->
         <div class="quick-stats">
             <div class="stat-item">
                 <span class="stat-label">Today's Searches:</span>
@@ -107,10 +123,9 @@
                 <span class="stat-value" id="activeTrackers">0</span>
             </div>
         </div>
-
-        
     </div>
 
+    <!-- Voice Search Modal -->
     <div class="voice-search-modal" id="voiceSearchModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -125,6 +140,7 @@
         </div>
     </div>
 
+    <!-- Script -->
     <script src="popup.js"></script>
 </body>
 </html>

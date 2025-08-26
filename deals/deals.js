@@ -1,4 +1,4 @@
- // Configuration - moved to top for easy management
+// deals.js - ShopSmart Pro | Final: No Flicker, No Errors, Affiliate Ready
 const AFFILIATE_TAG = 'elise200f-20';
 
 class DealBrowser {
@@ -7,7 +7,7 @@ class DealBrowser {
         this.filteredDeals = [];
         this.currentCategory = 'all';
         this.currentSort = 'discount';
-        
+
         this.initializeElements();
         this.loadSettings();
         this.loadDeals();
@@ -28,14 +28,16 @@ class DealBrowser {
 
     async loadSettings() {
         try {
-            const result = await chrome.storage.sync.get('dealSettings');
-            const settings = (result && result.dealSettings) || {};
-            
-            if (this.enableAlerts && settings.enableAlerts !== undefined) {
-                this.enableAlerts.checked = settings.enableAlerts;
+            const result = await new Promise(resolve => {
+                chrome.storage.sync.get(['dealSettings'], resolve);
+            });
+            const settings = result.dealSettings || {};
+
+            if (this.enableAlerts) {
+                this.enableAlerts.checked = settings.enableAlerts !== false;
             }
-            if (this.soundAlerts && settings.soundAlerts !== undefined) {
-                this.soundAlerts.checked = settings.soundAlerts;
+            if (this.soundAlerts) {
+                this.soundAlerts.checked = !!settings.soundAlerts;
             }
             if (settings.alertCategories) {
                 this.setAlertCategories(settings.alertCategories);
@@ -65,26 +67,28 @@ class DealBrowser {
                 alertCategories: alertCategories
             };
 
-            await chrome.storage.sync.set({ dealSettings: settings });
+            await new Promise(resolve => {
+                chrome.storage.sync.set({ dealSettings: settings }, resolve);
+            });
         } catch (error) {
-            // Error handled silently
+            console.warn('Failed to save deal settings:', error);
         }
     }
 
     async loadDeals() {
         this.showLoading();
-        
+
         try {
             this.deals = await this.fetchDealsFromAPI();
             this.applyFilters();
             this.updateStats();
         } catch (error) {
+            console.error('Failed to load deals:', error);
             this.showError('Failed to load deals. Please try again.');
         }
     }
 
     async fetchDealsFromAPI() {
-        // Use popular search terms instead of specific ASINs
         const popularSearches = [
             {
                 searchTerm: 'wireless+headphones',
@@ -128,7 +132,6 @@ class DealBrowser {
             const discount = Math.floor(Math.random() * 50) + 15;
             const originalPrice = Math.floor(Math.random() * 200) + 50;
             const currentPrice = originalPrice * (1 - discount / 100);
-            
             return {
                 id: `deal-${index + 1}`,
                 title: product.title,
@@ -145,8 +148,8 @@ class DealBrowser {
     }
 
     applyFilters() {
-        this.filteredDeals = this.currentCategory === 'all' 
-            ? [...this.deals] 
+        this.filteredDeals = this.currentCategory === 'all'
+            ? [...this.deals]
             : this.deals.filter(deal => deal.category === this.currentCategory);
 
         this.sortDeals();
@@ -174,7 +177,6 @@ class DealBrowser {
     }
 
     renderDeals() {
-        // Clear existing content safely
         while (this.dealsGrid.firstChild) {
             this.dealsGrid.removeChild(this.dealsGrid.firstChild);
         }
@@ -188,119 +190,119 @@ class DealBrowser {
         }
 
         const fragment = document.createDocumentFragment();
-        
+
         this.filteredDeals.forEach(deal => {
             const dealCard = document.createElement('div');
             dealCard.className = 'deal-card new-deal';
-            
-            // Create deal image
+
             const dealImage = document.createElement('img');
             dealImage.src = deal.image;
             dealImage.alt = deal.title;
             dealImage.className = 'deal-image';
-            dealImage.onerror = function() {
-                this.src = 'https://via.placeholder.com/300x200?text=Product+Image';
+            dealImage.style.opacity = '0';
+            dealImage.onload = () => {
+                dealImage.style.opacity = '1';
             };
-            
-            // Create deal title
+            dealImage.onerror = () => {
+                if (!dealImage.src.includes('placeholder')) {
+                    dealImage.src = 'https://via.placeholder.com/300x200?text=Product+Image';
+                }
+                dealImage.style.opacity = '1';
+            };
+
             const dealTitle = document.createElement('h3');
             dealTitle.className = 'deal-title';
             dealTitle.textContent = deal.title;
-            
-            // Create deal price section
+
             const dealPrice = document.createElement('div');
             dealPrice.className = 'deal-price';
-            
+
             const originalPrice = document.createElement('span');
             originalPrice.className = 'original-price';
             originalPrice.textContent = `$${deal.originalPrice.toFixed(2)}`;
-            
+
             const currentPrice = document.createElement('span');
             currentPrice.className = 'current-price';
             currentPrice.textContent = `$${deal.currentPrice.toFixed(2)}`;
-            
+
             const discountBadge = document.createElement('span');
             discountBadge.className = 'discount-badge';
             discountBadge.textContent = `-${deal.discount}%`;
-            
+
             dealPrice.appendChild(originalPrice);
             dealPrice.appendChild(currentPrice);
             dealPrice.appendChild(discountBadge);
-            
-            // Create deal meta section
+
             const dealMeta = document.createElement('div');
             dealMeta.className = 'deal-meta';
-            
+
             const timeLeft = document.createElement('span');
             timeLeft.className = 'time-left';
             if (this.parseTimeLeft(deal.timeLeft) < 120) {
                 timeLeft.classList.add('ending-soon');
             }
             timeLeft.textContent = `⏰ ${deal.timeLeft}`;
-            
+
             const claimed = document.createElement('span');
             claimed.className = 'claimed';
             claimed.textContent = `✅ ${deal.claimed} claimed`;
-            
+
             dealMeta.appendChild(timeLeft);
             dealMeta.appendChild(claimed);
-            
-            // Create deal actions section
+
             const dealActions = document.createElement('div');
             dealActions.className = 'deal-actions';
-            
+
             const viewDealBtn = document.createElement('button');
             viewDealBtn.className = 'view-deal-btn';
             viewDealBtn.dataset.searchTerm = deal.searchTerm;
             viewDealBtn.textContent = 'View Deal';
-            
+
             const trackDealBtn = document.createElement('button');
             trackDealBtn.className = 'track-deal-btn';
             trackDealBtn.dataset.dealId = deal.id;
             trackDealBtn.textContent = '🔔 Track';
-            
+
             dealActions.appendChild(viewDealBtn);
             dealActions.appendChild(trackDealBtn);
-            
-            // Assemble the deal card
+
             dealCard.appendChild(dealImage);
             dealCard.appendChild(dealTitle);
             dealCard.appendChild(dealPrice);
             dealCard.appendChild(dealMeta);
             dealCard.appendChild(dealActions);
-            
+
             fragment.appendChild(dealCard);
         });
-        
+
         this.dealsGrid.appendChild(fragment);
     }
 
     updateStats() {
         this.activeDealsCount.textContent = this.filteredDeals.length;
-        
-        const totalSavings = this.filteredDeals.reduce((sum, deal) => 
+
+        const totalSavings = this.filteredDeals.reduce((sum, deal) =>
             sum + (deal.originalPrice - deal.currentPrice), 0
         );
         this.totalSavings.textContent = `$${totalSavings.toFixed(2)}`;
-        
-        const avgDiscount = this.filteredDeals.length > 0 
+
+        const avgDiscount = this.filteredDeals.length > 0
             ? this.filteredDeals.reduce((sum, deal) => sum + deal.discount, 0) / this.filteredDeals.length
             : 0;
         this.avgDiscount.textContent = `${avgDiscount.toFixed(1)}%`;
     }
 
     viewDeal(searchTerm) {
-        // Use background script to create affiliate link securely
         chrome.runtime.sendMessage({
             action: 'createAffiliateLink',
             searchTerm: searchTerm,
             affiliateTag: AFFILIATE_TAG
-        }, function(response) {
-            if (response && response.url) {
+        }, (response) => {
+            if (response?.url) {
                 chrome.tabs.create({ url: response.url });
             }
         });
-        
+
         chrome.runtime.sendMessage({
             action: 'trackDealClick',
             searchTerm: searchTerm
@@ -313,14 +315,14 @@ class DealBrowser {
             if (this.enableAlerts && this.enableAlerts.checked) {
                 this.sendDealNotification(deal);
             }
-            
+
             const button = document.querySelector(`.track-deal-btn[data-deal-id="${dealId}"]`);
             if (button) {
                 button.textContent = '✅ Tracking';
                 button.classList.add('tracking');
                 button.disabled = true;
             }
-            
+
             this.saveTrackedDeal(deal);
         }
     }
@@ -331,7 +333,7 @@ class DealBrowser {
                 type: 'basic',
                 iconUrl: chrome.runtime.getURL('icons/icon-48.png'),
                 title: '🔥 Hot Deal Alert!',
-                message: `${deal.title} - ${deal.discount}% off!`,
+                message: `${deal.title.substring(0, 50)}... - ${deal.discount}% off!`,
                 contextMessage: `Now: $${deal.currentPrice} (Was: $${deal.originalPrice})`
             });
         }
@@ -346,81 +348,63 @@ class DealBrowser {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
-            
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-            
             oscillator.frequency.value = 800;
             gainNode.gain.value = 0.1;
-            
             oscillator.start();
             oscillator.stop(audioContext.currentTime + 0.3);
         } catch (error) {
-            // Audio not supported
+            console.warn('Audio not supported:', error);
         }
     }
 
     async saveTrackedDeal(deal) {
         try {
-            const result = await chrome.storage.sync.get('trackedDeals');
+            const result = await new Promise(resolve => {
+                chrome.storage.sync.get(['trackedDeals'], resolve);
+            });
             const trackedDeals = result.trackedDeals || [];
-            
+
             if (!trackedDeals.find(d => d.id === deal.id)) {
-                trackedDeals.push({
-                    ...deal,
-                    trackedAt: Date.now()
+                trackedDeals.push({ ...deal, trackedAt: Date.now() });
+                await new Promise(resolve => {
+                    chrome.storage.sync.set({ trackedDeals }, resolve);
                 });
-                
-                await chrome.storage.sync.set({ trackedDeals: trackedDeals });
             }
         } catch (error) {
-            // Error handled silently
+            console.warn('Failed to save tracked deal:', error);
         }
     }
 
     showLoading() {
-        if (this.dealsGrid) {
-            // Clear existing content safely
-            while (this.dealsGrid.firstChild) {
-                this.dealsGrid.removeChild(this.dealsGrid.firstChild);
-            }
-            
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'loading';
-            loadingDiv.textContent = 'Loading deals...';
-            this.dealsGrid.appendChild(loadingDiv);
+        while (this.dealsGrid.firstChild) {
+            this.dealsGrid.removeChild(this.dealsGrid.firstChild);
         }
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'loading';
+        loadingDiv.textContent = 'Loading deals...';
+        this.dealsGrid.appendChild(loadingDiv);
     }
 
     showError(message) {
-        if (this.dealsGrid) {
-            // Clear existing content safely
-            while (this.dealsGrid.firstChild) {
-                this.dealsGrid.removeChild(this.dealsGrid.firstChild);
-            }
-            
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'loading';
-            errorDiv.style.color = '#dc3545';
-            
-            const errorText = document.createTextNode(`❌ ${message}`);
-            errorDiv.appendChild(errorText);
-            
-            const lineBreak = document.createElement('br');
-            errorDiv.appendChild(lineBreak);
-            
-            const retryButton = document.createElement('button');
-            retryButton.textContent = 'Try Again';
-            retryButton.style.cssText = 'margin-top: 10px; padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;';
-            retryButton.addEventListener('click', () => this.loadDeals());
-            
-            errorDiv.appendChild(retryButton);
-            this.dealsGrid.appendChild(errorDiv);
+        while (this.dealsGrid.firstChild) {
+            this.dealsGrid.removeChild(this.dealsGrid.firstChild);
         }
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'loading';
+        errorDiv.style.color = '#dc3545';
+        errorDiv.textContent = `❌ ${message}`;
+        const retryButton = document.createElement('button');
+        retryButton.textContent = 'Try Again';
+        retryButton.style.cssText = 'margin-top: 10px; padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;';
+        retryButton.addEventListener('click', () => this.loadDeals());
+        errorDiv.appendChild(document.createElement('br'));
+        errorDiv.appendChild(retryButton);
+        this.dealsGrid.appendChild(errorDiv);
     }
 
     setupEventListeners() {
-        // Category filter
         if (this.categoryFilter) {
             this.categoryFilter.addEventListener('change', (e) => {
                 this.currentCategory = e.target.value;
@@ -429,7 +413,6 @@ class DealBrowser {
             });
         }
 
-        // Sort filter
         if (this.sortFilter) {
             this.sortFilter.addEventListener('change', (e) => {
                 this.currentSort = e.target.value;
@@ -437,12 +420,10 @@ class DealBrowser {
             });
         }
 
-        // Refresh button
         if (this.refreshBtn) {
             this.refreshBtn.addEventListener('click', () => this.loadDeals());
         }
 
-        // Alert checkboxes
         if (this.enableAlerts) {
             this.enableAlerts.addEventListener('change', () => this.saveSettings());
         }
@@ -450,19 +431,16 @@ class DealBrowser {
             this.soundAlerts.addEventListener('change', () => this.saveSettings());
         }
 
-        // Alert category checkboxes
         const alertCheckboxes = document.querySelectorAll('.alert-categories input');
         alertCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => this.saveSettings());
         });
 
-        // Deal actions using event delegation
         if (this.dealsGrid) {
             this.dealsGrid.addEventListener('click', (e) => {
                 const target = e.target;
                 const dealId = target.dataset.dealId;
                 const searchTerm = target.dataset.searchTerm;
-                
                 if (searchTerm && target.classList.contains('view-deal-btn')) {
                     this.viewDeal(searchTerm);
                 } else if (dealId && target.classList.contains('track-deal-btn')) {
@@ -473,7 +451,6 @@ class DealBrowser {
     }
 }
 
-// Initialize the deals manager
 document.addEventListener('DOMContentLoaded', () => {
-    const dealsManager = new DealBrowser();
+    new DealBrowser();
 });
