@@ -1,9 +1,11 @@
-document.addEventListener('DOMContentLoaded', function() {
+// settings.js - ShopSmart Pro | Final: With maxComparisonProducts & Data Retention
+document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
     const countrySelect = document.getElementById('countrySelect');
     const defaultCategory = document.getElementById('defaultCategory');
     const maxComparisonProducts = document.getElementById('maxComparisonProducts');
+    const dataRetention = document.getElementById('dataRetention');
     const saveButton = document.getElementById('saveButton');
     const resetButton = document.getElementById('resetButton');
     const exportSettingsBtn = document.getElementById('exportSettingsBtn');
@@ -14,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const debugButton = document.getElementById('debugButton');
     const debugInfo = document.getElementById('debugInfo');
     const debugContent = document.getElementById('debugContent');
+    const testNotificationBtn = document.getElementById('testNotificationBtn');
 
     // Fixed affiliate tag - cannot be changed by users
     const fixedAffiliateTag = 'elise200f-20';
@@ -25,11 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
         defaultCategory: 'search-alias=aps',
         autoRedirect: false,
         saveHistory: true,
-        enableNotifications: true,     // ✅ Master toggle
+        enableNotifications: true,
         priceAlerts: true,
         dealAlerts: true,
         couponAlerts: false,
-        soundAlerts: true,             // ✅ Play sound by default
+        soundAlerts: true,
         notificationFrequency: 'instant',
         enhancePages: true,
         voiceSearch: false,
@@ -56,12 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Load saved settings
-    chrome.storage.sync.get(['settings'], function(result) {
-        console.log('Loading settings from storage:', result);
-
+    chrome.storage.sync.get(['settings'], function (result) {
         let settings = result.settings || {};
 
-        // Ensure affiliate tag is always fixed
+        // Ensure critical settings are always set
         settings.affiliateTag = fixedAffiliateTag;
 
         // Backfill missing settings with defaults
@@ -73,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update UI with loaded settings
         updateUIWithSettings(settings);
-
         showStatus('Settings loaded successfully.', 'success');
     });
 
@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
         countrySelect.value = settings.country || 'ca';
         defaultCategory.value = settings.defaultCategory || 'search-alias=aps';
         maxComparisonProducts.value = settings.maxComparisonProducts || 4;
+        dataRetention.value = settings.dataRetention || 30;
 
         // General checkboxes
         document.getElementById('autoRedirect').checked = !!settings.autoRedirect;
@@ -99,41 +100,35 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('voiceSearch').checked = settings.voiceSearch !== false;
         document.getElementById('analytics').checked = settings.analytics !== false;
 
-        // Selects
-        document.getElementById('notificationFrequency').value = settings.notificationFrequency || 'instant';
-        document.getElementById('dataRetention').value = settings.dataRetention || 30;
-
         // Privacy
         document.getElementById('usageStatistics').checked = settings.usageStatistics !== false;
         document.getElementById('errorReporting').checked = settings.errorReporting !== false;
     }
 
     // Save settings
-    saveButton.addEventListener('click', function() {
+    saveButton.addEventListener('click', function () {
         const newSettings = {
             country: countrySelect.value,
             affiliateTag: fixedAffiliateTag,
             defaultCategory: defaultCategory.value,
             autoRedirect: document.getElementById('autoRedirect').checked,
             saveHistory: document.getElementById('saveHistory').checked,
-            enableNotifications: document.getElementById('enableNotifications').checked, // ✅
+            enableNotifications: document.getElementById('enableNotifications').checked,
             priceAlerts: document.getElementById('priceAlerts').checked,
             dealAlerts: document.getElementById('dealAlerts').checked,
             couponAlerts: document.getElementById('couponAlerts').checked,
-            soundAlerts: document.getElementById('soundAlerts').checked, // ✅
+            soundAlerts: document.getElementById('soundAlerts').checked,
             notificationFrequency: document.getElementById('notificationFrequency').value,
             enhancePages: document.getElementById('enhancePages').checked,
             voiceSearch: document.getElementById('voiceSearch').checked,
             analytics: document.getElementById('analytics').checked,
-            dataRetention: parseInt(document.getElementById('dataRetention').value),
+            dataRetention: parseInt(dataRetention.value) || 30,
             usageStatistics: document.getElementById('usageStatistics').checked,
             errorReporting: document.getElementById('errorReporting').checked,
             maxComparisonProducts: parseInt(maxComparisonProducts.value) || 4
         };
 
-        console.log('Saving settings:', newSettings);
-
-        chrome.storage.sync.set({ settings: newSettings }, function() {
+        chrome.storage.sync.set({ settings: newSettings }, function () {
             if (chrome.runtime.lastError) {
                 showStatus('Error saving settings: ' + chrome.runtime.lastError.message, 'error');
                 return;
@@ -150,9 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Reset to default
-    resetButton.addEventListener('click', function() {
+    resetButton.addEventListener('click', function () {
         if (confirm('Are you sure you want to reset all settings to default?')) {
-            chrome.storage.sync.set({ settings: defaultSettings }, function() {
+            chrome.storage.sync.set({ settings: defaultSettings }, function () {
                 updateUIWithSettings(defaultSettings);
                 showStatus('Settings reset to defaults.', 'success');
             });
@@ -160,11 +155,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Export settings
-    exportSettingsBtn.addEventListener('click', function() {
-        chrome.storage.sync.get(['settings'], function(result) {
+    exportSettingsBtn.addEventListener('click', function () {
+        chrome.storage.sync.get(['settings'], function (result) {
             const settings = result.settings || defaultSettings;
             const dataStr = JSON.stringify(settings, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+            const dataUri = 'application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
             const exportFileDefaultName = 'shopsmart-pro-settings.json';
 
@@ -178,15 +173,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Import settings
-    importSettingsBtn.addEventListener('click', function() {
+    importSettingsBtn.addEventListener('click', function () {
         importSettingsFile.click();
     });
 
-    importSettingsFile.addEventListener('change', function(event) {
+    importSettingsFile.addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 try {
                     const importedSettings = JSON.parse(e.target.result);
 
@@ -200,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
 
-                    chrome.storage.sync.set({ settings: importedSettings }, function() {
+                    chrome.storage.sync.set({ settings: importedSettings }, function () {
                         updateUIWithSettings(importedSettings);
                         showStatus('Settings imported successfully.', 'success');
                     });
@@ -213,10 +208,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Clear all data
-    clearDataBtn.addEventListener('click', function() {
+    clearDataBtn.addEventListener('click', function () {
         if (confirm('Are you sure you want to clear ALL data? This cannot be undone.')) {
-            chrome.storage.sync.clear(function() {
-                chrome.storage.local.clear(function() {
+            chrome.storage.sync.clear(function () {
+                chrome.storage.local.clear(function () {
                     updateUIWithSettings(defaultSettings);
                     showStatus('All data cleared successfully.', 'success');
                 });
@@ -225,11 +220,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Debug button
-    debugButton.addEventListener('click', function() {
+    debugButton.addEventListener('click', function () {
         if (debugInfo.style.display === 'none') {
-            chrome.storage.sync.get(null, function(syncResult) {
-                chrome.storage.local.get(null, function(localResult) {
-                    debugContent.textContent = 'Sync Storage:\n' +
+            chrome.storage.sync.get(null, function (syncResult) {
+                chrome.storage.local.get(null, function (localResult) {
+                    debugContent.textContent =
+                        'Sync Storage:\n' +
                         JSON.stringify(syncResult, null, 2) +
                         '\n\nLocal Storage:\n' +
                         JSON.stringify(localResult, null, 2);
@@ -244,13 +240,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Help & About buttons
-    document.getElementById('helpButton').addEventListener('click', function() {
+    document.getElementById('helpButton').addEventListener('click', function () {
         chrome.tabs.create({
             url: chrome.runtime.getURL('documentation.html')
         });
     });
 
-    document.getElementById('aboutButton').addEventListener('click', function() {
+    document.getElementById('aboutButton').addEventListener('click', function () {
         chrome.tabs.create({
             url: chrome.runtime.getURL('about.html')
         });
@@ -265,11 +261,14 @@ document.addEventListener('DOMContentLoaded', function() {
             statusMessage.className = '';
         }, 5000);
     }
-});
 
-document.getElementById('testNotificationBtn').addEventListener('click', () => {
-    chrome.runtime.sendMessage({
-        action: 'createTestNotification'
-    });
-    showStatus('Test notification sent!', 'success');
+    // Test Notification Button
+    if (testNotificationBtn) {
+        testNotificationBtn.addEventListener('click', () => {
+            chrome.runtime.sendMessage({
+                action: 'createTestNotification'
+            });
+            showStatus('Test notification sent!', 'success');
+        });
+    }
 });

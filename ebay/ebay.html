@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📦 eBay Search - ShopSmart Pro</title>
+    <link rel="stylesheet" href="ebay.css" />
+    <!-- Prevent CSP warnings -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none';">
+</head>
+<body class="light-mode">
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📦 eBay Search</h1>
+            <p class="subtitle">Find deals across eBay with affiliate tracking</p>
+            <button id="darkModeToggle" class="btn btn-icon" aria-label="Toggle dark mode">
+                🌓 Dark Mode
+            </button>
+        </header>
+
+        <!-- Search Form -->
+        <form id="searchForm" class="search-box">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search on eBay..." 
+                autofocus
+            />
+            <button type="submit" id="searchBtn" class="btn btn-primary">🔍 Search</button>
+        </form>
+
+        <!-- Action Controls -->
+        <div class="action-controls">
+            <button id="clearSearch" class="btn btn-secondary">🗑️ Clear</button>
+            <button id="closeBtn" class="btn btn-primary">✕ Close</button>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading" style="display: none;">
+            <p>🔍 Searching eBay...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error" class="error" style="display: none;"></div>
+
+        <!-- Results Grid -->
+        <main id="results" class="results-grid">
+            <!-- Results will be injected here by JavaScript -->
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🛒 Powered by <strong>ShopSmart Pro</strong> | Affiliate links supported</p>
+        </footer>
+    </div>
+
+    <!-- External JS (CSP-compliant) -->
+    <script src="ebay.js"></script>
+</body>
+</html>

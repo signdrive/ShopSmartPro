@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
+// popup/popup.js - ShopSmart Pro | Final: With eBay Search Support
+document.addEventListener('DOMContentLoaded', function () {
     // DOM Elements
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
@@ -10,13 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const voiceSearchBtn = document.getElementById('voiceSearchBtn');
     const dealsBtn = document.getElementById('dealsBtn');
     const compareBtn = document.getElementById('compareBtn');
+    const ebayBtn = document.getElementById('searchEbayBtn'); // ✅ New: eBay Button
     const searchHistory = document.getElementById('searchHistory');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
     const todaySearches = document.getElementById('todaySearches');
     const activeTrackers = document.getElementById('activeTrackers');
     const primeOnly = document.getElementById('primeOnly');
     const freeShipping = document.getElementById('freeShipping');
-    
+
     // Voice search elements
     const voiceSearchModal = document.getElementById('voiceSearchModal');
     const startVoiceBtn = document.getElementById('startVoiceBtn');
@@ -53,42 +55,42 @@ document.addEventListener('DOMContentLoaded', function() {
             recognition.interimResults = false;
             recognition.lang = 'en-US';
 
-            recognition.onstart = function() {
+            recognition.onstart = function () {
                 isListening = true;
                 startVoiceBtn.textContent = '🎤 Listening...';
                 startVoiceBtn.classList.add('listening');
                 voiceStatus.textContent = 'Listening... Speak now!';
             };
 
-            recognition.onresult = function(event) {
+            recognition.onresult = function (event) {
                 const transcript = event.results[0][0].transcript;
-                
+
                 voiceResult.textContent = `"${transcript}"`;
                 searchInput.value = transcript;
                 voiceStatus.textContent = 'Got it! Click "Use This" to search.';
-                
+
                 // Create "Use This" button
                 const useButton = document.createElement('button');
                 useButton.textContent = 'Use This Search';
                 useButton.className = 'voice-btn';
                 useButton.style.marginTop = '10px';
-                useButton.addEventListener('click', function() {
+                useButton.addEventListener('click', function () {
                     searchInput.value = transcript;
                     voiceSearchModal.classList.remove('active');
                     searchInput.focus();
                 });
-                
+
                 // Replace content
                 voiceResult.innerHTML = '';
                 voiceResult.appendChild(useButton);
             };
 
-            recognition.onerror = function(event) {
+            recognition.onerror = function (event) {
                 voiceStatus.textContent = `Error: ${event.error}. Please try again.`;
                 resetVoiceUI();
             };
 
-            recognition.onend = function() {
+            recognition.onend = function () {
                 resetVoiceUI();
             };
         } else {
@@ -103,14 +105,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Load settings and initialize
-    chrome.storage.sync.get(['settings', 'searchHistory'], function(result) {
+    chrome.storage.sync.get(['settings', 'searchHistory'], function (result) {
         const settings = result.settings || defaultSettings;
         updateUIWithSettings(settings);
-        
+
         if (result.searchHistory) {
             displaySearchHistory(result.searchHistory);
         }
-        
+
         loadActiveTrackersCount();
     });
 
@@ -118,22 +120,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const country = settings.country || 'ca';
         countryInput.value = country;
         currentCountry.textContent = countryFlags[country] || '🇨🇦';
-        
+
         if (settings.defaultCategory) {
             categorySelect.value = settings.defaultCategory;
         }
     }
 
     function loadActiveTrackersCount() {
-        chrome.storage.sync.get(['trackedProducts'], function(result) {
+        chrome.storage.sync.get(['trackedProducts'], function (result) {
             const trackedProducts = result.trackedProducts || [];
             activeTrackers.textContent = trackedProducts.length;
         });
     }
 
     // ✅ Fixed: Removed form action dependency — build URL in JS
-    searchForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Always prevent default
+    searchForm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
         const keyword = searchInput.value.trim();
         if (!keyword) return;
@@ -145,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let url = `${baseUrl}?field-keywords=${encodeURIComponent(keyword)}`;
         url += `&${categorySelect.value}`;
         url += `&tag=${AFFILIATE_TAG}`;
-        
+
         if (primeOnly.checked) url += '&rh=p_85:2470955011';         // Prime Only
         if (freeShipping.checked) url += '&rh=p_76:1249130011';     // Free Shipping
 
@@ -169,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Search history management
     function saveSearchHistory(query, category) {
-        chrome.storage.sync.get(['searchHistory'], function(result) {
+        chrome.storage.sync.get(['searchHistory'], function (result) {
             const history = result.searchHistory || [];
             const newEntry = {
                 query: query,
@@ -182,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
             history.unshift(newEntry);
             if (history.length > 20) history.pop();
 
-            chrome.storage.sync.set({ searchHistory: history }, function() {
+            chrome.storage.sync.set({ searchHistory: history }, function () {
                 displaySearchHistory(history);
                 updateTodaysSearchesCount(history);
             });
@@ -191,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateTodaysSearchesCount(history) {
         const today = new Date().toLocaleDateString();
-        const todayCount = history.filter(item => 
+        const todayCount = history.filter(item =>
             new Date(item.timestamp).toLocaleDateString() === today
         ).length;
         todaySearches.textContent = todayCount;
@@ -199,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function displaySearchHistory(history) {
         searchHistory.innerHTML = '';
-        
+
         if (!history || history.length === 0) {
             const noHistoryItem = document.createElement('div');
             noHistoryItem.className = 'history-item';
@@ -215,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
             historyItem.className = 'history-item';
             historyItem.dataset.query = item.query;
             historyItem.textContent = item.query;
-            
+
             const dateSpan = document.createElement('span');
             dateSpan.style.cssText = 'color: #666; font-size: 0.8em; margin-left: 5px;';
             dateSpan.textContent = `(${new Date(item.timestamp).toLocaleDateString()})`;
@@ -228,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Rebind click listeners
         searchHistory.querySelectorAll('.history-item').forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function () {
                 const query = this.dataset.query;
                 searchInput.value = query;
                 searchForm.dispatchEvent(new Event('submit'));
@@ -237,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearSearchHistory() {
-        chrome.storage.sync.set({ searchHistory: [] }, function() {
+        chrome.storage.sync.set({ searchHistory: [] }, function () {
             searchHistory.innerHTML = '';
             const noHistoryItem = document.createElement('div');
             noHistoryItem.className = 'history-item';
@@ -247,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Button handlers
+    // ✅ Button handlers
     settingsButton.addEventListener('click', () => {
         chrome.runtime.openOptionsPage();
     });
@@ -269,6 +271,20 @@ document.addEventListener('DOMContentLoaded', function() {
     compareBtn.addEventListener('click', () => {
         chrome.runtime.sendMessage({ action: 'openComparison' });
     });
+
+    // ✅ eBay Search Button Handler
+    if (ebayBtn) {
+        ebayBtn.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (!query) {
+                alert('Please enter a search term');
+                return;
+            }
+
+            const url = chrome.runtime.getURL(`ebay/ebay.html?search=${encodeURIComponent(query)}`);
+            chrome.tabs.create({ url });
+        });
+    }
 
     clearHistoryBtn.addEventListener('click', clearSearchHistory);
 
@@ -298,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             if (document.activeElement !== searchInput) {
                 searchInput.focus();
@@ -307,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 searchForm.dispatchEvent(new Event('submit'));
             }
         }
-        
+
         if (e.key === 'Escape') {
             if (voiceSearchModal.classList.contains('active')) {
                 voiceSearchModal.classList.remove('active');
@@ -318,16 +334,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Listen for settings updates
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         if (request.action === 'settingsUpdated') {
             updateUIWithSettings(request.settings);
             sendResponse({ status: 'success' });
         }
-        
+
         if (request.action === 'trackersUpdated') {
             loadActiveTrackersCount();
         }
-        
+
         return true;
     });
 
@@ -337,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial load
     loadActiveTrackersCount();
-    chrome.storage.sync.get(['searchHistory'], function(result) {
+    chrome.storage.sync.get(['searchHistory'], function (result) {
         if (result.searchHistory) {
             updateTodaysSearchesCount(result.searchHistory);
         }

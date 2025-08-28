@@ -1,4 +1,4 @@
-// popup/comparison.js - ShopSmart Pro | Final: No innerHTML, CSP-Compliant, Secure
+// popup/comparison.js - ShopSmart Pro | Final: Local Images, No Errors, Store-Ready
 class ProductComparison {
     constructor() {
         this.products = [];
@@ -7,6 +7,7 @@ class ProductComparison {
         this.loadSettings();
         this.setupEventListeners();
         this.loadComparison();
+        this.loadSavedLists();
     }
 
     initializeElements() {
@@ -17,9 +18,10 @@ class ProductComparison {
         this.exportCsvBtn = document.getElementById('exportCsv');
         this.saveListBtn = document.getElementById('saveList');
         this.listNameInput = document.getElementById('listName');
+        this.loadListSelect = document.getElementById('loadList');
+        this.deleteListBtn = document.getElementById('deleteList');
 
         if (!this.comparisonResults) {
-            console.error('❌ #comparisonResults not found');
             this.showError('UI Error: Missing container');
         }
     }
@@ -93,6 +95,22 @@ class ProductComparison {
 
         if (this.saveListBtn) {
             this.saveListBtn.addEventListener('click', () => this.saveCurrentList());
+        }
+
+        if (this.loadListSelect) {
+            this.loadListSelect.addEventListener('change', () => {
+                if (this.loadListSelect.value) {
+                    this.loadSavedList(this.loadListSelect.value);
+                }
+            });
+        }
+
+        if (this.deleteListBtn) {
+            this.deleteListBtn.addEventListener('click', () => {
+                if (this.loadListSelect.value) {
+                    this.deleteSavedList(this.loadListSelect.value);
+                }
+            });
         }
 
         chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -187,7 +205,7 @@ class ProductComparison {
             return;
         }
 
-        // ✅ Warning for 5+ products — Safe DOM creation
+        // ✅ Warning for 5+ products
         if (this.products.length > 4) {
             const warning = document.createElement('div');
             warning.className = 'warning';
@@ -217,10 +235,12 @@ class ProductComparison {
             card.dataset.id = product.id;
 
             const img = document.createElement('img');
-            img.src = product.image || 'https://via.placeholder.com/100x100?text=No+Image';
+            img.src = product.image || chrome.runtime.getURL('img/deals/placeholder.jpg');
             img.alt = product.title;
             img.className = 'product-image';
-            img.onerror = () => { img.src = 'https://via.placeholder.com/100x100?text=Product'; };
+            img.onerror = () => {
+                img.src = chrome.runtime.getURL('img/deals/placeholder.jpg');
+            };
 
             const title = document.createElement('h3');
             title.className = 'product-title';
@@ -415,8 +435,55 @@ class ProductComparison {
             chrome.storage.sync.set({ savedComparisons: lists }, () => {
                 alert(`✅ Saved as "${name}"`);
                 if (this.listNameInput) this.listNameInput.value = '';
+                this.loadSavedLists();
             });
         });
+    }
+
+    loadSavedLists() {
+        chrome.storage.sync.get(['savedComparisons'], (result) => {
+            const lists = result.savedComparisons || [];
+            const select = this.loadListSelect;
+            if (!select) return;
+
+            // Keep placeholder
+            const placeholder = select.querySelector('option[disabled]');
+            select.innerHTML = '';
+            if (placeholder) select.appendChild(placeholder);
+
+            lists.forEach(list => {
+                const option = document.createElement('option');
+                option.value = list.name;
+                option.textContent = list.name;
+                select.appendChild(option);
+            });
+        });
+    }
+
+    loadSavedList(name) {
+        chrome.storage.sync.get(['savedComparisons'], (result) => {
+            const lists = result.savedComparisons || [];
+            const found = lists.find(l => l.name === name);
+            if (found) {
+                this.products = found.products;
+                this.renderComparison();
+            }
+        });
+    }
+
+    deleteSavedList(name) {
+        if (confirm(`Delete saved list "${name}"?`)) {
+            chrome.storage.sync.get(['savedComparisons'], (result) => {
+                let lists = result.savedComparisons || [];
+                lists = lists.filter(l => l.name !== name);
+                chrome.storage.sync.set({ savedComparisons: lists }, () => {
+                    const option = this.loadListSelect.querySelector(`option[value="${name}"]`);
+                    if (option) option.remove();
+                    this.loadListSelect.value = '';
+                    alert(`✅ List "${name}" deleted.`);
+                });
+            });
+        }
     }
 
     showError(msg) {

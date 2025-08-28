@@ -468,3 +468,22 @@ select:focus, input[type="text"]:focus {
     color: #1976d2;
     font-size: 1.1em;
 }
+/* eBay Button */
+.btn-ebay {
+    background: #e53935; /* eBay red */
+    color: white;
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-ebay:hover {
+    background: #c62828;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.2);
+}
