@@ -1,11 +1,11 @@
-// background.js - ShopSmart Pro | FINAL: No Errors, Full eBay Browse API Support
+// background.js - ShopSmart Pro | FINAL: Fixed Async Response Issues
 
 const AFFILIATE_TAG = 'elise200f-20';
 const DEFAULT_COUNTRY = 'ca';
 
-// ✅ Your eBay Credentials
+// ✅ Your eBay Credentials (Client ID and Client Secret)
 const EBAY_CLIENT_ID = 'SabirImc-ShopSmar-PRD-9d5c80ac8-d88362d1';
-const EBAY_CLIENT_SECRET = 'PRD-8140fb565f34-76f8-458a-bbf7-4601';
+const EBAY_CLIENT_SECRET = 'PRD-d47d6511273c-071a-4d8e-9fb2-c4be';
 
 let accessToken = null;
 let tokenExpiry = 0;
@@ -19,28 +19,29 @@ const requestHistory = new Map();
 const MAX_REQUESTS_PER_MINUTE = 5;
 const RATE_LIMIT_WINDOW = 60_000;
 
-// Mock data fallback
-function getMockEbayData(query) {
+// Mock data fallback with pagination support
+function getMockEbayData(query, page = 1, limit = 20) {
+  const mockItems = [];
+  const totalItems = 35; // Simulate multiple pages
+  
+  for (let i = 1; i <= limit; i++) {
+    const itemNumber = (page - 1) * limit + i;
+    if (itemNumber > totalItems) break;
+    
+    mockItems.push({
+      title: `${query} - Robot Toy #${itemNumber}`,
+      price: { value: (24.99 + itemNumber).toFixed(2), currency: "USD" },
+      image: { imageUrl: "https://via.placeholder.com/150" },
+      itemWebUrl: `https://www.ebay.com/itm/${1234567890 + itemNumber}`,
+      shippingOptions: [{ shippingCost: { value: "5.99", currency: "USD" } }],
+      condition: itemNumber % 2 === 0 ? "New" : "Used",
+      itemId: `mock_${1234567890 + itemNumber}`
+    });
+  }
+  
   return {
-    itemSummaries: [
-      {
-        title: `${query} - Robot Toy`,
-        price: { value: "24.99", currency: "USD" },
-        imageUrl: "https://via.placeholder.com/150",
-        itemWebUrl: "https://www.ebay.com/itm/1234567890",
-        shippingOptions: [{ shippingCost: { value: "5.99", currency: "USD" } }],
-        condition: "New"
-      },
-      {
-        title: `${query} - Robotic Arm Kit`,
-        price: { value: "45.99", currency: "USD" },
-        imageUrl: "https://via.placeholder.com/150",
-        itemWebUrl: "https://www.ebay.com/itm/0987654321",
-        shippingOptions: [{ shippingCost: { value: "0.00", currency: "USD" } }],
-        condition: "Used"
-      }
-    ],
-    total: 2
+    itemSummaries: mockItems,
+    total: totalItems
   };
 }
 
@@ -126,33 +127,40 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   });
 });
 
-// Handle messages
+// Handle messages - FIXED for async operations
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case 'fetchEbaySearch':
-      handleFetchEbaySearch(request, sender.tab?.id, sendResponse);
-      return true; // ✅ Required for async
+      handleFetchEbaySearch(request, sender.tab?.id, sendResponse)
+        .catch(error => {
+          console.error('Search error:', error);
+          sendResponse({ 
+            error: error.message,
+            success: false 
+          });
+        });
+      return true; // ✅ Keep the message channel open for async response
 
     case 'getSettings':
       chrome.storage.sync.get(['settings'], (res) => {
         sendResponse({ settings: res.settings || {} });
       });
-      return true;
+      return true; // ✅ Required for async response
 
     case 'addToComparison':
       addToComparison(request.product);
       sendResponse({ status: 'added' });
-      return true;
+      return false; // ✅ Sync response
 
     case 'openComparison':
       openComparisonPage();
       sendResponse({ status: 'success' });
-      return true;
+      return false; // ✅ Sync response
 
     case 'openDeals':
       openDealsPage();
       sendResponse({ status: 'success' });
-      return true;
+      return false; // ✅ Sync response
   }
   return false;
 });
@@ -208,27 +216,34 @@ async function getEbayAccessToken() {
   return accessToken;
 }
 
-// Handle eBay search
+// Handle eBay search with PAGINATION - FIXED async handling
 async function handleFetchEbaySearch(request, senderTabId, sendResponse) {
-  const { query } = request;
+  const { query, page = 1, limit = 20 } = request;
   const senderId = senderTabId || 'unknown';
 
   if (isRateLimited(senderId)) {
-    sendResponse({ error: 'Too many requests. Please wait.' });
+    sendResponse({ error: 'Too many requests. Please wait.', success: false });
     return;
   }
 
-  const cacheKey = `ebay_${query}_${DEFAULT_COUNTRY}`;
+  const cacheKey = `ebay_${query}_${DEFAULT_COUNTRY}_page${page}_limit${limit}`;
   const cached = ebayCache.get(cacheKey);
   if (cached && Date.now() < cached.expiry) {
-    sendResponse({ data: cached.data });
+    sendResponse({ 
+      data: cached.data, 
+      page: cached.page, 
+      totalPages: cached.totalPages,
+      success: true 
+    });
     return;
   }
 
   try {
     const token = await getEbayAccessToken();
     const marketplaceId = DEFAULT_COUNTRY === 'com' ? 'EBAY-US' : 'EBAY-CA';
-    const url = `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&limit=10&marketplace_id=${marketplaceId}`;
+    const offset = (page - 1) * limit;
+    
+    const url = `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&limit=${limit}&offset=${offset}&marketplace_id=${marketplaceId}`;
 
     const res = await fetch(url, {
       method: 'GET',
@@ -247,15 +262,40 @@ async function handleFetchEbaySearch(request, senderTabId, sendResponse) {
     }
 
     const data = await res.json();
-    ebayCache.set(cacheKey, { data, expiry: Date.now() + CACHE_TTL });
-    sendResponse({ data });
+    const totalPages = Math.ceil(data.total / limit);
+    
+    ebayCache.set(cacheKey, { 
+      data, 
+      page,
+      totalPages,
+      expiry: Date.now() + CACHE_TTL
+    });
+    
+    sendResponse({ 
+      data, 
+      page, 
+      totalPages,
+      success: true 
+    });
+    
   } catch (error) {
     console.warn('API failed, using mock data', error.message);
-    const mock = getMockEbayData(query);
-    ebayCache.set(cacheKey, { mock, expiry: Date.now() + CACHE_TTL });
+    const mock = getMockEbayData(query, page, limit);
+    const totalPages = Math.ceil(mock.total / limit);
+    
+    ebayCache.set(cacheKey, { 
+      data: mock, 
+      page,
+      totalPages,
+      expiry: Date.now() + CACHE_TTL
+    });
+    
     sendResponse({
-      mock,
-      warning: 'Using demo data — API temporarily unavailable.'
+      data: mock,
+      page,
+      totalPages,
+      warning: 'Using demo data — API temporarily unavailable.',
+      success: true
     });
   }
 }

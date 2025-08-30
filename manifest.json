@@ -2,19 +2,16 @@
   "manifest_version": 2,
   "name": "ShopSmart Pro",
   "version": "2.33",
-  "description": "Enhances your shopping experience on Amazon with price tracking, comparisons, and deal alerts",
+  "description": "Enhances your shopping experience on Amazon and eBay with price tracking, comparisons, and deal alerts",
   "author": "ShopSmart Team",
   "homepage_url": "https://www.shopsmartpro.com",
-
   "content_security_policy": "script-src 'self'; object-src 'none'",
-
   "browser_specific_settings": {
     "gecko": {
       "id": "shopsmart-pro@parkalgo.com",
       "strict_min_version": "91.0"
     }
   },
-
   "permissions": [
     "activeTab",
     "storage",
@@ -36,18 +33,17 @@
     "*://*.amazon.com.br/*",
     "*://*.amazon.com.mx/*",
     "*://*.amazon.nl/*",
-    "*://api.ebay.com/*",
-    "*://i.ebayimg.com/*",
-    "*://via.placeholder.com/*"
+    "https://api.ebay.com/*", 
+    "https://svcs.ebay.com/*", 
+    "https://i.ebayimg.com/*", 
+    "https://via.placeholder.com/*" 
   ],
-
   "background": {
     "scripts": [
       "background.js"
     ],
     "persistent": true
   },
-
   "browser_action": {
     "default_icon": {
       "16": "icons/icon-16.png",
@@ -57,7 +53,6 @@
     "default_popup": "popup/popup.html",
     "default_title": "ShopSmart Pro"
   },
-
   "content_scripts": [
     {
       "matches": [
@@ -74,33 +69,26 @@
         "*://*.amazon.com.mx/*",
         "*://*.amazon.nl/*"
       ],
-      "js": ["content.js"],
-      "css": ["content.css"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": [
-        "https://www.ebay.com/*"
+      "js": [
+        "content.js"
       ],
-      "js": ["ebay/ebay-content.js"],
-      "css": ["ebay/ebay.css"],
-      "run_at": "document_start"
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
     }
   ],
-
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
     "48": "icons/icon-48.png",
     "96": "icons/icon-96.png"
   },
-
   "options_ui": {
     "page": "settings/settings.html",
     "open_in_tab": true,
     "browser_style": true
   },
-
   "commands": {
     "quick-search": {
       "suggested_key": {
@@ -124,7 +112,6 @@
       "description": "Open eBay search"
     }
   },
-
   "web_accessible_resources": [
     "icons/icon-16.png",
     "icons/icon-32.png",
@@ -158,6 +145,11 @@
     "img/deals/*.jpg",
     "img/deals/placeholder.jpg",
     "img/ebay/*.png",
+    "img/ebay/ebay-button.png",
+    "img/ebay/comparision.png",
+    "img/ebay/question-mark.png",
+    "img/ebay/deals.png",
+    "img/ebay/settings-gear.png",
     "img/ebay/logo.png",
     "img/ebay/favicon.ico",
     "img/ebay/loading.gif",

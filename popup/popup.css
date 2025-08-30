@@ -1,3 +1,5 @@
+/* popup/popup.css - ShopSmart Pro | Updated: Professional Icons */
+
 body {
     width: 400px;
     padding: 15px;
@@ -40,15 +42,16 @@ body {
     margin-right: 10px;
 }
 
+/* Updated Header Buttons - Icon-based */
 .header-buttons {
     display: flex;
     gap: 5px;
+    align-items: center;
 }
 
-.settings-btn, .help-btn {
+.icon-btn {
     background: none;
     border: none;
-    font-size: 1.3em;
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
@@ -58,29 +61,42 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0; /* Prevents shrinking */
 }
 
-.settings-btn:hover, .help-btn:hover {
+.icon-btn:hover {
     background: #f0f0f0;
 }
 
+.icon-btn img {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+
+/* --- Quick Actions Grid --- */
+/* Updated grid to 3 columns as per your existing rule */
 .quick-actions {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     margin-bottom: 20px;
 }
 
+/* --- Action Button Styles (for quick actions like voice search) --- */
 .quick-actions button {
     background: linear-gradient(45deg, #4ecdc4, #44a08d);
     border: none;
     border-radius: 8px;
     color: white;
-    font-size: 1.2em;
+    font-size: 1.2em; /* Consider reducing if icon */
     cursor: pointer;
     padding: 10px;
     transition: all 0.3s;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .quick-actions button:hover {
@@ -92,6 +108,7 @@ body {
     transform: translateY(0);
 }
 
+/* --- Search Form --- */
 .search-form {
     margin: 0;
 }
@@ -124,6 +141,7 @@ select:focus, input[type="text"]:focus {
     box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
 }
 
+/* --- Advanced Options --- */
 .advanced-options {
     display: flex;
     gap: 15px;
@@ -146,6 +164,7 @@ select:focus, input[type="text"]:focus {
     transform: scale(1.2);
 }
 
+/* --- Main Search Button --- */
 .search-btn {
     background: linear-gradient(45deg, #FF9900, #FF6B00);
     color: white;
@@ -176,6 +195,7 @@ select:focus, input[type="text"]:focus {
     font-size: 1.2em;
 }
 
+/* --- Recent Searches --- */
 .recent-searches {
     margin: 20px 0;
     padding: 15px;
@@ -228,6 +248,7 @@ select:focus, input[type="text"]:focus {
     background: #5a6268;
 }
 
+/* --- Quick Stats --- */
 .quick-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -256,6 +277,7 @@ select:focus, input[type="text"]:focus {
     font-size: 1.1em;
 }
 
+/* --- Footer --- */
 .footer {
     display: flex;
     justify-content: space-between;
@@ -275,7 +297,7 @@ select:focus, input[type="text"]:focus {
     color: #666;
 }
 
-/* Voice Search Modal */
+/* --- Voice Search Modal --- */
 .voice-search-modal {
     display: none;
     position: fixed;
@@ -376,7 +398,7 @@ select:focus, input[type="text"]:focus {
     border-left: 4px solid #1976d2;
 }
 
-/* Scrollbar styling */
+/* --- Scrollbar Styling --- */
 .search-history::-webkit-scrollbar {
     width: 4px;
 }
@@ -395,7 +417,7 @@ select:focus, input[type="text"]:focus {
     background: #e68a00;
 }
 
-/* Responsive design */
+/* --- Responsive Design --- */
 @media (max-width: 480px) {
     body {
         width: 350px;
@@ -410,6 +432,7 @@ select:focus, input[type="text"]:focus {
         font-size: 1.2em;
     }
     
+    /* Ensure grid adjusts on small screens */
     .quick-actions {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
@@ -432,15 +455,67 @@ select:focus, input[type="text"]:focus {
     }
 }
 
-/* Remove any analytics-specific styles and update quick-actions grid */
-.quick-actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Changed from 4 to 3 columns */
-    gap: 10px;
-    margin-bottom: 20px;
+/* --- Specific Button Styles (if you want text + icon) --- */
+/* eBay Button */
+.btn-ebay {
+    background: #e53935; /* eBay red */
+    color: white;
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex; /* Use flex for icon + text */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
 }
 
-/* Update the quick-stats to show trackers instead of savings */
+.btn-ebay:hover {
+    background: #c62828;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.2);
+}
+
+.btn-ebay img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Comparison Button */
+.btn-compare {
+    background: #007bff; /* Blue */
+    color: white;
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex; /* Use flex for icon + text */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+.btn-compare:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.btn-compare img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Ensure the quick-stats grid definition is applied */
+/* This rule was already present in your code, just reiterating */
 .quick-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -467,23 +542,4 @@ select:focus, input[type="text"]:focus {
     font-weight: bold;
     color: #1976d2;
     font-size: 1.1em;
-}
-/* eBay Button */
-.btn-ebay {
-    background: #e53935; /* eBay red */
-    color: white;
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-ebay:hover {
-    background: #c62828;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.2);
 }

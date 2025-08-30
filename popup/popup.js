@@ -94,7 +94,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 resetVoiceUI();
             };
         } else {
-            voiceSearchBtn.style.display = 'none';
+            // Hide the voice search button if SpeechRecognition is not supported
+            if (voiceSearchBtn) {
+                voiceSearchBtn.style.display = 'none';
+            }
         }
     }
 
