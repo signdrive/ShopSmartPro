@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📦 Tracked Products - ShopSmart Pro</title>
+  <link rel="stylesheet" href="tracked.css">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'; object-src 'none';">
+</head>
+<body class="light-mode">
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>📦 Tracked Products</h1>
+      <p class="subtitle">Get alerts when prices drop</p>
+      <button id="darkModeToggle" class="btn btn-icon" aria-label="Toggle dark mode">🌙 Dark Mode</button>
+      <button id="closeBtn" class="btn btn-danger" aria-label="Close">✕</button>
+    </header>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="search-filter">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search tracked products..." 
+          class="search-input"
+          aria-label="Search tracked products">
+        <select id="categoryFilter" aria-label="Filter by category">
+          <option value="all">All Categories</option>
+          <option value="electronics">Electronics</option>
+          <option value="home">Home & Kitchen</option>
+          <option value="books">Books</option>
+          <option value="toys">Toys & Games</option>
+        </select>
+      </div>
+      <button id="exportCsvBtn" class="btn">📤 Export to CSV</button>
+    </div>
+
+    <!-- Results -->
+    <main id="trackedResults" class="results" role="main">
+      <div class="loading">Loading tracked products...</div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>🔔 <strong>Price alerts active</strong> | Updates every 6 hours</p>
+    </footer>
+  </div>
+
+  <!-- JS -->
+  <script src="tracked.js"></script>
+</body>
+</html>

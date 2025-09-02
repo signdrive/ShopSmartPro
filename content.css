@@ -1,4 +1,67 @@
+/* content.css - ShopSmart Pro | Content Script Styles */
+
+.shopsmart-compare-btn,
+.shopsmart-track-btn {
+    background: #007bff; /* Amazon Blue */
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin: 4px auto;
+    display: block;
+    width: 80%;
+    text-align: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.shopsmart-compare-btn:hover,
+.shopsmart-track-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.shopsmart-compare-btn:disabled,
+.shopsmart-track-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #cccccc; /* Greyed out when disabled */
+}
+
+.shopsmart-price-history {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.price-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.shopsmart-deal-badge {
+    background: #dc3545; /* Red for deals */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.shopsmart-track-btn-tracked {
+    background: #28a745; /* Green for tracked state */
+}
+
+/* Disabled button style provided by user */
 .shopsmart-btn-container button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+

@@ -1,13 +1,16 @@
-// popup/comparison.js - ShopSmart Pro | Final: Local Images, No Errors, Store-Ready
+// popup/comparison.js - ShopSmart Pro | FINAL: No Console Logs, Store-Ready
 class ProductComparison {
     constructor() {
         this.products = [];
+        this.maxProducts = 4;
         this.initializeElements();
-        this.loadTheme();
-        this.loadSettings();
-        this.setupEventListeners();
-        this.loadComparison();
-        this.loadSavedLists();
+        if (this.comparisonResults) {
+            this.loadSettings()
+                .then(() => this.loadTheme())
+                .then(() => this.setupEventListeners())
+                .then(() => this.loadComparison())
+                .then(() => this.loadSavedLists());
+        }
     }
 
     initializeElements() {
@@ -20,10 +23,6 @@ class ProductComparison {
         this.listNameInput = document.getElementById('listName');
         this.loadListSelect = document.getElementById('loadList');
         this.deleteListBtn = document.getElementById('deleteList');
-
-        if (!this.comparisonResults) {
-            this.showError('UI Error: Missing container');
-        }
     }
 
     async loadSettings() {
@@ -31,7 +30,7 @@ class ProductComparison {
             const result = await new Promise(resolve => {
                 chrome.storage.sync.get(['settings'], res => resolve(res));
             });
-            this.maxProducts = result.settings?.maxComparisonProducts || 4;
+            this.maxProducts = result?.settings?.maxComparisonProducts || 4;
         } catch (e) {
             this.maxProducts = 4;
         }
@@ -40,19 +39,33 @@ class ProductComparison {
     async loadTheme() {
         try {
             const result = await new Promise(resolve => {
-                chrome.storage.sync.get(['darkMode'], res => resolve(res));
+                chrome.storage.sync.get(['settings'], res => resolve(res));
             });
-            if (result.darkMode) {
-                document.body.classList.replace('light-mode', 'dark-mode');
-                this.darkModeToggle.textContent = '☀️ Light Mode';
-            }
-        } catch (e) {}
+            const isDark = result?.settings?.darkMode === true;
+            this.updateTheme(isDark);
+        } catch (e) {
+            this.updateTheme(false);
+        }
+    }
+
+    updateTheme(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('light-mode', !isDark);
+        if (this.darkModeToggle) {
+            this.darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+        }
     }
 
     saveTheme(isDark) {
         try {
-            chrome.storage.sync.set({ darkMode: isDark });
-        } catch (e) {}
+            chrome.storage.sync.get(['settings'], (result) => {
+                const settings = result.settings || {};
+                settings.darkMode = isDark;
+                chrome.storage.sync.set({ settings });
+            });
+        } catch (e) {
+            // Silent fail — no console output
+        }
     }
 
     setupEventListeners() {
@@ -66,10 +79,8 @@ class ProductComparison {
 
         if (this.darkModeToggle) {
             this.darkModeToggle.addEventListener('click', () => {
-                const isDark = document.body.classList.contains('light-mode');
-                document.body.classList.toggle('light-mode');
-                document.body.classList.toggle('dark-mode');
-                this.darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌓 Dark Mode';
+                const isDark = !document.body.classList.contains('dark-mode');
+                this.updateTheme(isDark);
                 this.saveTheme(isDark);
             });
         }
@@ -82,8 +93,7 @@ class ProductComparison {
                     .then(() => {
                         alert('🔗 Comparison link copied to clipboard!');
                     })
-                    .catch(err => {
-                        console.error('Failed to copy link:', err);
+                    .catch(() => {
                         alert('❌ Could not copy link. Please try again.');
                     });
             });
@@ -113,12 +123,51 @@ class ProductComparison {
             });
         }
 
+        // Listen for updates
         chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-            if (request.action === 'comparisonUpdated') {
+            if (request.action === 'comparisonUpdated' || request.action === 'addToComparison') {
                 this.loadComparison();
             }
             return true;
         });
+
+        // Delegate events for dynamic buttons
+        this.comparisonResults?.addEventListener('click', (e) => {
+            const viewBtn = e.target.closest('.view-btn');
+            const trackBtn = e.target.closest('.track-btn');
+            const removeBtn = e.target.closest('.remove-btn');
+
+            if (viewBtn) {
+                this.handleViewProduct(viewBtn.dataset.url);
+            } else if (trackBtn) {
+                this.handleTrackProduct(trackBtn.dataset.id);
+            } else if (removeBtn) {
+                this.removeProduct(removeBtn.dataset.id);
+            }
+        });
+    }
+
+    handleViewProduct(url) {
+        if (!url) return;
+        try {
+            const affiliateUrl = new URL(url);
+            affiliateUrl.searchParams.set('tag', 'elise200f-20');
+            chrome.tabs.create({ url: affiliateUrl.toString(), openerTabId: window.opener?.id });
+        } catch (e) {
+            chrome.tabs.create({ url, openerTabId: window.opener?.id });
+        }
+    }
+
+    handleTrackProduct(id) {
+        const product = this.products.find(p => p.id === id);
+        if (!product) return;
+
+        chrome.runtime.sendMessage({ action: 'trackProduct', product });
+        const btn = document.querySelector(`.track-btn[data-id="${id}"]`);
+        if (btn) {
+            btn.textContent = '✅ Tracking';
+            btn.disabled = true;
+        }
     }
 
     async loadComparison() {
@@ -131,10 +180,9 @@ class ProductComparison {
                 });
             });
 
-            this.products = result.comparisonProducts || [];
+            this.products = result.comparisonProducts;
             this.renderComparison();
         } catch (error) {
-            console.error('Failed to load comparison:', error);
             this.showError('Failed to load saved products');
             this.products = [];
             this.renderComparison();
@@ -153,19 +201,16 @@ class ProductComparison {
                 });
             });
         } catch (error) {
-            console.error('Failed to save comparison:', error);
             this.showError('Failed to save products');
         }
     }
 
     addProduct(product) {
         if (!product || !product.id) return;
-        const exists = this.products.some(p => p.id === product.id);
-        if (exists) return;
+        if (this.products.some(p => p.id === product.id)) return;
 
         this.products.unshift(product);
-
-        if (this.products.length > (this.maxProducts || 4)) {
+        if (this.products.length > this.maxProducts) {
             this.products.pop();
         }
 
@@ -205,7 +250,6 @@ class ProductComparison {
             return;
         }
 
-        // ✅ Warning for 5+ products
         if (this.products.length > 4) {
             const warning = document.createElement('div');
             warning.className = 'warning';
@@ -236,15 +280,15 @@ class ProductComparison {
 
             const img = document.createElement('img');
             img.src = product.image || chrome.runtime.getURL('img/deals/placeholder.jpg');
-            img.alt = product.title;
+            img.alt = product.title || 'Product';
             img.className = 'product-image';
-            img.onerror = () => {
+            img.addEventListener('error', () => {
                 img.src = chrome.runtime.getURL('img/deals/placeholder.jpg');
-            };
+            });
 
             const title = document.createElement('h3');
             title.className = 'product-title';
-            title.textContent = product.title;
+            title.textContent = product.title || 'Unknown Product';
 
             const price = document.createElement('div');
             price.className = 'product-price';
@@ -259,7 +303,7 @@ class ProductComparison {
 
             const viewBtn = document.createElement('button');
             viewBtn.className = 'action-btn view-btn';
-            viewBtn.dataset.url = product.url;
+            viewBtn.dataset.url = product.url || '';
             viewBtn.textContent = 'View';
 
             const trackBtn = document.createElement('button');
@@ -284,7 +328,6 @@ class ProductComparison {
         }
 
         this.comparisonResults.appendChild(grid);
-        this.addProductEventListeners();
     }
 
     createComparisonTable() {
@@ -308,7 +351,7 @@ class ProductComparison {
 
         this.products.forEach((_, i) => {
             const th = document.createElement('th');
-            th.textContent = `Product ${i+1}`;
+            th.textContent = `Product ${i + 1}`;
             hRow.appendChild(th);
         });
 
@@ -326,8 +369,7 @@ class ProductComparison {
             this.products.forEach(product => {
                 const td = document.createElement('td');
                 td.textContent = this.formatFeatureValue(feature, product);
-                const cls = this.getFeatureClass(feature, product);
-                td.className = cls;
+                td.className = this.getFeatureClass(feature, product);
                 row.appendChild(td);
             });
 
@@ -350,42 +392,14 @@ class ProductComparison {
     }
 
     getFeatureClass(feature, product) {
-        const values = this.products.map(p => p[feature] || 0);
+        const values = this.products.map(p => p[feature] || 0).filter(v => v);
+        if (values.length === 0) return '';
+
         const current = product[feature] || 0;
         const best = feature === 'price' ? Math.min(...values) : Math.max(...values);
         const worst = feature === 'price' ? Math.max(...values) : Math.min(...values);
+
         return current === best ? 'feature-better' : current === worst ? 'feature-worse' : 'feature-equal';
-    }
-
-    addProductEventListeners() {
-        document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.onclick = () => {
-                const url = btn.dataset.url;
-                if (url) {
-                    const affiliateUrl = new URL(url, location.origin);
-                    affiliateUrl.searchParams.set('tag', 'elise200f-20');
-                    chrome.tabs.create({ url: affiliateUrl.toString() });
-                }
-            };
-        });
-
-        document.querySelectorAll('.track-btn').forEach(btn => {
-            btn.onclick = () => {
-                const id = btn.dataset.id;
-                const product = this.products.find(p => p.id === id);
-                if (product) {
-                    chrome.runtime.sendMessage({ action: 'trackProduct', product });
-                    btn.textContent = '✅ Tracking';
-                    btn.disabled = true;
-                }
-            };
-        });
-
-        document.querySelectorAll('.remove-btn').forEach(btn => {
-            btn.onclick = () => {
-                this.removeProduct(btn.dataset.id);
-            };
-        });
     }
 
     exportToCsv() {
@@ -396,13 +410,13 @@ class ProductComparison {
 
         const headers = ['Title', 'Price', 'Rating', 'URL'];
         const rows = this.products.map(p => [
-            p.title,
-            `$${p.price.toFixed(2)}`,
-            p.rating,
-            p.url
+            p.title || 'Unknown',
+            `$${p.price?.toFixed(2) || 'N/A'}`,
+            p.rating || 'N/A',
+            p.url || ''
         ]);
 
-        let csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+        let csv = [headers, ...rows].map(r => r.map(c => `"${c.replace(/"/g, '""')}"`).join(',')).join('\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
 
@@ -446,7 +460,6 @@ class ProductComparison {
             const select = this.loadListSelect;
             if (!select) return;
 
-            // Keep placeholder
             const placeholder = select.querySelector('option[disabled]');
             select.innerHTML = '';
             if (placeholder) select.appendChild(placeholder);

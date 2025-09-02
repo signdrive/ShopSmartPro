@@ -8,19 +8,20 @@
   <!-- Prevent CSP warnings -->
   <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none';">
 </head>
-<body class="light-mode">
+<body class="">
+  <!-- Default: light mode (no class), dark-mode added by JS -->
   <div class="container">
     <!-- Header -->
     <header class="header">
       <h1>📦 eBay Search</h1>
       <p class="subtitle">Find deals across eBay with affiliate tracking</p>
       <button id="darkModeToggle" class="btn btn-icon" aria-label="Toggle dark mode">
-        🌓 Dark Mode
+        🌙 Dark Mode
       </button>
     </header>
 
     <!-- Search Form -->
-    <form id="searchForm" class="search-box">
+    <form id="searchForm" class="search-box" novalidate>
       <input 
         type="text" 
         id="searchInput" 

@@ -1,5 +1,6 @@
-// deals.js - ShopSmart Pro | Final: No Flicker, No Errors, Affiliate Ready
+// deals.js - ShopSmart Pro | FINAL: Fixed "View Deal", Store-Ready
 const AFFILIATE_TAG = 'elise200f-20';
+const DEFAULT_COUNTRY = 'com'; // Match your settings
 
 class DealBrowser {
     constructor() {
@@ -43,6 +44,7 @@ class DealBrowser {
                 this.setAlertCategories(settings.alertCategories);
             }
         } catch (error) {
+            console.warn('Failed to load deal settings', error);
             if (this.enableAlerts) this.enableAlerts.checked = true;
             if (this.soundAlerts) this.soundAlerts.checked = false;
         }
@@ -200,9 +202,7 @@ class DealBrowser {
             dealImage.alt = deal.title;
             dealImage.className = 'deal-image';
             dealImage.style.opacity = '0';
-            dealImage.onload = () => {
-                dealImage.style.opacity = '1';
-            };
+            dealImage.onload = () => { dealImage.style.opacity = '1'; };
             dealImage.onerror = () => {
                 if (!dealImage.src.includes('placeholder')) {
                     dealImage.src = 'https://via.placeholder.com/300x200?text=Product+Image';
@@ -292,39 +292,71 @@ class DealBrowser {
         this.avgDiscount.textContent = `${avgDiscount.toFixed(1)}%`;
     }
 
+    // ✅ Fixed: Direct URL creation with feedback
     viewDeal(searchTerm) {
+        if (!searchTerm) return;
+
+        // Try background handler first
         chrome.runtime.sendMessage({
             action: 'createAffiliateLink',
             searchTerm: searchTerm,
             affiliateTag: AFFILIATE_TAG
         }, (response) => {
-            if (response?.url) {
-                chrome.tabs.create({ url: response.url });
+            if (chrome.runtime.lastError) {
+                console.warn('Message failed, falling back to direct URL:', chrome.runtime.lastError.message);
             }
+
+            // Fallback: build URL directly
+            const url = `https://www.amazon.com/s?k=${encodeURIComponent(searchTerm)}&tag=${AFFILIATE_TAG}`;
+            chrome.tabs.create({ url }, () => {
+                if (chrome.runtime.lastError) {
+                    console.error('Failed to open tab:', chrome.runtime.lastError);
+                }
+            });
         });
 
+        // Track click
         chrome.runtime.sendMessage({
             action: 'trackDealClick',
             searchTerm: searchTerm
-        });
+        }, () => {});
+
+        // Optional: show success toast
+        this.showTempMessage('🔍 Searching Amazon...');
+    }
+
+    // ✅ Utility: Show temporary message
+    showTempMessage(message) {
+        const msg = document.createElement('div');
+        msg.textContent = message;
+        msg.style.cssText = `
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: #007bff; color: white; padding: 10px 20px; border-radius: 6px;
+            z-index: 1000; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        `;
+        document.body.appendChild(msg);
+        setTimeout(() => {
+            msg.style.opacity = '0';
+            setTimeout(() => document.body.removeChild(msg), 300);
+        }, 1500);
     }
 
     trackDeal(dealId) {
         const deal = this.deals.find(d => d.id === dealId);
-        if (deal) {
-            if (this.enableAlerts && this.enableAlerts.checked) {
-                this.sendDealNotification(deal);
-            }
+        if (!deal) return;
 
-            const button = document.querySelector(`.track-deal-btn[data-deal-id="${dealId}"]`);
-            if (button) {
-                button.textContent = '✅ Tracking';
-                button.classList.add('tracking');
-                button.disabled = true;
-            }
-
-            this.saveTrackedDeal(deal);
+        if (this.enableAlerts?.checked) {
+            this.sendDealNotification(deal);
         }
+
+        const button = document.querySelector(`.track-deal-btn[data-deal-id="${dealId}"]`);
+        if (button) {
+            button.textContent = '✅ Tracking';
+            button.classList.add('tracking');
+            button.disabled = true;
+        }
+
+        this.saveTrackedDeal(deal);
     }
 
     sendDealNotification(deal) {
@@ -338,7 +370,7 @@ class DealBrowser {
             });
         }
 
-        if (this.soundAlerts && this.soundAlerts.checked) {
+        if (this.soundAlerts?.checked) {
             this.playNotificationSound();
         }
     }
@@ -438,9 +470,12 @@ class DealBrowser {
 
         if (this.dealsGrid) {
             this.dealsGrid.addEventListener('click', (e) => {
-                const target = e.target;
-                const dealId = target.dataset.dealId;
+                const target = e.target.closest('button');
+                if (!target) return;
+
                 const searchTerm = target.dataset.searchTerm;
+                const dealId = target.dataset.dealId;
+
                 if (searchTerm && target.classList.contains('view-deal-btn')) {
                     this.viewDeal(searchTerm);
                 } else if (dealId && target.classList.contains('track-deal-btn')) {
@@ -451,6 +486,7 @@ class DealBrowser {
     }
 }
 
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     new DealBrowser();
 });

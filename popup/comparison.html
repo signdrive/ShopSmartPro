@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🛒 Product Comparison - ShopSmart Pro</title>
     <link rel="stylesheet" href="comparison.css" />
+    <!-- Prevent CSP warnings -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none';">
 </head>
-<body class="light-mode">
+<body>
+    <!-- No default class — dark mode will be added by JS -->
     <div class="container">
         <!-- Header -->
         <header class="header">
             <h1>🛒 Product Comparison</h1>
             <p class="subtitle">Compare prices, ratings, and features at a glance</p>
             <button id="darkModeToggle" class="btn btn-icon" aria-label="Toggle dark mode">
-                🌓 Dark Mode
+                🌙 Dark Mode
             </button>
         </header>
 
         <!-- Results Grid -->
         <main id="comparisonResults" class="results">
+            <!-- Will be filled by comparison.js -->
             <div class="empty-state">
                 <p>🔍 No products added yet.</p>
                 <p class="hint">Click “Compare” on any product listing to add items here.</p>

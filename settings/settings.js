@@ -1,4 +1,4 @@
-// settings.js - ShopSmart Pro | Final: With maxComparisonProducts & Data Retention
+// settings.js - ShopSmart Pro | Final: Default Country = USA
 document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fixed affiliate tag - cannot be changed by users
     const fixedAffiliateTag = 'elise200f-20';
 
-    // Default settings
+    // Default settings – changed country to 'com' (USA)
     const defaultSettings = {
-        country: 'ca',
+        country: 'com', // ✅ Changed from 'ca' to 'com' (United States)
         affiliateTag: fixedAffiliateTag,
         defaultCategory: 'search-alias=aps',
         autoRedirect: false,
@@ -48,11 +48,9 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', () => {
             const tab = button.dataset.tab;
 
-            // Update active tab button
             tabButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            // Show corresponding tab pane
             tabPanes.forEach(pane => pane.classList.remove('active'));
             document.getElementById(`${tab}-tab`).classList.add('active');
         });
@@ -79,7 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Update UI with settings
     function updateUIWithSettings(settings) {
-        countrySelect.value = settings.country || 'ca';
+        // ✅ Fallback to 'com' if no country
+        const country = settings.country || 'com';
+        countrySelect.value = country;
         defaultCategory.value = settings.defaultCategory || 'search-alias=aps';
         maxComparisonProducts.value = settings.maxComparisonProducts || 4;
         dataRetention.value = settings.dataRetention || 30;
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Save settings
     saveButton.addEventListener('click', function () {
         const newSettings = {
-            country: countrySelect.value,
+            country: countrySelect.value, // ✅ Will be 'com' by default
             affiliateTag: fixedAffiliateTag,
             defaultCategory: defaultCategory.value,
             autoRedirect: document.getElementById('autoRedirect').checked,
@@ -136,10 +136,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
             showStatus('Settings saved successfully!', 'success');
 
-            // Notify other parts of the extension
+            // ✅ Broadcast settings update to ALL parts of extension
             chrome.runtime.sendMessage({
                 action: 'settingsUpdated',
                 settings: newSettings
+            });
+
+            // ✅ Also broadcast to all open tabs (including popup)
+            chrome.tabs.query({}, function (tabs) {
+                tabs.forEach(tab => {
+                    chrome.tabs.sendMessage(tab.id, {
+                        action: 'settingsUpdated',
+                        settings: newSettings
+                    }, () => {
+                        // Ignore errors (tab may not have listener)
+                    });
+                });
             });
         });
     });
@@ -150,6 +162,12 @@ document.addEventListener('DOMContentLoaded', function () {
             chrome.storage.sync.set({ settings: defaultSettings }, function () {
                 updateUIWithSettings(defaultSettings);
                 showStatus('Settings reset to defaults.', 'success');
+
+                // ✅ Broadcast reset
+                chrome.runtime.sendMessage({
+                    action: 'settingsUpdated',
+                    settings: defaultSettings
+                });
             });
         }
     });
@@ -198,6 +216,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     chrome.storage.sync.set({ settings: importedSettings }, function () {
                         updateUIWithSettings(importedSettings);
                         showStatus('Settings imported successfully.', 'success');
+
+                        // ✅ Broadcast import
+                        chrome.runtime.sendMessage({
+                            action: 'settingsUpdated',
+                            settings: importedSettings
+                        });
                     });
                 } catch (error) {
                     showStatus('Error importing settings: Invalid file format', 'error');
@@ -214,6 +238,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 chrome.storage.local.clear(function () {
                     updateUIWithSettings(defaultSettings);
                     showStatus('All data cleared successfully.', 'success');
+
+                    // ✅ Broadcast reset
+                    chrome.runtime.sendMessage({
+                        action: 'settingsUpdated',
+                        settings: defaultSettings
+                    });
                 });
             });
         }
