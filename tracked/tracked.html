@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>📦 Tracked Products - ShopSmart Pro</title>
   <link rel="stylesheet" href="tracked.css">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'; object-src 'none';">
 </head>
 <body class="light-mode">
   <div class="container">
@@ -28,10 +27,6 @@
           aria-label="Search tracked products">
         <select id="categoryFilter" aria-label="Filter by category">
           <option value="all">All Categories</option>
-          <option value="electronics">Electronics</option>
-          <option value="home">Home & Kitchen</option>
-          <option value="books">Books</option>
-          <option value="toys">Toys & Games</option>
         </select>
       </div>
       <button id="exportCsvBtn" class="btn">📤 Export to CSV</button>
@@ -48,7 +43,11 @@
     </footer>
   </div>
 
-  <!-- JS -->
+  <!-- ✅ CORRECT PATHS -->
+  <!-- Goes to /lib folder -->
+  <script src="../lib/chart.min.js"></script>
+  
+  <!-- In same folder -->
   <script src="tracked.js"></script>
 </body>
 </html>

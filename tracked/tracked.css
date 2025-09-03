@@ -1,4 +1,4 @@
-/* tracked.css - ShopSmart Pro | Tracked Products */
+/* tracked.css - ShopSmart Pro | Tracked Products - FIXED */
 :root {
   --bg: #fff;
   --text: #333;
@@ -21,6 +21,7 @@
   --border: #444;
   --primary: #0066cc;
   --danger: #c82333;
+  --success: #28a745;
   --gray: #aaa;
 }
 
@@ -169,8 +170,8 @@ input:checked + .switch::before {
 
 .results {
   display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   margin-bottom: 20px;
 }
 
@@ -181,12 +182,10 @@ input:checked + .switch::before {
   background: var(--card-bg);
   box-shadow: var(--shadow);
   transition: transform 0.2s, box-shadow 0.2s;
-  height: 360px; /* Fixed height for consistent layout */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 15px;
+  padding: 16px;
+  min-height: 380px; /* More flexible height */
 }
 
 .product-card:hover {
@@ -195,44 +194,59 @@ input:checked + .switch::before {
 }
 
 .product-image {
-  max-width: 150px;
-  max-height: 120px;
+  width: 100%;
+  height: 150px;
   object-fit: contain;
+  margin: 0 auto 12px;
   display: block;
-  margin-bottom: 10px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.dark-mode .product-image {
+  background: #333;
 }
 
 .product-info {
-  padding: 12px;
-  height: 120px;
-  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-title {
-  margin: 0 0 8px;
-  font-size: 0.9rem;
+  margin: 0 0 12px;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text);
-  display: -webkit-box;
+  line-height: 1.4;
+  /* Allow title to wrap properly */
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
+  max-height: 2.8em;
 }
 
 .price-info {
-  margin: 8px 0;
-  font-size: 0.85rem;
+  margin: 8px 0 12px;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .original-price {
+  display: block;
   text-decoration: line-through;
   color: var(--gray);
-  margin-right: 8px;
+  font-size: 0.9em;
 }
 
 .current-price {
+  display: block;
   font-weight: bold;
   color: var(--primary);
+  font-size: 1.1em;
 }
 
 .price-history {
@@ -241,11 +255,11 @@ input:checked + .switch::before {
   background: var(--bg);
   border: 1px dashed var(--border);
   border-radius: 6px;
-  font-size: 0.85rem;
-  color: var(--gray);
-  min-height: 80px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
-  width: 100%;
 }
 
 .price-history::before {
@@ -256,43 +270,64 @@ input:checked + .switch::before {
   transform: translate(-50%, -50%);
   font-style: italic;
   opacity: 0.6;
+  font-size: 0.85rem;
+  color: var(--gray);
+  text-align: center;
+  width: 80%;
+}
+
+.price-chart-container {
+  width: 100%;
+  height: 100%;
+}
+
+.price-chart-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .action-buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-  width: 100%;
-  justify-content: center;
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
 }
 
 .action-btn {
-  flex: 1;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.9em;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  margin: 0 4px;
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
 }
 
 .view-btn {
-  background: var(--success);
-  color: white;
+    background: #28a745;
+    color: white;
 }
 
 .view-btn:hover {
-  background: #218838;
+    background: #218838;
 }
 
 .remove-btn {
-  background: var(--danger);
-  color: white;
+    background: #dc3545;
+    color: white;
 }
 
 .remove-btn:hover {
-  background: #c82333;
+    background: #c82333;
+}
+
+/* Dark mode support */
+.dark-mode .view-btn {
+    background: #28a745;
+}
+
+.dark-mode .remove-btn {
+    background: #dc3545;
 }
 
 .empty-state {
@@ -316,11 +351,14 @@ input:checked + .switch::before {
   color: var(--gray);
 }
 
-.price-chart-container {
-  width: 100%;
-  max-width: 300px; /* Adjust as needed */
-  height: 150px; /* Adjust as needed */
-  margin-top: 10px;
+/* Status indicator for tracking */
+.tracking-status {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--success);
+  color: white;
+  margin-left: 8px;
 }
 
 /* Responsive */
@@ -328,10 +366,51 @@ input:checked + .switch::before {
   .container {
     padding: 12px;
   }
+  
   .results {
     grid-template-columns: 1fr;
   }
+  
+  .search-filter {
+    flex-direction: column;
+  }
+  
+  .product-card {
+    min-height: auto;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
 }
 
+/* Animation for button clicks */
+@keyframes buttonClick {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
 
+.action-btn:active {
+  animation: buttonClick 0.2s ease;
+}
 
+/* Ensure good contrast in both modes */
+.dark-mode .view-btn {
+  background: var(--success);
+}
+
+.dark-mode .remove-btn {
+  background: var(--danger);
+}
+
+.dark-mode .product-image {
+  background: #333;
+}
+
+/* Fix for price display */
+.price-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

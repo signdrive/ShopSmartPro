@@ -33,9 +33,9 @@
     "*://*.amazon.com.br/*",
     "*://*.amazon.com.mx/*",
     "*://*.amazon.nl/*",
-    "https://api.ebay.com/*",
-    "https://svcs.ebay.com/*",
-    "https://i.ebayimg.com/*"
+    "https://api.ebay.com/",
+    "https://svcs.ebay.com/",
+    "https://i.ebayimg.com/"
   ],
   "background": {
     "scripts": [
@@ -116,19 +116,17 @@
     "sound/alert.mp3",
     "popup/popup.html",
     "popup/comparison.html",
-    "popup/tracked.html",
     "deals/deals.html",
     "ebay/ebay.html",
     "settings/settings.html",
     "about.html",
     "privacy.html",
     "documentation.html",
-    "img/ebay/*.png",
-    "img/ebay/*.gif",
-    "img/ebay/*.jpg",
-    "img/ebay/*.ico",
+    "img/ebay/*",
     "img/deals/placeholder.jpg",
+    "tracked/chart.min.js",
+    "tracked/tracked.js",
     "tracked/tracked.css",
-    "tracked/tracked.js"
+    "tracked/tracked.html"
   ]
 }

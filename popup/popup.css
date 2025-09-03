@@ -1,4 +1,4 @@
-/* popup/popup.css - ShopSmart Pro | Updated: Professional Icons */
+/* popup/popup.css - ShopSmart Pro | FINAL: Clean, Responsive, Bug-Free */
 
 body {
     width: 400px;
@@ -8,6 +8,7 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     margin: 0;
     color: #333;
+    box-sizing: border-box;
 }
 
 .container {
@@ -17,6 +18,7 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
+/* Header: Country flag + title + action icons */
 .header {
     display: flex;
     align-items: center;
@@ -40,9 +42,10 @@ body {
 .current-country {
     font-size: 2em;
     margin-right: 10px;
+    flex-shrink: 0;
 }
 
-/* Updated Header Buttons - Icon-based */
+/* Icon buttons (Settings, Voice, Compare, eBay) */
 .header-buttons {
     display: flex;
     gap: 5px;
@@ -61,7 +64,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0; /* Prevents shrinking */
+    flex-shrink: 0;
 }
 
 .icon-btn:hover {
@@ -74,8 +77,7 @@ body {
     display: block;
 }
 
-/* --- Quick Actions Grid --- */
-/* Updated grid to 3 columns as per your existing rule */
+/* Quick Actions Grid (Voice, Deals, Compare) */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -83,13 +85,12 @@ body {
     margin-bottom: 20px;
 }
 
-/* --- Action Button Styles (for quick actions like voice search) --- */
 .quick-actions button {
     background: linear-gradient(45deg, #4ecdc4, #44a08d);
     border: none;
     border-radius: 8px;
     color: white;
-    font-size: 1.2em; /* Consider reducing if icon */
+    font-size: 1.2em;
     cursor: pointer;
     padding: 10px;
     transition: all 0.3s;
@@ -108,7 +109,7 @@ body {
     transform: translateY(0);
 }
 
-/* --- Search Form --- */
+/* Search Form */
 .search-form {
     margin: 0;
 }
@@ -125,7 +126,8 @@ label {
     font-size: 0.9em;
 }
 
-select, input[type="text"] {
+select,
+input[type="text"] {
     width: 100%;
     padding: 12px;
     border: 2px solid #ddd;
@@ -135,13 +137,14 @@ select, input[type="text"] {
     transition: border-color 0.3s;
 }
 
-select:focus, input[type="text"]:focus {
+select:focus,
+input[type="text"]:focus {
     border-color: #FF9900;
     outline: none;
     box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
 }
 
-/* --- Advanced Options --- */
+/* Advanced Options (Checkboxes) */
 .advanced-options {
     display: flex;
     gap: 15px;
@@ -160,11 +163,10 @@ select:focus, input[type="text"]:focus {
 
 .checkbox-label input[type="checkbox"] {
     margin-right: 8px;
-    width: auto;
     transform: scale(1.2);
 }
 
-/* --- Main Search Button --- */
+/* Main Search Button */
 .search-btn {
     background: linear-gradient(45deg, #FF9900, #FF6B00);
     color: white;
@@ -195,7 +197,7 @@ select:focus, input[type="text"]:focus {
     font-size: 1.2em;
 }
 
-/* --- Recent Searches --- */
+/* Recent Searches */
 .recent-searches {
     margin: 20px 0;
     padding: 15px;
@@ -222,7 +224,7 @@ select:focus, input[type="text"]:focus {
     background: white;
     border-radius: 6px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.2s;
     font-size: 0.9em;
     border-left: 3px solid #FF9900;
 }
@@ -248,7 +250,7 @@ select:focus, input[type="text"]:focus {
     background: #5a6268;
 }
 
-/* --- Quick Stats --- */
+/* Quick Stats */
 .quick-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -277,7 +279,7 @@ select:focus, input[type="text"]:focus {
     font-size: 1.1em;
 }
 
-/* --- Footer --- */
+/* Footer */
 .footer {
     display: flex;
     justify-content: space-between;
@@ -297,7 +299,7 @@ select:focus, input[type="text"]:focus {
     color: #666;
 }
 
-/* --- Voice Search Modal --- */
+/* Voice Search Modal */
 .voice-search-modal {
     display: none;
     position: fixed;
@@ -398,7 +400,7 @@ select:focus, input[type="text"]:focus {
     border-left: 4px solid #1976d2;
 }
 
-/* --- Scrollbar Styling --- */
+/* Scrollbar Styling */
 .search-history::-webkit-scrollbar {
     width: 4px;
 }
@@ -417,7 +419,7 @@ select:focus, input[type="text"]:focus {
     background: #e68a00;
 }
 
-/* --- Responsive Design --- */
+/* Responsive Design */
 @media (max-width: 480px) {
     body {
         width: 350px;
@@ -432,7 +434,6 @@ select:focus, input[type="text"]:focus {
         font-size: 1.2em;
     }
     
-    /* Ensure grid adjusts on small screens */
     .quick-actions {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
@@ -455,11 +456,9 @@ select:focus, input[type="text"]:focus {
     }
 }
 
-/* --- Specific Button Styles (if you want text + icon) --- */
-/* eBay Button */
-.btn-ebay {
-    background: #e53935; /* eBay red */
-    color: white;
+/* Button Styles (eBay, Compare) */
+.btn-ebay,
+.btn-compare {
     flex: 1;
     padding: 12px;
     border: none;
@@ -468,10 +467,15 @@ select:focus, input[type="text"]:focus {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    display: flex; /* Use flex for icon + text */
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px; /* Space between icon and text */
+    gap: 8px;
+}
+
+.btn-ebay {
+    background: #e53935;
+    color: white;
 }
 
 .btn-ebay:hover {
@@ -480,27 +484,9 @@ select:focus, input[type="text"]:focus {
     box-shadow: 0 4px 12px rgba(229, 57, 53, 0.2);
 }
 
-.btn-ebay img {
-    width: 24px;
-    height: 24px;
-}
-
-/* Comparison Button */
 .btn-compare {
-    background: #007bff; /* Blue */
+    background: #007bff;
     color: white;
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex; /* Use flex for icon + text */
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* Space between icon and text */
 }
 
 .btn-compare:hover {
@@ -509,37 +495,9 @@ select:focus, input[type="text"]:focus {
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
 }
 
+/* Ensure icons are consistent */
+.btn-ebay img,
 .btn-compare img {
     width: 24px;
     height: 24px;
-}
-
-/* Ensure the quick-stats grid definition is applied */
-/* This rule was already present in your code, just reiterating */
-.quick-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin: 15px 0;
-    padding: 12px;
-    background: linear-gradient(45deg, #e3f2fd, #bbdefb);
-    border-radius: 8px;
-}
-
-.stat-item {
-    text-align: center;
-}
-
-.stat-label {
-    display: block;
-    font-size: 0.8em;
-    color: #666;
-    margin-bottom: 3px;
-}
-
-.stat-value {
-    display: block;
-    font-weight: bold;
-    color: #1976d2;
-    font-size: 1.1em;
 }

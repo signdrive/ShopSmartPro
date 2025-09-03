@@ -1,4 +1,4 @@
-// content.js - ShopSmart Pro | Refactored: Removed inline CSS
+// content.js - ShopSmart Pro | FIXED: Title extraction and product data
 console.log("ShopSmart Pro content script loaded");
 
 // Prevent multiple initialization
@@ -29,7 +29,6 @@ function initContentScript() {
         }, 500); // Slight delay for render
 
         observeDOMChanges();
-        // No longer injecting styles directly, assuming CSS is linked via manifest.json
     } else {
         console.log("ℹ️ Not a product page – skipping injection");
     }
@@ -190,7 +189,7 @@ function addPriceTrackingButtons() {
                 sendMessageToBackground({ action: "trackProduct", product });
                 trackBtn.textContent = "✅ Tracking";
                 trackBtn.disabled = true;
-                trackBtn.classList.add("shopsmart-track-btn-tracked"); // Add class for tracked state
+                trackBtn.classList.add("shopsmart-track-btn-tracked");
             }
         });
 
@@ -203,55 +202,70 @@ function addPriceTrackingButtons() {
     });
 }
 
-// FIXED: Extract product data with better price detection
+// FIXED: Extract product data with improved title extraction
 function extractProductData(card, asin) {
-    // Title extraction
+    // Title extraction - IMPROVED with multiple selectors
     let title = "";
-    const titleEl = card.querySelector("h2 a span") || 
-                    card.querySelector("h2 a") || 
-                    card.querySelector(".a-link-normal[href*=\"/dp/\"]") ||
-                    card.querySelector(".a-text-normal");
-    if (titleEl) {
-        title = titleEl.textContent?.trim() || "Unknown Product";
-    } else {
-        title = "Unknown Product";
+    
+    // Try multiple selectors for product title
+    const titleSelectors = [
+        'h2 a span', // Search results
+        '.a-size-medium', // Common class
+        '.a-text-normal', // Another common class
+        '[data-cy="title-recipe"]', // Sometimes used
+        '.a-link-normal[href*="/dp/"]', // Link with product
+        '.s-title-instructions-style h2', // New Amazon layout
+        'h2 .a-link-normal', // Nested structure
+        '.a-size-base-plus' // Another common class
+    ];
+    
+    for (const selector of titleSelectors) {
+        const titleEl = card.querySelector(selector);
+        if (titleEl && titleEl.textContent && titleEl.textContent.trim()) {
+            title = titleEl.textContent.trim();
+            break;
+        }
+    }
+    
+    // If still not found, try text content approach
+    if (!title) {
+        const possibleTitleElements = card.querySelectorAll('h2, h3, .a-size-base-plus, .a-text-normal');
+        for (const el of possibleTitleElements) {
+            if (el.textContent && el.textContent.trim() && el.textContent.length > 10) {
+                title = el.textContent.trim();
+                break;
+            }
+        }
+    }
+    
+    // Last resort: use data attributes or generic text
+    if (!title) {
+        title = card.getAttribute('data-asin') || "Unknown Product";
     }
 
     // Price extraction - multiple strategies
     let price = 0;
     let originalPrice = 0;
     
-    // Try whole price first
-    const priceWholeEl = card.querySelector(".a-price-whole");
-    if (priceWholeEl) {
-        const priceText = priceWholeEl.textContent.replace(/[^\d.]/g, "");
-        price = parseFloat(priceText) || 0;
-    }
+    // Try multiple price selectors
+    const priceSelectors = [
+        '.a-price-whole',
+        '.a-price[data-a-size="xl"]',
+        '[data-a-price]',
+        '.a-price-range',
+        '.a-text-price',
+        '.a-color-price'
+    ];
     
-    // Try price range
-    if (!price) {
-        const priceRangeEl = card.querySelector(".a-price-range");
-        if (priceRangeEl) {
-            const priceText = priceRangeEl.textContent.match(/\d+\.\d{2}/);
-            if (priceText) price = parseFloat(priceText[0]);
-        }
-    }
-    
-    // Try data attributes
-    if (!price) {
-        const priceData = card.querySelector("[data-a-price]");
-        if (priceData) {
-            const priceValue = priceData.getAttribute("data-a-price");
-            if (priceValue) price = parseFloat(priceValue);
-        }
-    }
-    
-    // Last resort: search text content
-    if (!price) {
-        const cardText = card.textContent;
-        const priceMatch = cardText.match(/\$\d+\.\d{2}/);
-        if (priceMatch) {
-            price = parseFloat(priceMatch[0].replace("$", ""));
+    for (const selector of priceSelectors) {
+        const priceEl = card.querySelector(selector);
+        if (priceEl) {
+            const priceText = priceEl.textContent || priceEl.getAttribute('data-a-price') || '0';
+            const priceMatch = priceText.match(/\d+\.\d{2}/) || priceText.match(/\d+/);
+            if (priceMatch) {
+                price = parseFloat(priceMatch[0]);
+                break;
+            }
         }
     }
     
@@ -259,44 +273,62 @@ function extractProductData(card, asin) {
 
     // Image extraction
     let image = "";
-    const img = card.querySelector("img");
-    if (img) {
-        image = img.src || img.getAttribute("data-src") || img.getAttribute("data-image-src") || "";
+    const imgSelectors = [
+        'img',
+        '[data-image-load]',
+        '[data-old-hires]',
+        '.s-image'
+    ];
+    
+    for (const selector of imgSelectors) {
+        const img = card.querySelector(selector);
+        if (img) {
+            image = img.src || img.getAttribute('data-src') || img.getAttribute('data-image-src') || '';
+            if (image) break;
+        }
     }
 
     // URL extraction
     let url = "";
-    const link = card.querySelector("h2 a") || 
-                 card.querySelector(".a-link-normal[href*=\"/dp/\"]") ||
-                 card.querySelector("a.a-text-normal");
-    if (link) {
-        url = link.href || "";
-        // Ensure URL is absolute
-        if (url && !url.startsWith("http")) {
-            url = "https://" + window.location.hostname + url;
+    const linkSelectors = [
+        'h2 a',
+        '.a-link-normal[href*="/dp/"]',
+        'a.a-text-normal',
+        '.a-size-base-plus a'
+    ];
+    
+    for (const selector of linkSelectors) {
+        const link = card.querySelector(selector);
+        if (link && link.href) {
+            url = link.href;
+            // Ensure URL is absolute
+            if (url && !url.startsWith('http')) {
+                url = 'https://' + window.location.hostname + url;
+            }
+            break;
         }
     }
 
     // Rating extraction
     let rating = 0;
-    const ratingEl = card.querySelector(".a-icon-star-small .a-icon-alt") ||
-                     card.querySelector(".a-icon-star .a-icon-alt");
+    const ratingEl = card.querySelector('.a-icon-star-small .a-icon-alt') ||
+                     card.querySelector('.a-icon-star .a-icon-alt');
     if (ratingEl) {
-        const ratingText = ratingEl.textContent || "0";
+        const ratingText = ratingEl.textContent || '0';
         const match = ratingText.match(/(\d+(\.\d+)?)/);
         rating = match ? parseFloat(match[0]) : 0;
     }
 
     // Category extraction
     let category = "Uncategorized";
-    const breadcrumb = document.querySelector(".a-breadcrumb li:last-child");
+    const breadcrumb = document.querySelector('.a-breadcrumb li:last-child');
     if (breadcrumb) {
-        category = breadcrumb.textContent?.trim() || "Uncategorized";
+        category = breadcrumb.textContent?.trim() || 'Uncategorized';
     }
 
     return {
         id: asin,
-        title: title.substring(0, 200), // Limit title length
+        title: title.substring(0, 200),
         price: price,
         originalPrice: originalPrice,
         image: image,
@@ -312,9 +344,17 @@ function extractProductData(card, asin) {
 function handleTrackProduct(event) {
     const button = event.target;
     const productId = button.dataset.productId;
+    
+    // Get product title from detail page
+    let productTitle = document.querySelector('#productTitle')?.textContent?.trim();
+    if (!productTitle) {
+        // Try other title selectors for detail pages
+        productTitle = document.querySelector('h1')?.textContent?.trim() || "Unknown Product";
+    }
+    
     const productData = {
         id: productId,
-        title: document.querySelector("#productTitle")?.textContent?.trim() || "Unknown Product",
+        title: productTitle,
         price: getCurrentPrice(),
         image: getMainImageSrc(),
         url: window.location.href,
@@ -328,7 +368,7 @@ function handleTrackProduct(event) {
     sendMessageToBackground({ action: "trackProduct", product: productData });
     button.textContent = "✅ Tracking";
     button.disabled = true;
-    button.classList.add("shopsmart-track-btn-tracked"); // Add class for tracked state
+    button.classList.add("shopsmart-track-btn-tracked");
 }
 
 // Helper functions
@@ -338,20 +378,22 @@ function getProductId() {
 }
 
 function getCurrentPrice() {
-    // Try multiple price selectors
+    // Try multiple price selectors for detail pages
     const priceSelectors = [
-        ".a-price-whole",
-        ".a-price[data-a-size=\"xl\"]",
-        "#priceblock_ourprice",
-        "#priceblock_dealprice",
-        ".a-text-price"
+        '.a-price-whole',
+        '.a-price[data-a-size="xl"]',
+        '#priceblock_ourprice',
+        '#priceblock_dealprice',
+        '.a-text-price',
+        '.a-color-price',
+        '[data-a-price]'
     ];
     
     for (const selector of priceSelectors) {
         const priceEl = document.querySelector(selector);
         if (priceEl) {
-            const priceText = priceEl.textContent || "0";
-            const match = priceText.match(/\d+\.\d{2}/);
+            const priceText = priceEl.textContent || priceEl.getAttribute('data-a-price') || '0';
+            const match = priceText.match(/\d+\.\d{2}/) || priceText.match(/\d+/);
             if (match) return parseFloat(match[0]);
         }
     }
@@ -360,9 +402,9 @@ function getCurrentPrice() {
 }
 
 function getOriginalPrice() {
-    const priceEl = document.querySelector(".a-text-price[data-a-strike=\"true\"]");
+    const priceEl = document.querySelector('.a-text-price[data-a-strike="true"]');
     if (priceEl) {
-        const priceText = priceEl.textContent || "0";
+        const priceText = priceEl.textContent || '0';
         const match = priceText.match(/\d+\.\d{2}/);
         if (match) return parseFloat(match[0]);
     }
@@ -370,18 +412,43 @@ function getOriginalPrice() {
 }
 
 function getMainImageSrc() {
-    return document.querySelector("#landingImage, #imgTagWrapperId img")?.src || "";
+    const imgSelectors = [
+        '#landingImage',
+        '#imgTagWrapperId img',
+        '[data-old-hires]',
+        '.a-dynamic-image'
+    ];
+    
+    for (const selector of imgSelectors) {
+        const img = document.querySelector(selector);
+        if (img && (img.src || img.getAttribute('data-old-hires'))) {
+            return img.src || img.getAttribute('data-old-hires');
+        }
+    }
+    
+    return "";
 }
 
 function getProductRating() {
-    const text = document.querySelector(".a-icon-star .a-icon-alt")?.textContent || "0";
-    const match = text.match(/(\d+(\.\d+)?)/);
-    return match ? parseFloat(match[0]) : 0;
+    const ratingSelectors = [
+        '.a-icon-star .a-icon-alt',
+        '.a-icon-star-small .a-icon-alt',
+        '[data-hook="average-star-rating"]',
+        '.a-size-base'
+    ];
+    
+    for (const selector of ratingSelectors) {
+        const text = document.querySelector(selector)?.textContent || '0';
+        const match = text.match(/(\d+(\.\d+)?)/);
+        if (match) return parseFloat(match[0]);
+    }
+    
+    return 0;
 }
 
 function getProductCategory() {
-    const breadcrumb = document.querySelector(".a-breadcrumb li:last-child");
-    return breadcrumb?.textContent?.trim() || "Uncategorized";
+    const breadcrumb = document.querySelector('.a-breadcrumb li:last-child');
+    return breadcrumb?.textContent?.trim() || 'Uncategorized';
 }
 
 // Observe for dynamic content
@@ -430,6 +497,3 @@ function sendMessageToBackground(message) {
         }
     });
 }
-
-
-

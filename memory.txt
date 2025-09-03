@@ -1,0 +1,7 @@
+ShopSmartPro Add-on Stable State Memory
+
+Date: September 2, 2025
+
+- The add-on is stable.
+- The file popup/tracked.html was recreated and confirmed to work without Quirks Mode issues.
+- Use this note as a reference if any problems arise in the future.

@@ -1,4 +1,4 @@
-// tracked.js - ShopSmart Pro | Refactored: Removed inline CSS
+// tracked.js - ShopSmart Pro | FIXED: Complete button functionality
 document.addEventListener("DOMContentLoaded", function () {
     const trackedResults = document.getElementById("trackedResults");
     const closeBtn = document.getElementById("closeBtn");
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
         trackedResults.appendChild(fragment);
     }
 
-    // Create product card - Refactored: Removed inline CSS
+    // Create product card - FIXED: Proper layout and button attributes
     function createProductCard(product) {
         const card = document.createElement("div");
         card.className = "product-card";
@@ -129,23 +129,19 @@ document.addEventListener("DOMContentLoaded", function () {
         currentPrice.className = "current-price";
         currentPrice.textContent = `Current: $${product.price?.toFixed(2) ?? "N/A"}`;
 
-        // Use a div for price lines to control layout with CSS
-        const priceLines = document.createElement("div");
-        priceLines.className = "price-lines";
-        priceLines.append(originalPrice, currentPrice);
-        priceInfo.appendChild(priceLines);
+        priceInfo.append(originalPrice, document.createElement("br"), currentPrice);
 
         const actions = document.createElement("div");
         actions.className = "action-buttons";
 
         const viewBtn = document.createElement("button");
-        viewBtn.className = "action-btn view-btn"; // Use CSS class for styling
-        viewBtn.dataset.url = product.url || "";
+        viewBtn.className = "action-btn view-btn";
+        viewBtn.setAttribute("data-url", product.url || "");
         viewBtn.textContent = "View on Amazon";
 
         const stopBtn = document.createElement("button");
-        stopBtn.className = "action-btn remove-btn"; // Use CSS class for styling
-        stopBtn.dataset.id = product.id;
+        stopBtn.className = "action-btn remove-btn";
+        stopBtn.setAttribute("data-id", product.id);
         stopBtn.textContent = "Stop Tracking";
 
         actions.append(viewBtn, stopBtn);
@@ -260,40 +256,48 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInput?.addEventListener("input", filterAndRender);
     categoryFilter?.addEventListener("change", filterAndRender);
 
-    // Handle actions
+    // FIXED: Handle button clicks with proper event delegation
     trackedResults.addEventListener("click", (e) => {
-        const viewBtn = e.target.closest(".view-btn");
-        const stopBtn = e.target.closest(".remove-btn");
-
-        if (viewBtn) {
-            const url = viewBtn.dataset.url;
-            if (url) {
-                try {
-                    const affiliateUrl = new URL(url);
-                    affiliateUrl.searchParams.set("tag", "elise200f-20");
-                    chrome.tabs.create({ url: affiliateUrl.toString() });
-                } catch (err) {
-                    chrome.Gtabs.create({ url });
-                }
-            }
-        }
-
-        if (stopBtn) {
-            const id = stopBtn.dataset.id;
-            if (!id) return;
-
-            chrome.storage.sync.get(["trackedProducts"], (result) => {
-                const filtered = (result.trackedProducts || []).filter(p => p.id !== id);
-                chrome.storage.sync.set({ trackedProducts: filtered }, () => {
-                    loadTrackedProducts();
-                });
-            });
+        // Check if a button was clicked
+        const button = e.target.closest("button");
+        if (!button) return;
+        
+        // Check which type of button was clicked
+        if (button.classList.contains("view-btn")) {
+            handleViewButton(button);
+        } else if (button.classList.contains("remove-btn")) {
+            handleRemoveButton(button);
         }
     });
+
+    // Handle View button click
+    function handleViewButton(button) {
+        const url = button.getAttribute("data-url");
+        if (url) {
+            try {
+                const affiliateUrl = new URL(url);
+                affiliateUrl.searchParams.set("tag", "elise200f-20");
+                chrome.tabs.create({ url: affiliateUrl.toString() });
+            } catch (err) {
+                chrome.tabs.create({ url });
+            }
+        }
+    }
+
+    // Handle Remove button click
+    function handleRemoveButton(button) {
+        const id = button.getAttribute("data-id");
+        if (!id) return;
+
+        chrome.storage.sync.get(["trackedProducts"], (result) => {
+            const filtered = (result.trackedProducts || []).filter(p => p.id !== id);
+            chrome.storage.sync.set({ trackedProducts: filtered }, () => {
+                loadTrackedProducts();
+            });
+        });
+    }
 
     // Initial load
     loadPreferences();
     loadTrackedProducts();
 });
-
-
