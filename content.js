@@ -1,4 +1,4 @@
-// content.js - ShopSmart Pro | FIXED: Title extraction and product data
+// content.js - ShopSmart Pro | FINAL: Optimized, No Duplicates, Full Fallback
 console.log("ShopSmart Pro content script loaded");
 
 // Prevent multiple initialization
@@ -22,11 +22,12 @@ function initContentScript() {
     // Only run on product listing or detail pages
     if (isSearchResultsPage() || isProductDetailPage()) {
         console.log("✅ Initializing on product page");
+        // Slight delay to avoid race conditions
         setTimeout(() => {
             enhanceProductPages();
             addPriceTrackingButtons();
             addComparisonButtons();
-        }, 500); // Slight delay for render
+        }, 500);
 
         observeDOMChanges();
     } else {
@@ -65,7 +66,6 @@ function enhanceProductPages() {
         addPriceHistorySection();
         addDealIndicators();
         addComparisonButtons();
-        enhanceProductImages();
     }
 }
 
@@ -83,7 +83,7 @@ function isProductPage() {
            document.querySelector("[data-product-id], .product-details, .item-details");
 }
 
-// Add price history section
+// Add price history section (on detail page)
 function addPriceHistorySection() {
     const productTitle = document.querySelector("#productTitle, h1");
     if (!productTitle || document.querySelector(".shopsmart-price-history")) return;
@@ -134,18 +134,17 @@ function addDealIndicators() {
 // Add "Compare" buttons to product listings
 function addComparisonButtons() {
     const cards = document.querySelectorAll(
-        ".s-result-item[data-asin], [data-component-type=\"s-search-result\"]"
+        ".s-result-item[data-asin]:not(.ss-compare-processed)",
+        "[data-component-type='s-search-result']:not(.ss-compare-processed)"
     );
 
     cards.forEach(card => {
-        if (card.classList.contains("ss-compare-processed")) return;
-
         const asin = card.getAttribute("data-asin") ||
                      card.closest("[data-asin]")?.getAttribute("data-asin");
         if (!asin) return;
 
         const btn = document.createElement("button");
-        btn.className = "shopsmart-compare-btn";
+        btn.className = "shopsmart-compare-btn ss-compare-processed";
         btn.textContent = "🔄 Compare";
 
         btn.addEventListener("click", (e) => {
@@ -163,6 +162,7 @@ function addComparisonButtons() {
         const container = card.querySelector(".a-section") || card;
         container.appendChild(btn);
 
+        // Mark as processed
         card.classList.add("ss-compare-processed");
     });
 }
@@ -178,7 +178,7 @@ function addPriceTrackingButtons() {
         if (!asin) return;
 
         const trackBtn = document.createElement("button");
-        trackBtn.className = "shopsmart-track-btn";
+        trackBtn.className = "shopsmart-track-btn ss-track-processed";
         trackBtn.textContent = "📍 Track";
 
         trackBtn.addEventListener("click", (e) => {
@@ -198,56 +198,50 @@ function addPriceTrackingButtons() {
                                  card;
         actionsContainer.appendChild(trackBtn);
 
+        // Mark as processed
         card.classList.add("ss-track-processed");
     });
 }
 
-// FIXED: Extract product data with improved title extraction
+// Extract product data with improved title extraction and fallback
 function extractProductData(card, asin) {
-    // Title extraction - IMPROVED with multiple selectors
     let title = "";
     
     // Try multiple selectors for product title
     const titleSelectors = [
-        'h2 a span', // Search results
-        '.a-size-medium', // Common class
-        '.a-text-normal', // Another common class
-        '[data-cy="title-recipe"]', // Sometimes used
-        '.a-link-normal[href*="/dp/"]', // Link with product
-        '.s-title-instructions-style h2', // New Amazon layout
-        'h2 .a-link-normal', // Nested structure
-        '.a-size-base-plus' // Another common class
+        'h2 a span',
+        '.a-size-medium',
+        '.a-text-normal',
+        '[data-cy="title-recipe"]',
+        '.s-title-instructions-style h2',
+        'h2 .a-link-normal',
+        '.a-size-base-plus'
     ];
     
     for (const selector of titleSelectors) {
         const titleEl = card.querySelector(selector);
-        if (titleEl && titleEl.textContent && titleEl.textContent.trim()) {
+        if (titleEl && titleEl.textContent.trim()) {
             title = titleEl.textContent.trim();
             break;
         }
     }
     
-    // If still not found, try text content approach
     if (!title) {
         const possibleTitleElements = card.querySelectorAll('h2, h3, .a-size-base-plus, .a-text-normal');
         for (const el of possibleTitleElements) {
-            if (el.textContent && el.textContent.trim() && el.textContent.length > 10) {
+            if (el.textContent.trim().length > 10) {
                 title = el.textContent.trim();
                 break;
             }
         }
     }
     
-    // Last resort: use data attributes or generic text
     if (!title) {
-        title = card.getAttribute('data-asin') || "Unknown Product";
+        title = "Unknown Product";
     }
 
-    // Price extraction - multiple strategies
+    // Price extraction
     let price = 0;
-    let originalPrice = 0;
-    
-    // Try multiple price selectors
     const priceSelectors = [
         '.a-price-whole',
         '.a-price[data-a-size="xl"]',
@@ -268,8 +262,6 @@ function extractProductData(card, asin) {
             }
         }
     }
-    
-    originalPrice = price; // Set original price to current price
 
     // Image extraction
     let image = "";
@@ -288,6 +280,11 @@ function extractProductData(card, asin) {
         }
     }
 
+    // ✅ FALLBACK TO LOCAL PLACEHOLDER
+    if (!image || image.trim() === "") {
+        image = chrome.runtime.getURL("img/ebay/placeholder.png");
+    }
+
     // URL extraction
     let url = "";
     const linkSelectors = [
@@ -300,11 +297,7 @@ function extractProductData(card, asin) {
     for (const selector of linkSelectors) {
         const link = card.querySelector(selector);
         if (link && link.href) {
-            url = link.href;
-            // Ensure URL is absolute
-            if (url && !url.startsWith('http')) {
-                url = 'https://' + window.location.hostname + url;
-            }
+            url = link.href.startsWith('http') ? link.href : `https://${window.location.hostname}${link.href}`;
             break;
         }
     }
@@ -314,8 +307,7 @@ function extractProductData(card, asin) {
     const ratingEl = card.querySelector('.a-icon-star-small .a-icon-alt') ||
                      card.querySelector('.a-icon-star .a-icon-alt');
     if (ratingEl) {
-        const ratingText = ratingEl.textContent || '0';
-        const match = ratingText.match(/(\d+(\.\d+)?)/);
+        const match = (ratingEl.textContent || '').match(/(\d+(\.\d+)?)/);
         rating = match ? parseFloat(match[0]) : 0;
     }
 
@@ -323,14 +315,14 @@ function extractProductData(card, asin) {
     let category = "Uncategorized";
     const breadcrumb = document.querySelector('.a-breadcrumb li:last-child');
     if (breadcrumb) {
-        category = breadcrumb.textContent?.trim() || 'Uncategorized';
+        category = breadcrumb.textContent.trim() || 'Uncategorized';
     }
 
     return {
         id: asin,
         title: title.substring(0, 200),
         price: price,
-        originalPrice: originalPrice,
+        originalPrice: price,
         image: image,
         url: url,
         rating: rating,
@@ -340,15 +332,13 @@ function extractProductData(card, asin) {
     };
 }
 
-// Handle track product
+// Handle track product on detail page
 function handleTrackProduct(event) {
     const button = event.target;
     const productId = button.dataset.productId;
     
-    // Get product title from detail page
     let productTitle = document.querySelector('#productTitle')?.textContent?.trim();
     if (!productTitle) {
-        // Try other title selectors for detail pages
         productTitle = document.querySelector('h1')?.textContent?.trim() || "Unknown Product";
     }
     
@@ -365,6 +355,11 @@ function handleTrackProduct(event) {
         originalPrice: getOriginalPrice() || getCurrentPrice()
     };
 
+    // ✅ FALLBACK TO PLACEHOLDER
+    if (!productData.image || productData.image.trim() === "") {
+        productData.image = chrome.runtime.getURL("img/ebay/placeholder.png");
+    }
+
     sendMessageToBackground({ action: "trackProduct", product: productData });
     button.textContent = "✅ Tracking";
     button.disabled = true;
@@ -378,7 +373,6 @@ function getProductId() {
 }
 
 function getCurrentPrice() {
-    // Try multiple price selectors for detail pages
     const priceSelectors = [
         '.a-price-whole',
         '.a-price[data-a-size="xl"]',
@@ -421,12 +415,12 @@ function getMainImageSrc() {
     
     for (const selector of imgSelectors) {
         const img = document.querySelector(selector);
-        if (img && (img.src || img.getAttribute('data-old-hires'))) {
-            return img.src || img.getAttribute('data-old-hires');
+        if (img) {
+            return img.src || img.getAttribute('data-old-hires') || '';
         }
     }
     
-    return "";
+    return chrome.runtime.getURL("img/ebay/placeholder.png");
 }
 
 function getProductRating() {
@@ -451,13 +445,16 @@ function getProductCategory() {
     return breadcrumb?.textContent?.trim() || 'Uncategorized';
 }
 
-// Observe for dynamic content
+// Observe for dynamic content (e.g., infinite scroll)
 function observeDOMChanges() {
     const observer = new MutationObserver(mutations => {
         let added = false;
-        mutations.forEach(mutation => {
-            if (mutation.addedNodes.length > 0) added = true;
-        });
+        for (const mutation of mutations) {
+            if (mutation.addedNodes.length > 0) {
+                added = true;
+                break;
+            }
+        }
         if (added) {
             setTimeout(() => {
                 if (isSearchResultsPage()) {
@@ -471,7 +468,7 @@ function observeDOMChanges() {
     observer.observe(document.body, { childList: true, subtree: true });
 }
 
-// Listen for messages
+// Listen for messages from background/popup
 function setupMessageListeners() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === "getProductData") {

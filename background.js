@@ -1,6 +1,18 @@
 // background.js - FINAL: Fixed & Secure
-const AFFILIATE_TAG = "elise200f-20";
-const DEFAULT_COUNTRY = "com"; // ✅ USA default
+const DEFAULT_AFFILIATE_TAG = "elise200f-20"; // US fallback
+const DEFAULT_COUNTRY = "com"; // USA default
+
+// ✅ Affiliate Tags by Country
+const AFFILIATE_TAGS = {
+  'com':      'elise200f-20',    // USA
+  'ca':       'elise2004-20',    // Canada
+  'com.be':   'elise2008-21',    // Belgium
+  'fr':       'elise2006-21',    // France
+  'de':       'elise2001-21',    // Germany
+  'it':       'elise20027-21',   // Italy
+  'es':       'elise2005-21',    // Spain
+  'co.uk':    'elise20-21'       // United Kingdom
+};
 
 // ✅ Your eBay Credentials
 const EBAY_CLIENT_ID = "SabirImc-ShopSmar-PRD-9d5c80ac8-d88362d1";
@@ -61,7 +73,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     settings: {
       country: DEFAULT_COUNTRY,
-      affiliateTag: AFFILIATE_TAG,
+      affiliateTag: DEFAULT_AFFILIATE_TAG,
       ebayClientId: EBAY_CLIENT_ID,
       maxComparisonProducts: 4,
       enableNotifications: true,
@@ -99,11 +111,12 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.alarms.create("priceCheck", { periodInMinutes: 360 });
 });
 
-// ✅ Build correct Amazon URL
+// ✅ Build correct Amazon URL with country-specific tag
 function buildAmazonUrl(term, country) {
   const domain = country === "com" ? "www.amazon.com" : `www.amazon.${country}`;
   const baseUrl = `https://${domain}/s`;
-  return `${baseUrl}?k=${encodeURIComponent(term)}&tag=${AFFILIATE_TAG}`;
+  const tag = AFFILIATE_TAGS[country] || DEFAULT_AFFILIATE_TAG;
+  return `${baseUrl}?k=${encodeURIComponent(term)}&tag=${tag}`;
 }
 
 // Context menu handler
@@ -232,12 +245,13 @@ function trackProduct(product, sender, sendResponse) {
   });
 }
 
-// ✅ Create affiliate link
+// ✅ Create affiliate link with country-specific tag
 function createAffiliateLink(request, sendResponse) {
   const { searchTerm } = request;
-  const country = request.country || "com";
+  const country = request.country || DEFAULT_COUNTRY;
   const domain = country === "com" ? "www.amazon.com" : `www.amazon.${country}`;
-  const url = `https://${domain}/s?k=${encodeURIComponent(searchTerm)}&tag=${AFFILIATE_TAG}`;
+  const tag = AFFILIATE_TAGS[country] || DEFAULT_AFFILIATE_TAG;
+  const url = `https://${domain}/s?k=${encodeURIComponent(searchTerm)}&tag=${tag}`;
   sendResponse({ url });
 }
 
@@ -329,7 +343,7 @@ async function handleFetchEbaySearch(request, senderTabId, sendResponse) {
       success: true
     };
     
-    ebayCache.set(cacheKey, payload);
+    ebayCache.set(cacheKey, { ...payload, expiry: Date.now() + CACHE_TTL });
     sendResponse(payload);
     
   } catch (error) {
@@ -338,14 +352,14 @@ async function handleFetchEbaySearch(request, senderTabId, sendResponse) {
     const totalPages = Math.ceil(mock.total / limit);
     
     const mockPayload = {
-       mock,
+      mock,
       page,
       totalPages,
       warning: "Using demo data — API temporarily unavailable.",
       success: true
     };
     
-    ebayCache.set(cacheKey, mockPayload);
+    ebayCache.set(cacheKey, { ...mockPayload, expiry: Date.now() + CACHE_TTL });
     sendResponse(mockPayload);
   }
 }
@@ -367,4 +381,3 @@ chrome.alarms.onAlarm.addListener(alarm => {
     });
   }
 });
-

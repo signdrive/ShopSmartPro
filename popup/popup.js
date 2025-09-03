@@ -1,4 +1,4 @@
-// popup/popup.js - ShopSmart Pro | FINAL: Tracked Items Fixed & Secure
+// popup/popup.js - FINAL: Dynamic Affiliate Tags + Auto-Close
 (() => {
     'use strict';
 
@@ -39,20 +39,30 @@
     const voiceStatus = document.getElementById('voiceStatus');
     const voiceResult = document.getElementById('voiceResult');
 
-    // Configuration
-    const AFFILIATE_TAG = 'elise200f-20';
+    // ✅ Affiliate Tags by Country
+    const AFFILIATE_TAGS = {
+        'com':      'elise200f-20',    // USA
+        'ca':       'elise2004-20',    // Canada
+        'com.be':   'elise2008-21',    // Belgium
+        'fr':       'elise2006-21',    // France
+        'de':       'elise2001-21',    // Germany
+        'it':       'elise20027-21',   // Italy
+        'es':       'elise2005-21',    // Spain
+        'co.uk':    'elise20-21'       // United Kingdom
+    };
+
+    const DEFAULT_AFFILIATE_TAG = 'elise200f-20'; // Fallback
 
     // Country flag mapping
     const countryFlags = {
         'ca': '🇨🇦', 'com': '🇺🇸', 'co.uk': '🇬🇧', 'de': '🇩🇪', 'fr': '🇫🇷',
         'it': '🇮🇹', 'es': '🇪🇸', 'co.jp': '🇯🇵', 'com.au': '🇦🇺', 'com.br': '🇧🇷',
-        'com.mx': '🇲🇽', 'nl': '🇳🇱'
+        'com.mx': '🇲🇽', 'nl': '🇳🇱', 'com.be': '🇧🇪'
     };
 
-    // Default settings – changed country to 'com' (Amazon US)
+    // Default settings
     const defaultSettings = {
         country: 'com',
-        affiliateTag: AFFILIATE_TAG,
         defaultCategory: 'search-alias=aps'
     };
 
@@ -166,16 +176,19 @@
         const keyword = searchInput?.value.trim();
         if (!keyword) return;
 
-        // Get country from hidden input (always updated by settings)
+        // Get country from hidden input
         const country = countryInput?.value || 'com';
         const category = categorySelect?.value || 'search-alias=aps';
 
-        // ✅ Correct Amazon domain
+        // ✅ Get correct affiliate tag
+        const tag = AFFILIATE_TAGS[country] || DEFAULT_AFFILIATE_TAG;
+
+        // ✅ Build correct domain
         const domain = country === 'com' ? 'www.amazon.com' : `www.amazon.${country}`;
         const baseUrl = `https://${domain}/s`;
 
         let url = `${baseUrl}?field-keywords=${encodeURIComponent(keyword)}`;
-        url += `&${category}&tag=${AFFILIATE_TAG}`;
+        url += `&${category}&tag=${tag}`;
 
         if (primeOnly?.checked) url += '&rh=p_85:2470955011';
         if (freeShipping?.checked) url += '&rh=p_76:1249130011';
@@ -184,6 +197,8 @@
             if (chrome.runtime.lastError) {
                 console.error('Failed to create tab:', chrome.runtime.lastError);
             }
+            // ✅ Close popup after tab opens
+            setTimeout(window.close, 100);
         });
 
         saveSearchHistory(keyword, category);
@@ -300,15 +315,18 @@
 
     dealsBtn?.addEventListener('click', () => {
         chrome.runtime.sendMessage({ action: 'openDeals' });
+        setTimeout(window.close, 100);
     });
 
     compareBtn?.addEventListener('click', () => {
         chrome.runtime.sendMessage({ action: 'openComparison' });
+        setTimeout(window.close, 100);
     });
 
     // ✅ New: Tracked Products Button
     trackedBtn?.addEventListener('click', () => {
         chrome.tabs.create({ url: chrome.runtime.getURL('tracked/tracked.html') });
+        setTimeout(window.close, 100);
     });
 
     if (ebayBtn) {
@@ -320,6 +338,7 @@
             }
             const url = chrome.runtime.getURL(`ebay/ebay.html?search=${encodeURIComponent(query)}`);
             chrome.tabs.create({ url });
+            setTimeout(window.close, 100);
         });
     }
 
@@ -379,7 +398,7 @@
             loadActiveTrackersCount();
         }
 
-        // ✅ Listen for tracking events from background
+        // ✅ Listen for tracking events
         if (request.action === 'productTracked' || request.action === 'trackProduct') {
             loadActiveTrackersCount();
         }
