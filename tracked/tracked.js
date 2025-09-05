@@ -1,8 +1,7 @@
-// tracked.js - ShopSmart Pro | FIXED: Complete button functionality
+// tracked.js - ShopSmart Pro | FINAL: Global Dark Mode Sync, No Local Toggle
 document.addEventListener("DOMContentLoaded", function () {
     const trackedResults = document.getElementById("trackedResults");
     const closeBtn = document.getElementById("closeBtn");
-    const darkModeToggle = document.getElementById("darkModeToggle");
     const searchInput = document.getElementById("searchInput");
     const categoryFilter = document.getElementById("categoryFilter");
     const exportCsvBtn = document.getElementById("exportCsvBtn");
@@ -13,22 +12,22 @@ document.addEventListener("DOMContentLoaded", function () {
     // Close button
     closeBtn?.addEventListener("click", () => window.close());
 
-    // Dark mode toggle
-    darkModeToggle?.addEventListener("click", () => {
-        const isDark = !document.body.classList.contains("dark-mode");
-        document.body.classList.toggle("dark-mode", isDark);
-        darkModeToggle.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
-        chrome.storage.sync.set({ darkMode: isDark });
-    });
-
-    // Load preferences (dark mode)
-    function loadPreferences() {
-        chrome.storage.sync.get(["darkMode"], (result) => {
-            const isDark = result?.darkMode === true;
-            document.body.classList.toggle("dark-mode", isDark);
-            darkModeToggle.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+    // ✅ Load dark mode from global settings
+    function loadDarkMode() {
+        chrome.storage.sync.get(['settings'], (result) => {
+            const settings = result.settings || {};
+            document.body.classList.toggle('dark-mode', !!settings.darkMode);
         });
     }
+
+    // ✅ Listen for global settings update
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === 'settingsUpdated') {
+            document.body.classList.toggle('dark-mode', !!request.settings.darkMode);
+            sendResponse({ status: 'success' });
+        }
+        return true;
+    });
 
     // Load tracked products safely
     function loadTrackedProducts() {
@@ -238,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ]);
 
         const csv = [headers, ...rows]
-            .map(r => r.map(c => `"${c.replace(/"/g, "\"\"")}"`).join(","))
+            .map(r => r.map(c => `"${c.replace(/"/g, '""')}"`).join(","))
             .join("\n");
 
         const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -256,13 +255,11 @@ document.addEventListener("DOMContentLoaded", function () {
     searchInput?.addEventListener("input", filterAndRender);
     categoryFilter?.addEventListener("change", filterAndRender);
 
-    // FIXED: Handle button clicks with proper event delegation
+    // ✅ Handle button clicks with proper event delegation
     trackedResults.addEventListener("click", (e) => {
-        // Check if a button was clicked
         const button = e.target.closest("button");
         if (!button) return;
         
-        // Check which type of button was clicked
         if (button.classList.contains("view-btn")) {
             handleViewButton(button);
         } else if (button.classList.contains("remove-btn")) {
@@ -298,6 +295,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Initial load
-    loadPreferences();
+    loadDarkMode();
     loadTrackedProducts();
 });

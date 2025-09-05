@@ -1,4 +1,4 @@
-// popup/comparison.js - ShopSmart Pro | FINAL: No Console Logs, Store-Ready
+// popup/comparison.js - FINAL: Global Dark Mode Sync, No Local Toggle
 class ProductComparison {
     constructor() {
         this.products = [];
@@ -17,7 +17,6 @@ class ProductComparison {
         this.comparisonResults = document.getElementById('comparisonResults');
         this.clearBtn = document.getElementById('clearComparison');
         this.closeBtn = document.getElementById('closeComparison');
-        this.darkModeToggle = document.getElementById('darkModeToggle');
         this.exportCsvBtn = document.getElementById('exportCsv');
         this.saveListBtn = document.getElementById('saveList');
         this.listNameInput = document.getElementById('listName');
@@ -36,6 +35,7 @@ class ProductComparison {
         }
     }
 
+    // ✅ Load dark mode from global settings
     async loadTheme() {
         try {
             const result = await new Promise(resolve => {
@@ -48,26 +48,13 @@ class ProductComparison {
         }
     }
 
+    // ✅ Apply theme class only
     updateTheme(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
-        if (this.darkModeToggle) {
-            this.darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
-        }
     }
 
-    saveTheme(isDark) {
-        try {
-            chrome.storage.sync.get(['settings'], (result) => {
-                const settings = result.settings || {};
-                settings.darkMode = isDark;
-                chrome.storage.sync.set({ settings });
-            });
-        } catch (e) {
-            // Silent fail — no console output
-        }
-    }
-
+    // ✅ Listen for global settings update
     setupEventListeners() {
         if (this.clearBtn) {
             this.clearBtn.addEventListener('click', () => this.clearComparison());
@@ -75,14 +62,6 @@ class ProductComparison {
 
         if (this.closeBtn) {
             this.closeBtn.addEventListener('click', () => window.close());
-        }
-
-        if (this.darkModeToggle) {
-            this.darkModeToggle.addEventListener('click', () => {
-                const isDark = !document.body.classList.contains('dark-mode');
-                this.updateTheme(isDark);
-                this.saveTheme(isDark);
-            });
         }
 
         const shareBtn = document.getElementById('shareBtn');
@@ -123,11 +102,18 @@ class ProductComparison {
             });
         }
 
-        // Listen for updates
+        // ✅ Listen for global settings update
         chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+            if (request.action === 'settingsUpdated') {
+                const isDark = !!request.settings.darkMode;
+                this.updateTheme(isDark);
+                sendResponse({ status: 'success' });
+            }
+
             if (request.action === 'comparisonUpdated' || request.action === 'addToComparison') {
                 this.loadComparison();
             }
+
             return true;
         });
 

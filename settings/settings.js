@@ -1,4 +1,4 @@
-// settings.js - ShopSmart Pro | Final: Default Country = USA
+// settings/settings.js - FINAL: Mobile-Friendly + Global Dark Mode Sync
 document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -18,12 +18,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const debugContent = document.getElementById('debugContent');
     const testNotificationBtn = document.getElementById('testNotificationBtn');
 
+    // ✅ Add dark mode toggle element
+    const darkModeToggle = document.createElement('input');
+    darkModeToggle.type = 'checkbox';
+    darkModeToggle.id = 'darkMode';
+    darkModeToggle.style.marginRight = '8px';
+
+    // ✅ Insert dark mode setting into General tab
+    const generalTab = document.getElementById('general-tab');
+    const saveHistoryGroup = generalTab.querySelector('.setting-group:nth-child(4)'); // After "Save search history"
+
+    const darkModeGroup = document.createElement('div');
+    darkModeGroup.className = 'setting-group';
+
+    const darkModeLabel = document.createElement('label');
+    darkModeLabel.appendChild(darkModeToggle);
+    darkModeLabel.appendChild(document.createTextNode('Enable Dark Mode'));
+
+    const darkModeSmall = document.createElement('small');
+    darkModeSmall.textContent = 'Use dark theme across all ShopSmart Pro interfaces';
+
+    darkModeGroup.appendChild(darkModeLabel);
+    darkModeGroup.appendChild(darkModeSmall);
+
+    generalTab.insertBefore(darkModeGroup, saveHistoryGroup.nextSibling);
+
     // Fixed affiliate tag - cannot be changed by users
     const fixedAffiliateTag = 'elise200f-20';
 
     // Default settings – changed country to 'com' (USA)
     const defaultSettings = {
-        country: 'com', // ✅ Changed from 'ca' to 'com' (United States)
+        country: 'com',
         affiliateTag: fixedAffiliateTag,
         defaultCategory: 'search-alias=aps',
         autoRedirect: false,
@@ -40,7 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
         dataRetention: 30,
         usageStatistics: true,
         errorReporting: true,
-        maxComparisonProducts: 4
+        maxComparisonProducts: 4,
+        darkMode: false // ✅ Default: light mode
     };
 
     // Tab switching functionality
@@ -56,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Load saved settings
+    // ✅ Load saved settings and apply dark mode immediately
     chrome.storage.sync.get(['settings'], function (result) {
         let settings = result.settings || {};
 
@@ -69,6 +95,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 settings[key] = defaultSettings[key];
             }
         });
+
+        // ✅ Apply dark mode class to body on load
+        document.body.classList.toggle('dark-mode', !!settings.darkMode);
 
         // Update UI with loaded settings
         updateUIWithSettings(settings);
@@ -83,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
         defaultCategory.value = settings.defaultCategory || 'search-alias=aps';
         maxComparisonProducts.value = settings.maxComparisonProducts || 4;
         dataRetention.value = settings.dataRetention || 30;
+        darkModeToggle.checked = !!settings.darkMode; // ✅ Apply dark mode
 
         // General checkboxes
         document.getElementById('autoRedirect').checked = !!settings.autoRedirect;
@@ -108,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Save settings
     saveButton.addEventListener('click', function () {
         const newSettings = {
-            country: countrySelect.value, // ✅ Will be 'com' by default
+            country: countrySelect.value,
             affiliateTag: fixedAffiliateTag,
             defaultCategory: defaultCategory.value,
             autoRedirect: document.getElementById('autoRedirect').checked,
@@ -125,7 +155,8 @@ document.addEventListener('DOMContentLoaded', function () {
             dataRetention: parseInt(dataRetention.value) || 30,
             usageStatistics: document.getElementById('usageStatistics').checked,
             errorReporting: document.getElementById('errorReporting').checked,
-            maxComparisonProducts: parseInt(maxComparisonProducts.value) || 4
+            maxComparisonProducts: parseInt(maxComparisonProducts.value) || 4,
+            darkMode: darkModeToggle.checked // ✅ Save dark mode state
         };
 
         chrome.storage.sync.set({ settings: newSettings }, function () {
@@ -136,20 +167,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
             showStatus('Settings saved successfully!', 'success');
 
+            // ✅ Apply dark mode to body
+            document.body.classList.toggle('dark-mode', newSettings.darkMode);
+
             // ✅ Broadcast settings update to ALL parts of extension
             chrome.runtime.sendMessage({
                 action: 'settingsUpdated',
                 settings: newSettings
             });
 
-            // ✅ Also broadcast to all open tabs (including popup)
+            // ✅ Also broadcast to all open tabs
             chrome.tabs.query({}, function (tabs) {
                 tabs.forEach(tab => {
                     chrome.tabs.sendMessage(tab.id, {
                         action: 'settingsUpdated',
                         settings: newSettings
                     }, () => {
-                        // Ignore errors (tab may not have listener)
+                        // Ignore errors
                     });
                 });
             });
@@ -161,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (confirm('Are you sure you want to reset all settings to default?')) {
             chrome.storage.sync.set({ settings: defaultSettings }, function () {
                 updateUIWithSettings(defaultSettings);
+                document.body.classList.remove('dark-mode'); // Reset UI
                 showStatus('Settings reset to defaults.', 'success');
 
                 // ✅ Broadcast reset
@@ -215,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     chrome.storage.sync.set({ settings: importedSettings }, function () {
                         updateUIWithSettings(importedSettings);
+                        document.body.classList.toggle('dark-mode', importedSettings.darkMode);
                         showStatus('Settings imported successfully.', 'success');
 
                         // ✅ Broadcast import
@@ -237,6 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
             chrome.storage.sync.clear(function () {
                 chrome.storage.local.clear(function () {
                     updateUIWithSettings(defaultSettings);
+                    document.body.classList.remove('dark-mode');
                     showStatus('All data cleared successfully.', 'success');
 
                     // ✅ Broadcast reset

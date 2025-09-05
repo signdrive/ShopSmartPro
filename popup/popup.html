@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>ShopSmart Pro</title>
     <link rel="stylesheet" href="popup.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+<body class="light-mode">
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -15,11 +15,11 @@
             <div class="header-buttons">
                 <!-- Updated Help Button with Image -->
                 <button class="icon-btn" id="popupHelpButton" title="Help">
-                    <img src="/img/ebay/question-mark.png" alt="Help">
+                    <img src="/img/ebay/question-mark.png" alt="Help" width="24" height="24">
                 </button>
                 <!-- Updated Settings Button with Image -->
                 <button class="icon-btn" id="settingsButton" title="Settings">
-                    <img src="/img/ebay/settings-gear.png" alt="Settings">
+                    <img src="/img/ebay/settings-gear.png" alt="Settings" width="24" height="24">
                 </button>
             </div>
         </div>
@@ -27,17 +27,17 @@
         <!-- Quick Actions (Updated with Image Buttons) -->
         <div class="quick-actions">
             <button class="icon-btn" id="voiceSearchBtn" title="Voice Search">
-                <img src="/img/ebay/microphone-icon.png" alt="Voice Search"> <!-- You'll need this image -->
+                <img src="/img/ebay/microphone-icon.png" alt="Voice Search" width="24" height="24">
             </button>
             <button class="icon-btn" id="dealsBtn" title="Today's Deals">
-                <img src="/img/ebay/deals.png" alt="Deals">
+                <img src="/img/ebay/deals.png" alt="Deals" width="24" height="24">
             </button>
             <button class="icon-btn" id="compareBtn" title="Compare Products">
-                <img src="/img/ebay/comparision.png" alt="Compare"> <!-- Note: Typo in filename preserved -->
+                <img src="/img/ebay/comparision.png" alt="Compare" width="24" height="24">
             </button>
             <!-- ✅ New: eBay Button with Image -->
             <button class="icon-btn" id="searchEbayBtn" title="Search on eBay">
-                <img src="/img/ebay/ebay-button.png" alt="Search eBay">
+                <img src="/img/ebay/ebay-button.png" alt="Search eBay" width="24" height="24">
             </button>
         </div>
 
@@ -45,12 +45,11 @@
         <form class="search-form" id="searchForm" novalidate>
             <!-- Hidden inputs -->
             <input type="hidden" name="country" id="country" value="ca">
-            <!-- Affiliate tag is now handled in JS -->
 
             <!-- Category Select -->
             <div class="form-group">
                 <label for="categorySelect">Category:</label>
-                <select name="url" id="categorySelect">
+                <select name="url" id="categorySelect" class="mobile-friendly">
                     <option value="search-alias=aps">All Departments</option>
                     <option value="search-alias=alexa-skills">Alexa Skills</option>
                     <option value="search-alias=amazon-devices">Amazon Devices</option>
@@ -97,7 +96,8 @@
                     name="keyword" 
                     id="searchInput" 
                     placeholder="What are you looking for?" 
-                    autocomplete="off">
+                    autocomplete="off"
+                    class="mobile-friendly">
             </div>
 
             <!-- Advanced Filters -->
@@ -116,7 +116,7 @@
 
             <!-- Submit Button (Updated with Image) -->
             <button type="submit" class="search-btn" id="searchButton">
-                <img src="/img/ebay/amazon-search-icon.png" alt="Search" class="btn-icon"> <!-- You'll need this image -->
+                <img src="/img/ebay/amazon-search-icon.png" alt="Search" class="btn-icon">
                 Search Store
             </button>
         </form>
@@ -160,3 +160,4 @@
     <script src="popup.js"></script>
 </body>
 </html>
+

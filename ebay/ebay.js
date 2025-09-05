@@ -1,55 +1,49 @@
 // ebay/ebay.js - FINAL: Dark Mode Persists After Refresh
-document.addEventListener('DOMContentLoaded', function () {
-    const searchForm = document.getElementById('searchForm');
-    const searchInput = document.getElementById('searchInput');
-    const resultsContainer = document.getElementById('results');
-    const loadingIndicator = document.getElementById('loading');
-    const errorDiv = document.getElementById('error');
-    const clearSearchBtn = document.getElementById('clearSearch');
-    const closeBtn = document.getElementById('closeBtn');
-    const darkModeToggle = document.getElementById('darkModeToggle');
+document.addEventListener("DOMContentLoaded", function () {
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const resultsContainer = document.getElementById("results");
+    const loadingIndicator = document.getElementById("loading");
+    const errorDiv = document.getElementById("error");
+    const clearSearchBtn = document.getElementById("clearSearch");
+    const closeBtn = document.getElementById("closeBtn");
 
-    const EBAY_AFFILIATE_CAMPAIGN_ID = '5339120658';
+    const EBAY_AFFILIATE_CAMPAIGN_ID = "5339120658";
 
     let currentPage = 1;
     let totalPages = 1;
-    let currentQuery = '';
+    let currentQuery = "";
 
-    // ✅ Load dark mode state on startup
-    function loadDarkMode() {
-        chrome.storage.sync.get(['darkMode'], (result) => {
-            const isDark = result.darkMode === true;
-            document.body.classList.toggle('dark-mode', isDark);
-            darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    // ✅ Load dark mode state from settings
+    function loadDarkModeFromSettings() {
+        chrome.storage.sync.get(["settings"], (result) => {
+            if (result.settings && typeof result.settings.darkMode !== "undefined") {
+                document.body.classList.toggle("dark-mode", result.settings.darkMode);
+            }
         });
-    }
-
-    // ✅ Save dark mode state
-    function saveDarkMode(isDark) {
-        chrome.storage.sync.set({ darkMode: isDark });
     }
 
     function showError(message) {
         errorDiv.textContent = message;
-        errorDiv.style.display = message ? 'block' : 'none';
+        errorDiv.style.display = message ? "block" : "none";
     }
 
     function showLoading() {
-        loadingIndicator.style.display = 'block';
-        errorDiv.style.display = 'none';
+        loadingIndicator.style.display = "block";
+        errorDiv.style.display = "none";
     }
 
     function hideLoading() {
-        loadingIndicator.style.display = 'none';
+        loadingIndicator.style.display = "none";
     }
 
     function clearResults() {
-        resultsContainer.innerHTML = '';
+        resultsContainer.innerHTML = "";
     }
 
     async function searchEbay(query, page = 1) {
         if (!query || !query.trim()) {
-            showError('Please enter a search term');
+            showError("Please enter a search term");
             return;
         }
 
@@ -63,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await new Promise((resolve, reject) => {
                 chrome.runtime.sendMessage({
-                    action: 'fetchEbaySearch',
+                    action: "fetchEbaySearch",
                     query: cleanQuery,
                     page: page,
                     limit: 20
@@ -79,11 +73,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (response.warning) {
-                showError('⚠️ ' + response.warning);
+                showError("⚠️ " + response.warning);
             }
 
             if (!response.success) {
-                throw new Error(response.error || 'Search failed');
+                throw new Error(response.error || "Search failed");
             }
 
             const data = response.data;
@@ -91,8 +85,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const items = data?.itemSummaries || [];
             if (items.length === 0) {
-                const noResults = document.createElement('p');
-                noResults.className = 'no-results';
+                const noResults = document.createElement("p");
+                noResults.className = "no-results";
                 noResults.textContent = `No results found for "${cleanQuery}"`;
                 resultsContainer.appendChild(noResults);
                 hideLoading();
@@ -141,23 +135,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function createProductCard(item) {
-        const title = sanitizeText(item.title || 'No title');
+        const title = sanitizeText(item.title || "No title");
         const priceValue = parseFloat(item.price?.value) || 0;
-        const currency = item.price?.currency || 'USD';
-        const imageUrl = sanitizeUrl(item.image?.imageUrl || item.imageUrl || '');
-        const itemUrl = item.itemWebUrl || '#';
-        const condition = sanitizeText(item.condition || 'Unknown');
+        const currency = item.price?.currency || "USD";
+        const imageUrl = sanitizeUrl(item.image?.imageUrl || item.imageUrl || "");
+        const itemUrl = item.itemWebUrl || "#";
+        const condition = sanitizeText(item.condition || "Unknown");
         const shippingCost = parseFloat(item.shippingOptions?.[0]?.shippingCost?.value) || 0;
-        const itemId = item.itemId || title.replace(/\s+/g, '_').toLowerCase();
+        const itemId = item.itemId || title.replace(/\s+/g, "_").toLowerCase();
 
         let affiliateUrl = itemUrl;
         try {
             const url = new URL(itemUrl);
-            url.searchParams.set('mkcid', '1');
-            url.searchParams.set('mkrid', '711-53200-19255-0');
-            url.searchParams.set('campid', EBAY_AFFILIATE_CAMPAIGN_ID);
-            url.searchParams.set('toolid', '10001');
-            url.searchParams.set('customid', encodeURIComponent(title));
+            url.searchParams.set("mkcid", "1");
+            url.searchParams.set("mkrid", "711-53200-19255-0");
+            url.searchParams.set("campid", EBAY_AFFILIATE_CAMPAIGN_ID);
+            url.searchParams.set("toolid", "10001");
+            url.searchParams.set("customid", encodeURIComponent(title));
             affiliateUrl = url.toString();
         } catch (e) {
             // Silent fail
@@ -165,44 +159,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const totalPrice = priceValue + shippingCost;
 
-        const card = document.createElement('div');
-        card.className = 'product-card';
+        const card = document.createElement("div");
+        card.className = "product-card";
 
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = affiliateUrl;
-        link.target = '_blank';
-        link.rel = 'noopener';
-        link.className = 'product-link';
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.className = "product-link";
 
-        const img = document.createElement('img');
+        const img = document.createElement("img");
         img.src = imageUrl;
         img.alt = title;
-        img.className = 'product-image';
-        img.addEventListener('error', () => {
-            img.src = 'https://via.placeholder.com/150?text=No+Image';
+        img.className = "product-image";
+        img.addEventListener("error", () => {
+            img.src = "https://via.placeholder.com/150?text=No+Image";
         });
 
-        const info = document.createElement('div');
-        info.className = 'product-info';
+        const info = document.createElement("div");
+        info.className = "product-info";
 
-        const titleEl = document.createElement('h3');
-        titleEl.className = 'product-title';
+        const titleEl = document.createElement("h3");
+        titleEl.className = "product-title";
         titleEl.textContent = title;
 
-        const priceEl = document.createElement('div');
-        priceEl.className = 'product-price';
+        const priceEl = document.createElement("div");
+        priceEl.className = "product-price";
         priceEl.textContent = `${currency}$${priceValue.toFixed(2)}`;
 
-        const shippingEl = document.createElement('div');
-        shippingEl.className = 'product-shipping';
+        const shippingEl = document.createElement("div");
+        shippingEl.className = "product-shipping";
         shippingEl.textContent = `+ ${currency}$${shippingCost.toFixed(2)} shipping`;
 
-        const totalEl = document.createElement('div');
-        totalEl.className = 'product-total';
+        const totalEl = document.createElement("div");
+        totalEl.className = "product-total";
         totalEl.textContent = `Total: ${currency}$${totalPrice.toFixed(2)}`;
 
-        const conditionEl = document.createElement('div');
-        conditionEl.className = 'product-condition';
+        const conditionEl = document.createElement("div");
+        conditionEl.className = "product-condition";
         conditionEl.textContent = `Condition: ${condition}`;
 
         info.appendChild(titleEl);
@@ -214,17 +208,17 @@ document.addEventListener('DOMContentLoaded', function () {
         link.appendChild(img);
         link.appendChild(info);
 
-        const compareBtn = document.createElement('button');
-        compareBtn.className = 'compare-btn';
-        compareBtn.textContent = 'Add to Comparison';
+        const compareBtn = document.createElement("button");
+        compareBtn.className = "compare-btn";
+        compareBtn.textContent = "Add to Comparison";
         compareBtn.dataset.itemId = itemId;
         compareBtn.dataset.title = title;
         compareBtn.dataset.url = affiliateUrl;
         compareBtn.dataset.image = imageUrl;
         compareBtn.dataset.price = priceValue;
-        compareBtn.dataset.source = 'eBay';
+        compareBtn.dataset.source = "eBay";
 
-        compareBtn.addEventListener('click', handleCompareClick);
+        compareBtn.addEventListener("click", handleCompareClick);
 
         card.appendChild(link);
         card.appendChild(compareBtn);
@@ -236,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         e.stopPropagation();
 
-        const btn = e.target.closest('.compare-btn');
+        const btn = e.target.closest(".compare-btn");
         if (!btn) return;
 
         const productData = {
@@ -250,12 +244,12 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         chrome.runtime.sendMessage({
-            action: 'addToComparison',
+            action: "addToComparison",
             product: productData
         }, (response) => {
-            if (response?.status === 'added') {
-                const msg = document.createElement('div');
-                msg.textContent = '✅ Added to comparison!';
+            if (response?.status === "added") {
+                const msg = document.createElement("div");
+                msg.textContent = "✅ Added to comparison!";
                 msg.style.cssText = `
                     position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
                     background: #28a745; color: white; padding: 10px 20px; border-radius: 6px;
@@ -263,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
                 document.body.appendChild(msg);
                 setTimeout(() => {
-                    msg.style.opacity = '0';
+                    msg.style.opacity = "0";
                     setTimeout(() => document.body.removeChild(msg), 300);
                 }, 1500);
             }
@@ -273,26 +267,26 @@ document.addEventListener('DOMContentLoaded', function () {
     function createPaginationControls() {
         if (totalPages <= 1) return null;
 
-        const container = document.createElement('div');
-        container.className = 'pagination-controls';
+        const container = document.createElement("div");
+        container.className = "pagination-controls";
 
         if (currentPage > 1) {
-            const prevBtn = document.createElement('button');
-            prevBtn.className = 'pagination-btn prev-btn';
-            prevBtn.textContent = '← Previous';
+            const prevBtn = document.createElement("button");
+            prevBtn.className = "pagination-btn prev-btn";
+            prevBtn.textContent = "← Previous";
             prevBtn.dataset.page = currentPage - 1;
             container.appendChild(prevBtn);
         }
 
-        const pageInfo = document.createElement('span');
-        pageInfo.className = 'page-info';
+        const pageInfo = document.createElement("span");
+        pageInfo.className = "page-info";
         pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
         container.appendChild(pageInfo);
 
         if (currentPage < totalPages) {
-            const nextBtn = document.createElement('button');
-            nextBtn.className = 'pagination-btn next-btn';
-            nextBtn.textContent = 'Next →';
+            const nextBtn = document.createElement("button");
+            nextBtn.className = "pagination-btn next-btn";
+            nextBtn.textContent = "Next →";
             nextBtn.dataset.page = currentPage + 1;
             container.appendChild(nextBtn);
         }
@@ -302,8 +296,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setupEventListeners() {
         // Pagination
-        document.querySelectorAll('.pagination-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+        document.querySelectorAll(".pagination-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
                 const page = parseInt(e.target.dataset.page);
                 searchEbay(currentQuery, page);
                 window.scrollTo(0, 0);
@@ -311,20 +305,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Compare buttons
-        resultsContainer.removeEventListener('click', handleCompareClick);
-        resultsContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('compare-btn') || e.target.closest('.compare-btn')) {
+        resultsContainer.removeEventListener("click", handleCompareClick);
+        resultsContainer.addEventListener("click", (e) => {
+            if (e.target.classList.contains("compare-btn") || e.target.closest(".compare-btn")) {
                 handleCompareClick(e);
             }
         });
 
         // ✅ Dark mode toggle
-        darkModeToggle?.addEventListener('click', () => {
-            const isDark = !document.body.classList.contains('dark-mode');
-            document.body.classList.toggle('dark-mode', isDark);
-            darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
-            saveDarkMode(isDark);
-        });
+        // Removed direct dark mode toggle as it's now handled by settings.js
     }
 
     function getMockEbayData(query, page = 1, limit = 20) {
@@ -347,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function sanitizeText(text) {
-        const div = document.createElement('div');
+        const div = document.createElement("div");
         div.textContent = text;
         return div.innerHTML;
     }
@@ -355,17 +344,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function sanitizeUrl(url) {
         try {
             const parsed = new URL(url);
-            if (['http:', 'https:', 'data:'].includes(parsed.protocol)) {
+            if (["http:", "https:", "data:"].includes(parsed.protocol)) {
                 return url;
             }
         } catch (e) {
             // Silent fail
         }
-        return 'https://via.placeholder.com/150?text=No+Image';
+        return "https://via.placeholder.com/150?text=No+Image";
     }
 
     // Form submit
-    searchForm.addEventListener('submit', e => {
+    searchForm.addEventListener("submit", e => {
         e.preventDefault();
         currentPage = 1;
         searchEbay(searchInput.value);
@@ -373,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Auto-search
     const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get('search');
+    const query = urlParams.get("search");
     if (query) {
         searchInput.value = query;
         searchEbay(query);
@@ -382,8 +371,8 @@ document.addEventListener('DOMContentLoaded', function () {
     searchInput.focus();
 
     // Keyboard
-    searchInput.addEventListener('keypress', e => {
-        if (e.key === 'Enter') {
+    searchInput.addEventListener("keypress", e => {
+        if (e.key === "Enter") {
             e.preventDefault();
             currentPage = 1;
             searchEbay(searchInput.value);
@@ -391,17 +380,28 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // UI buttons
-    clearSearchBtn?.addEventListener('click', () => {
-        searchInput.value = '';
+    clearSearchBtn?.addEventListener("click", () => {
+        searchInput.value = "";
         clearResults();
         searchInput.focus();
         currentPage = 1;
         totalPages = 1;
-        currentQuery = '';
+        currentQuery = "";
     });
 
-    closeBtn?.addEventListener('click', () => window.close());
+    closeBtn?.addEventListener("click", () => window.close());
 
-    // ✅ Initialize dark mode on load
-    loadDarkMode();
+    // ✅ Initialize dark mode on load from settings
+    loadDarkModeFromSettings();
+
+    // Listen for settings updates from background script or settings page
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === "settingsUpdated") {
+            const newSettings = request.settings;
+            if (newSettings && typeof newSettings.darkMode !== "undefined") {
+                document.body.classList.toggle("dark-mode", newSettings.darkMode);
+            }
+        }
+    });
 });
+

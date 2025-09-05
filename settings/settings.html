@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings - ShopSmart Pro</title>
     <link rel="stylesheet" href="settings.css">
 </head>
@@ -20,7 +21,7 @@
             <div id="general-tab" class="tab-pane active">
                 <div class="setting-group">
                     <label for="countrySelect">Default Country:</label>
-                    <select id="countrySelect">
+                    <select id="countrySelect" class="mobile-friendly">
                         <option value="ca">Amazon Canada (.ca)</option>
                         <option value="com">Amazon USA (.com)</option>
                         <option value="co.uk">Amazon UK (.co.uk)</option>
@@ -38,7 +39,7 @@
 
                 <div class="setting-group">
                     <label for="defaultCategory">Default Category:</label>
-                    <select id="defaultCategory">
+                    <select id="defaultCategory" class="mobile-friendly">
                         <option value="search-alias=aps">All Departments</option>
                         <option value="search-alias=alexa-skills">Alexa Skills</option>
                         <option value="search-alias=amazon-devices">Amazon Devices</option>
@@ -78,16 +79,18 @@
                 </div>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="autoRedirect" checked>
+                        <span class="checkmark"></span>
                         Auto-redirect to Amazon
                     </label>
                     <small>Automatically redirect when searching from popup</small>
                 </div>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="saveHistory" checked>
+                        <span class="checkmark"></span>
                         Save search history
                     </label>
                     <small>Remember your recent searches</small>
@@ -102,8 +105,9 @@
             <!-- Notification Settings -->
             <div id="notifications-tab" class="tab-pane">
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="enableNotifications" checked>
+                        <span class="checkmark"></span>
                         Enable all alerts
                     </label>
                     <small>Allow price drops, deals, and coupon notifications</small>
@@ -112,24 +116,27 @@
                 <hr>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="priceAlerts" checked>
+                        <span class="checkmark"></span>
                         Price drop alerts
                     </label>
                     <small>Get notified when tracked products drop in price</small>
                 </div>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="dealAlerts" checked>
+                        <span class="checkmark"></span>
                         Deal notifications
                     </label>
                     <small>Receive notifications for lightning deals</small>
                 </div>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="couponAlerts">
+                        <span class="checkmark"></span>
                         Coupon alerts
                     </label>
                     <small>Notify when coupons are available for products</small>
@@ -137,7 +144,7 @@
 
                 <div class="setting-group">
                     <label for="notificationFrequency">Notification Frequency:</label>
-                    <select id="notificationFrequency">
+                    <select id="notificationFrequency" class="mobile-friendly">
                         <option value="instant">Instant</option>
                         <option value="hourly">Hourly Digest</option>
                         <option value="daily">Daily Digest</option>
@@ -145,8 +152,9 @@
                 </div>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="soundAlerts">
+                        <span class="checkmark"></span>
                         Play sound for alerts
                     </label>
                     <small>Play a short sound when any notification appears</small>
@@ -166,34 +174,36 @@
             <!-- Advanced Settings -->
             <div id="advanced-tab" class="tab-pane">
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="enhancePages" checked>
+                        <span class="checkmark"></span>
                         Enhance pages
                     </label>
                     <small>Add extra features to product pages</small>
                 </div>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="voiceSearch">
+                        <span class="checkmark"></span>
                         Enable voice search
                     </label>
                     <small>Allow voice input for searches</small>
                 </div>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="analytics" checked>
+                        <span class="checkmark"></span>
                         Enable analytics
                     </label>
                     <small>Track your affiliate performance</small>
                 </div>
 
-            
                 <!-- ✅ Comparison Limit Setting -->
                 <div class="setting-group">
                     <label for="maxComparisonProducts">Maximum Products in Comparison:</label>
-                    <select id="maxComparisonProducts">
+                    <select id="maxComparisonProducts" class="mobile-friendly">
                         <option value="4">4 (Recommended)</option>
                         <option value="6">6</option>
                         <option value="8">8</option>
@@ -205,7 +215,7 @@
                 <!-- ✅ Data Retention for Saved Comparisons -->
                 <div class="setting-group">
                     <label for="dataRetention">Data Retention:</label>
-                    <select id="dataRetention">
+                    <select id="dataRetention" class="mobile-friendly">
                         <option value="7">7 days</option>
                         <option value="30" selected>30 days</option>
                         <option value="90">90 days</option>
@@ -222,16 +232,18 @@
 
                 <!-- Privacy Settings -->
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="usageStatistics" checked>
+                        <span class="checkmark"></span>
                         Help improve ShopSmart Pro
                     </label>
                     <small>Allow anonymous usage statistics to help us improve the extension (recommended)</small>
                 </div>
 
                 <div class="setting-group">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="errorReporting" checked>
+                        <span class="checkmark"></span>
                         Automatic error reporting
                     </label>
                     <small>Send error reports to help fix issues faster</small>
@@ -240,18 +252,18 @@
         </div>
 
         <div class="settings-actions">
-            <button id="saveButton">Save Settings</button>
-            <button id="resetButton">Reset to Defaults</button>
-            <button id="exportSettingsBtn">Export Settings</button>
-            <button id="importSettingsBtn">Import Settings</button>
+            <button id="saveButton" class="primary-btn">Save Settings</button>
+            <button id="resetButton" class="secondary-btn">Reset to Defaults</button>
+            <button id="exportSettingsBtn" class="secondary-btn">Export Settings</button>
+            <button id="importSettingsBtn" class="secondary-btn">Import Settings</button>
             <input type="file" id="importSettingsFile" accept=".json" style="display: none;">
         </div>
 
-        <div id="statusMessage"></div>
+        <div id="statusMessage" role="alert" aria-live="polite"></div>
 
         <div class="debug-section">
             <h3>Debug Information</h3>
-            <button id="debugButton">Show Debug Info</button>
+            <button id="debugButton" class="debug-btn">Show Debug Info</button>
             <div id="debugInfo" style="display: none;">
                 <pre id="debugContent"></pre>
             </div>

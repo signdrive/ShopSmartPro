@@ -1,4 +1,4 @@
-// popup/popup.js - FINAL: Dynamic Affiliate Tags + Auto-Close
+// popup/popup.js - FINAL: Verified Affiliate Tags + Auto-Close + Dark Mode Sync
 (() => {
     'use strict';
 
@@ -39,7 +39,7 @@
     const voiceStatus = document.getElementById('voiceStatus');
     const voiceResult = document.getElementById('voiceResult');
 
-    // ✅ Affiliate Tags by Country
+    // ✅ Affiliate Tags by Country (Verified)
     const AFFILIATE_TAGS = {
         'com':      'elise200f-20',    // USA
         'ca':       'elise2004-20',    // Canada
@@ -51,7 +51,7 @@
         'co.uk':    'elise20-21'       // United Kingdom
     };
 
-    const DEFAULT_AFFILIATE_TAG = 'elise200f-20'; // Fallback
+    const DEFAULT_AFFILIATE_TAG = 'elise200f-20'; // Fallback: USA
 
     // Country flag mapping
     const countryFlags = {
@@ -63,7 +63,8 @@
     // Default settings
     const defaultSettings = {
         country: 'com',
-        defaultCategory: 'search-alias=aps'
+        defaultCategory: 'search-alias=aps',
+        darkMode: false
     };
 
     // Voice recognition
@@ -143,6 +144,9 @@
         }
 
         loadActiveTrackersCount();
+
+        // ✅ Apply dark mode from settings
+        applyDarkMode(!!settings.darkMode);
     });
 
     // ✅ Update UI and ensure hidden input is in sync
@@ -153,6 +157,12 @@
         if (categorySelect && settings.defaultCategory) {
             categorySelect.value = settings.defaultCategory;
         }
+    }
+
+    // ✅ Apply dark mode to popup
+    function applyDarkMode(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        document.body.classList.toggle('light-mode', !isDark);
     }
 
     function loadActiveTrackersCount() {
@@ -180,7 +190,7 @@
         const country = countryInput?.value || 'com';
         const category = categorySelect?.value || 'search-alias=aps';
 
-        // ✅ Get correct affiliate tag
+        // ✅ Get correct affiliate tag — falls back to USA
         const tag = AFFILIATE_TAGS[country] || DEFAULT_AFFILIATE_TAG;
 
         // ✅ Build correct domain
@@ -391,6 +401,7 @@
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === 'settingsUpdated') {
             updateUIWithSettings(request.settings);
+            applyDarkMode(!!request.settings.darkMode);
             sendResponse({ status: 'success' });
         }
 

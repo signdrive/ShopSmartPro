@@ -1,4 +1,4 @@
-// content.js - ShopSmart Pro | FINAL: Optimized, No Duplicates, Full Fallback
+// content.js - ShopSmart Pro | FINAL: Verified, No Duplicates, Full Fallback
 console.log("ShopSmart Pro content script loaded");
 
 // Prevent multiple initialization

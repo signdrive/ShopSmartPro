@@ -1,3 +1,10 @@
+/* settings/settings.css - FINAL: Mobile-Friendly + Dark Mode Support */
+
+/* Mobile-first reset */
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: "Trebuchet MS", sans-serif;
     margin: 0;
@@ -5,6 +12,12 @@ body {
     background-color: #f9f9f9;
     color: #333;
     min-width: 600px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
 .settings-container {
@@ -13,7 +26,13 @@ body {
     background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+body.dark-mode .settings-container {
+    background: #1e1e1e;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
@@ -22,16 +41,35 @@ h1 {
     text-align: center;
     border-bottom: 2px solid #eee;
     padding-bottom: 15px;
+    transition: color 0.3s, border-bottom-color 0.3s;
+    font-size: 1.5rem;
 }
 
+body.dark-mode h1 {
+    color: #e0e0e0;
+    border-bottom-color: #333;
+}
+
+/* Tabs - Mobile Optimized */
 .settings-tabs {
     display: flex;
     margin-bottom: 20px;
     border-bottom: 2px solid #eee;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.settings-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+body.dark-mode .settings-tabs {
+    border-bottom-color: #333;
 }
 
 .tab-btn {
-    padding: 12px 20px;
+    padding: 14px 24px; /* Increased for touch */
     background: none;
     border: none;
     cursor: pointer;
@@ -39,6 +77,8 @@ h1 {
     color: #666;
     border-bottom: 3px solid transparent;
     transition: all 0.3s;
+    white-space: nowrap;
+    font-size: 1rem;
 }
 
 .tab-btn:hover {
@@ -50,6 +90,16 @@ h1 {
     border-bottom-color: #FF9900;
 }
 
+body.dark-mode .tab-btn {
+    color: #aaa;
+}
+
+body.dark-mode .tab-btn:hover,
+body.dark-mode .tab-btn.active {
+    color: #FFB347;
+}
+
+/* Tab Content */
 .tab-pane {
     display: none;
     padding: 20px 0;
@@ -59,29 +109,54 @@ h1 {
     display: block;
 }
 
+/* Setting Group - Mobile Optimized */
 .setting-group {
     margin: 20px 0;
-    padding: 15px;
+    padding: 20px;
     background: #f8f9fa;
     border-radius: 8px;
     border-left: 4px solid #007bff;
+    transition: background 0.3s, border-left-color 0.3s;
+}
+
+body.dark-mode .setting-group {
+    background: #2d2d2d;
+    border-left-color: #42a5f5;
 }
 
 .setting-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-weight: bold;
     color: #555;
+    transition: color 0.3s;
+    font-size: 1rem;
 }
 
+body.dark-mode .setting-group label {
+    color: #ccc;
+}
+
+/* Mobile-Friendly Inputs */
 .setting-group select,
 .setting-group input[type="text"] {
     width: 100%;
-    padding: 10px;
+    padding: 14px; /* Minimum 44px height */
     border: 2px solid #ddd;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 16px; /* Readable on mobile */
     margin-top: 5px;
+    background: white;
+    color: #333;
+    transition: border-color 0.3s;
+    min-height: 44px;
+}
+
+body.dark-mode .setting-group select,
+body.dark-mode .setting-group input[type="text"] {
+    background: #2d2d2d;
+    color: #e0e0e0;
+    border-color: #555;
 }
 
 .setting-group select:focus,
@@ -91,34 +166,66 @@ h1 {
     box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
 }
 
+body.dark-mode .setting-group select:focus,
+body.dark-mode .setting-group input[type="text"]:focus {
+    border-color: #FF9900;
+    box-shadow: 0 0 5px rgba(255, 153, 0, 0.2);
+}
+
+/* Checkboxes - Bigger Touch Target */
 .setting-group input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
+    margin-right: 12px;
+    transform: scale(1.4); /* Larger checkbox */
+    accent-color: #FF9900; /* Orange checkmark */
 }
 
 .setting-group small {
     display: block;
-    margin-top: 5px;
+    margin-top: 8px;
     color: #666;
-    font-size: 12px;
+    font-size: 14px;
+    transition: color 0.3s;
 }
 
+body.dark-mode .setting-group small {
+    color: #aaa;
+}
+
+/* Affiliate Info */
 .affiliate-info {
-    margin: 20px 0;
-    padding: 15px;
+    margin: 25px 0;
+    padding: 20px;
     background: #f0f8ff;
     border-radius: 8px;
     border-left: 4px solid #0073bb;
+    transition: background 0.3s, border-left-color 0.3s;
+}
+
+body.dark-mode .affiliate-info {
+    background: #1a237e;
+    border-left-color: #42a5f5;
 }
 
 .affiliate-info h3 {
     margin-top: 0;
     color: #0073bb;
+    transition: color 0.3s;
+    font-size: 1.1rem;
+}
+
+body.dark-mode .affiliate-info h3 {
+    color: #42a5f5;
 }
 
 .affiliate-info p {
     margin: 8px 0;
-    font-size: 14px;
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+}
+
+body.dark-mode .affiliate-info p {
+    color: #ccc;
 }
 
 .affiliate-info strong {
@@ -126,20 +233,35 @@ h1 {
     font-size: 16px;
 }
 
+body.dark-mode .affiliate-info strong {
+    color: #ff6b6b;
+}
+
+/* Action Buttons - Mobile Responsive */
 .settings-actions {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin: 25px 0;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 30px 0;
+}
+
+@media (min-width: 600px) {
+    .settings-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .settings-actions button {
-    padding: 12px;
+    padding: 16px; /* Minimum 44px height */
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 16px;
     transition: all 0.3s;
+    text-align: center;
+    max-width: 100%; /* Prevent overflow */
+    width: 100%; /* Full width */
 }
 
 #saveButton {
@@ -149,6 +271,15 @@ h1 {
 
 #saveButton:hover {
     background: #218838;
+    transform: translateY(-1px);
+}
+
+body.dark-mode #saveButton {
+    background: #2e7d32;
+}
+
+body.dark-mode #saveButton:hover {
+    background: #1b5e20;
 }
 
 #resetButton {
@@ -158,6 +289,15 @@ h1 {
 
 #resetButton:hover {
     background: #5a6268;
+    transform: translateY(-1px);
+}
+
+body.dark-mode #resetButton {
+    background: #546e7a;
+}
+
+body.dark-mode #resetButton:hover {
+    background: #455a64;
 }
 
 #exportSettingsBtn {
@@ -167,6 +307,15 @@ h1 {
 
 #exportSettingsBtn:hover {
     background: #138496;
+    transform: translateY(-1px);
+}
+
+body.dark-mode #exportSettingsBtn {
+    background: #00838f;
+}
+
+body.dark-mode #exportSettingsBtn:hover {
+    background: #006064;
 }
 
 #importSettingsBtn {
@@ -176,6 +325,16 @@ h1 {
 
 #importSettingsBtn:hover {
     background: #e0a800;
+    transform: translateY(-1px);
+}
+
+body.dark-mode #importSettingsBtn {
+    background: #ff8f00;
+    color: white;
+}
+
+body.dark-mode #importSettingsBtn:hover {
+    background: #dd7700;
 }
 
 .danger-btn {
@@ -185,14 +344,25 @@ h1 {
 
 .danger-btn:hover {
     background: #c82333 !important;
+    transform: translateY(-1px);
 }
 
+body.dark-mode .danger-btn {
+    background: #c62828 !important;
+}
+
+body.dark-mode .danger-btn:hover {
+    background: #a52828 !important;
+}
+
+/* Status Message */
 #statusMessage {
     margin: 15px 0;
-    padding: 12px;
+    padding: 16px;
     border-radius: 6px;
     font-weight: bold;
     text-align: center;
+    font-size: 16px;
 }
 
 #statusMessage.success {
@@ -201,61 +371,117 @@ h1 {
     border: 1px solid #c3e6cb;
 }
 
+body.dark-mode #statusMessage.success {
+    background: #155724;
+    color: #d4edda;
+    border-color: #1d6c3c;
+}
+
 #statusMessage.error {
     background: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
 
+body.dark-mode #statusMessage.error {
+    background: #721c24;
+    color: #f8d7da;
+    border-color: #8c262f;
+}
+
+/* Debug Section */
 .debug-section {
-    margin: 25px 0;
-    padding: 15px;
+    margin: 30px 0;
+    padding: 20px;
     background: #f8f9fa;
     border-radius: 8px;
+    transition: background 0.3s;
+}
+
+body.dark-mode .debug-section {
+    background: #2d2d2d;
 }
 
 .debug-section h3 {
     margin-top: 0;
     color: #495057;
+    transition: color 0.3s;
+    font-size: 1.1rem;
+}
+
+body.dark-mode .debug-section h3 {
+    color: #ccc;
 }
 
 #debugInfo {
     margin-top: 15px;
-    padding: 15px;
+    padding: 16px;
     background: #e9ecef;
     border-radius: 6px;
     font-family: monospace;
-    font-size: 12px;
+    font-size: 14px;
     max-height: 300px;
     overflow: auto;
+    transition: background 0.3s;
+}
+
+body.dark-mode #debugInfo {
+    background: #1e1e1e;
+    color: #e0e0e0;
 }
 
 #debugButton {
-    padding: 8px 15px;
+    padding: 12px 16px;
     background: #6c757d;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 #debugButton:hover {
     background: #5a6268;
+    transform: translateY(-1px);
 }
+
+body.dark-mode #debugButton {
+    background: #546e7a;
+}
+
+body.dark-mode #debugButton:hover {
+    background: #455a64;
+}
+
+/* Help & About Buttons */
+.help-btn, .about-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
 .help-btn {
-    background: #17a2b8 !important;
-    color: white !important;
+    background: #17a2b8;
+    color: white;
 }
 
 .about-btn {
-    background: #6c757d !important;
-    color: white !important;
+    background: #6c757d;
+    color: white;
 }
 
-.help-btn:hover {
-    background: #138496 !important;
+.help-btn:hover, .about-btn:hover {
+    transform: translateY(-1px);
 }
 
-.about-btn:hover {
-    background: #5a6268 !important;
+body.dark-mode .help-btn {
+    background: #00838f;
+}
+
+body.dark-mode .about-btn {
+    background: #546e7a;
 }

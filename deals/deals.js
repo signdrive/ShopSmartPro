@@ -1,4 +1,4 @@
-// deals.js - ShopSmart Pro | FINAL: Fixed "View Deal", Store-Ready
+// deals.js - ShopSmart Pro | FINAL: Fixed "View Deal", Store-Ready + Dark Mode Sync
 const AFFILIATE_TAG = 'elise200f-20';
 const DEFAULT_COUNTRY = 'com'; // Match your settings
 
@@ -13,6 +13,9 @@ class DealBrowser {
         this.loadSettings();
         this.loadDeals();
         this.setupEventListeners();
+
+        // ✅ Load dark mode from global settings
+        this.loadDarkMode();
     }
 
     initializeElements() {
@@ -484,7 +487,24 @@ class DealBrowser {
             });
         }
     }
+
+    // ✅ Load dark mode from settings
+    loadDarkMode() {
+        chrome.storage.sync.get(['settings'], (result) => {
+            const settings = result.settings || {};
+            document.body.classList.toggle('dark-mode', !!settings.darkMode);
+        });
+    }
 }
+
+// ✅ Listen for global settings update
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'settingsUpdated') {
+        document.body.classList.toggle('dark-mode', !!request.settings.darkMode);
+        sendResponse({ status: 'success' });
+    }
+    return true;
+});
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
