@@ -70,45 +70,55 @@ function isRateLimited(senderId) {
 
 // Initialize on install
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({
-    settings: {
-      country: DEFAULT_COUNTRY,
-      affiliateTag: DEFAULT_AFFILIATE_TAG,
-      ebayClientId: EBAY_CLIENT_ID,
-      maxComparisonProducts: 4,
-      enableNotifications: true,
-      priceAlerts: true,
-      dealAlerts: true,
-      soundAlerts: true,
-      trackPrices: true
-    },
-    searchHistory: [],
-    trackedProducts: [],
-    comparisonProducts: [],
-    savedComparisons: []
-  });
-
-  // Create context menus
-  chrome.contextMenus.removeAll(() => {
-    chrome.contextMenus.create({
-      id: "search-store",
-      title: "Search for \"%s\"",
-      contexts: ["selection"]
+  // Use Promise to ensure completion
+  new Promise((resolve) => {
+    chrome.storage.sync.set({
+      settings: {
+        country: DEFAULT_COUNTRY,
+        affiliateTag: DEFAULT_AFFILIATE_TAG,
+        ebayClientId: EBAY_CLIENT_ID,
+        maxComparisonProducts: 4,
+        enableNotifications: true,
+        priceAlerts: true,
+        dealAlerts: true,
+        soundAlerts: true,
+        trackPrices: true
+      },
+      searchHistory: [],
+      trackedProducts: [],
+      comparisonProducts: [],
+      savedComparisons: []
+    }, resolve);
+  }).then(() => {
+    // Create context menus after storage is set
+    return new Promise((resolve) => {
+      chrome.contextMenus.removeAll(() => {
+        chrome.contextMenus.create({
+          id: "search-store",
+          title: "Search for \"%s\"",
+          contexts: ["selection"]
+        });
+        chrome.contextMenus.create({
+          id: "search-store-new-tab",
+          title: "Search in New Tab",
+          contexts: ["selection"]
+        });
+        chrome.contextMenus.create({
+          id: "compare-product",
+          title: "Compare with ShopSmart Pro",
+          contexts: ["selection"]
+        });
+        resolve();
+      });
     });
-    chrome.contextMenus.create({
-      id: "search-store-new-tab",
-      title: "Search in New Tab",
-      contexts: ["selection"]
-    });
-    chrome.contextMenus.create({
-      id: "compare-product",
-      title: "Compare with ShopSmart Pro",
-      contexts: ["selection"]
-    });
+  }).catch(err => {
+    console.error('Failed to initialize:', err);
   });
 
   // Set up price check alarm
-  chrome.alarms.create("priceCheck", { periodInMinutes: 360 });
+  chrome.alarms.clearAll(() => {
+    chrome.alarms.create("priceCheck", { periodInMinutes: 360 });
+  });
 });
 
 // ✅ Build correct Amazon URL with country-specific tag
@@ -152,7 +162,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           console.error("eBay search error:", err);
           sendResponse({ error: err.message, success: false });
         });
-      return true;
+      return true; // Keep message channel open
 
     case "getSettings":
       chrome.storage.sync.get(["settings"], (res) => {
@@ -168,12 +178,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case "openComparison":
       openComparisonPage();
       sendResponse({ status: "success" });
-      return false;
+      return true;
 
     case "openDeals":
       openDealsPage();
       sendResponse({ status: "success" });
-      return false;
+      return true;
 
     case "trackProduct":
       trackProduct(request.product, sender, sendResponse);
@@ -352,7 +362,7 @@ async function handleFetchEbaySearch(request, senderTabId, sendResponse) {
     const totalPages = Math.ceil(mock.total / limit);
     
     const mockPayload = {
-      mock,
+      data: mock,
       page,
       totalPages,
       warning: "Using demo data — API temporarily unavailable.",

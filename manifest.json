@@ -38,9 +38,7 @@
     "https://i.ebayimg.com/"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ],
+    "scripts": ["background.js"],
     "persistent": true
   },
   "browser_action": {
@@ -51,6 +49,13 @@
     },
     "default_popup": "popup/popup.html",
     "default_title": "ShopSmart Pro"
+  },
+  "sidebar_action": {
+    "default_panel": "sidebar/sidebar.html",
+    "default_title": "ShopSmart Pro",
+    "default_icon": {
+      "48": "icons/icon-48.png"
+    }
   },
   "content_scripts": [
     {
@@ -68,12 +73,8 @@
         "*://*.amazon.com.mx/*",
         "*://*.amazon.nl/*"
       ],
-      "js": [
-        "content.js"
-      ],
-      "css": [
-        "content.css"
-      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
       "run_at": "document_idle"
     }
   ],
@@ -127,6 +128,9 @@
     "tracked/chart.min.js",
     "tracked/tracked.js",
     "tracked/tracked.css",
-    "tracked/tracked.html"
+    "tracked/tracked.html",
+    "sidebar/sidebar.html",
+    "sidebar/sidebar.css",
+    "sidebar/sidebar.js"
   ]
 }
