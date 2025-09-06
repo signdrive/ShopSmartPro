@@ -1,4 +1,4 @@
-// popup/popup.js - FINAL: Verified Affiliate Tags + Auto-Close + Dark Mode Sync
+// popup/popup.js - FINAL: Fixed Duplicate Button + Verified Affiliate Tags + Auto-Close + Dark Mode Sync
 (() => {
     'use strict';
 
@@ -14,6 +14,7 @@
     const dealsBtn = document.getElementById('dealsBtn');
     const compareBtn = document.getElementById('compareBtn');
     const ebayBtn = document.getElementById('searchEbayBtn');
+    const trackedBtn = document.getElementById('trackedBtn'); // ✅ Already in HTML
     const searchHistory = document.getElementById('searchHistory');
     const clearHistoryBtn = document.getElementById('clearHistoryBtn');
     const todaySearches = document.getElementById('todaySearches');
@@ -21,16 +22,7 @@
     const primeOnly = document.getElementById('primeOnly');
     const freeShipping = document.getElementById('freeShipping');
 
-    // New: Tracked Page Button
-    const trackedBtn = document.createElement('button');
-    trackedBtn.className = 'icon-btn';
-    trackedBtn.id = 'trackedBtn';
-    trackedBtn.title = 'View Tracked Products';
-    trackedBtn.innerHTML = '<img src="img/ebay/tracked.png" alt="Tracked" width="24" height="24">';
-    const quickActions = document.querySelector('.quick-actions');
-    if (quickActions) {
-        quickActions.appendChild(trackedBtn);
-    }
+    // ✅ No button creation here — already in HTML
 
     // Voice search elements
     const voiceSearchModal = document.getElementById('voiceSearchModal');
@@ -333,7 +325,7 @@
         setTimeout(window.close, 100);
     });
 
-    // ✅ New: Tracked Products Button
+    // ✅ New: Tracked Products Button — already in HTML, just add listener
     trackedBtn?.addEventListener('click', () => {
         chrome.tabs.create({ url: chrome.runtime.getURL('tracked/tracked.html') });
         setTimeout(window.close, 100);

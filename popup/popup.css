@@ -733,5 +733,64 @@ body.dark-mode .voice-result {
         font-size: 13px;
     }
 }
+/* Tooltip Base Styles */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    /* Ensures tooltips don't interfere with layout */
+}
 
+/* Tooltip Text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    max-width: 200px;
+    background-color: #121212;
+    color: #fff;
+    text-align: center;
+    font-size: 0.85em;
+    font-weight: normal;
+    padding: 6px 10px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 130%; /* Above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* Tooltip Arrow */
+.tooltip .tooltiptext::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #121212 transparent transparent transparent;
+}
+
+/* Show Tooltip on Hover */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Optional: Add slight delay to prevent flicker */
+.tooltip .tooltiptext {
+    transition-delay: 0.1s;
+}
+
+/* Tooltip on Icon Buttons (used in popup/sidebar) */
+.icon-btn:hover + .tooltiptext,
+.icon-btn:hover ~ .tooltiptext,
+.icon-btn:hover .tooltiptext {
+    /* Handled by structure below */
+}
 

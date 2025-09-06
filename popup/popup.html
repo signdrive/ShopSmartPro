@@ -10,33 +10,37 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <span class="current-country" id="currentCountry">🇨🇦</span>
+            <span class="current-country" id="currentCountry">🇺🇸</span>
             <h2>ShopSmart Pro</h2>
             <div class="header-buttons">
                 <!-- Updated Help Button with Image -->
-                <button class="icon-btn" id="popupHelpButton" title="Help">
-                    <img src="/img/ebay/question-mark.png" alt="Help" width="24" height="24">
+                <button class="icon-btn" id="popupHelpButton" title="Get help and user guide">
+                    <img src="../img/ebay/question-mark.png" alt="Help" width="24" height="24">
                 </button>
                 <!-- Updated Settings Button with Image -->
-                <button class="icon-btn" id="settingsButton" title="Settings">
-                    <img src="/img/ebay/settings-gear.png" alt="Settings" width="24" height="24">
+                <button class="icon-btn" id="settingsButton" title="Open extension settings">
+                    <img src="../img/ebay/settings-gear.png" alt="Settings" width="24" height="24">
                 </button>
             </div>
         </div>
 
         <!-- Quick Actions (Updated with Image Buttons) -->
         <div class="quick-actions">
-            <button class="icon-btn" id="voiceSearchBtn" title="Voice Search">
+            <button class="icon-btn" id="voiceSearchBtn" title="Search using your voice">
                 <img src="/img/ebay/microphone-icon.png" alt="Voice Search" width="24" height="24">
             </button>
-            <button class="icon-btn" id="dealsBtn" title="Today's Deals">
+            <button class="icon-btn" id="dealsBtn" title="Browse today's top deals">
                 <img src="/img/ebay/deals.png" alt="Deals" width="24" height="24">
             </button>
-            <button class="icon-btn" id="compareBtn" title="Compare Products">
+            <button class="icon-btn" id="compareBtn" title="Compare products side-by-side">
                 <img src="/img/ebay/comparision.png" alt="Compare" width="24" height="24">
             </button>
+            <!-- ✅ New: Tracked Products Button -->
+            <button class="icon-btn" id="trackedBtn" title="View your tracked price history">
+                <img src="/img/ebay/tracked.png" alt="Tracked" width="24" height="24">
+            </button>
             <!-- ✅ New: eBay Button with Image -->
-            <button class="icon-btn" id="searchEbayBtn" title="Search on eBay">
+            <button class="icon-btn" id="searchEbayBtn" title="Search for products on eBay">
                 <img src="/img/ebay/ebay-button.png" alt="Search eBay" width="24" height="24">
             </button>
         </div>
@@ -44,7 +48,7 @@
         <!-- Search Form -->
         <form class="search-form" id="searchForm" novalidate>
             <!-- Hidden inputs -->
-            <input type="hidden" name="country" id="country" value="ca">
+            <input type="hidden" name="country" id="country" value="com">
 
             <!-- Category Select -->
             <div class="form-group">
@@ -116,7 +120,7 @@
 
             <!-- Submit Button (Updated with Image) -->
             <button type="submit" class="search-btn" id="searchButton">
-                <img src="/img/ebay/amazon-search-icon.png" alt="Search" class="btn-icon">
+                <img src="img/ebay/amazon-search-icon.png" alt="Search" class="btn-icon">
                 Search Store
             </button>
         </form>
@@ -160,4 +164,3 @@
     <script src="popup.js"></script>
 </body>
 </html>
-

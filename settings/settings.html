@@ -6,19 +6,19 @@
     <title>Settings - ShopSmart Pro</title>
     <link rel="stylesheet" href="settings.css">
 </head>
-<body>
+<body class="light-mode">
     <div class="settings-container">
         <h1>ShopSmart Pro Settings</h1>
         
-        <div class="settings-tabs">
-            <button class="tab-btn active" data-tab="general">General</button>
-            <button class="tab-btn" data-tab="notifications">Notifications</button>
-            <button class="tab-btn" data-tab="advanced">Advanced</button>
+        <div class="settings-tabs" role="tablist">
+            <button class="tab-btn active" data-tab="general" role="tab" aria-selected="true" aria-controls="general-tab">General</button>
+            <button class="tab-btn" data-tab="notifications" role="tab" aria-selected="false" aria-controls="notifications-tab">Notifications</button>
+            <button class="tab-btn" data-tab="advanced" role="tab" aria-selected="false" aria-controls="advanced-tab">Advanced</button>
         </div>
 
-        <div class="tab-content">
+        <div class="tab-content" id="tabContent">
             <!-- General Settings -->
-            <div id="general-tab" class="tab-pane active">
+            <div id="general-tab" class="tab-pane active" role="tabpanel" aria-labelledby="general-tab">
                 <div class="setting-group">
                     <label for="countrySelect">Default Country:</label>
                     <select id="countrySelect" class="mobile-friendly">
@@ -96,6 +96,26 @@
                     <small>Remember your recent searches</small>
                 </div>
 
+                <!-- ✅ Dark Mode Toggle -->
+                <div class="setting-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="darkMode">
+                        <span class="checkmark"></span>
+                        Enable Dark Mode
+                    </label>
+                    <small>Use dark theme across all ShopSmart Pro interfaces</small>
+                </div>
+
+                <!-- ✅ Sync with System -->
+                <div class="setting-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="syncWithSystem">
+                        <span class="checkmark"></span>
+                        Sync with system appearance
+                    </label>
+                    <small>Automatically follow your device's light/dark mode</small>
+                </div>
+
                 <div class="affiliate-info">
                     <h3>Affiliate Information</h3>
                     <p>Yes! The extension is completely free. It's supported through affiliate program, which doesn't cost you anything extra.</p>
@@ -103,7 +123,7 @@
             </div>
 
             <!-- Notification Settings -->
-            <div id="notifications-tab" class="tab-pane">
+            <div id="notifications-tab" class="tab-pane" role="tabpanel" aria-labelledby="notifications-tab">
                 <div class="setting-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="enableNotifications" checked>
@@ -161,18 +181,18 @@
                 </div>
 
                 <div class="settings-actions">
-                    <button id="helpButton" class="help-btn">📖 Help & Documentation</button>
-                    <button id="aboutButton" class="about-btn">ℹ️ About</button>
+                    <button id="helpButton" class="help-btn" type="button">📖 Help & Documentation</button>
+                    <button id="aboutButton" class="about-btn" type="button">ℹ️ About</button>
                 </div>
 
                 <div class="setting-group">
-                    <button id="testNotificationBtn" class="test-btn">🧪 Test Notification</button>
+                    <button id="testNotificationBtn" class="test-btn" type="button">🧪 Test Notification</button>
                     <small>Send a test alert to verify sound and notifications</small>
                 </div>
             </div>
 
             <!-- Advanced Settings -->
-            <div id="advanced-tab" class="tab-pane">
+            <div id="advanced-tab" class="tab-pane" role="tabpanel" aria-labelledby="advanced-tab">
                 <div class="setting-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="enhancePages" checked>
@@ -226,7 +246,7 @@
                 </div>
 
                 <div class="setting-group">
-                    <button id="clearDataBtn" class="danger-btn">Clear All Data</button>
+                    <button id="clearDataBtn" class="danger-btn" type="button">Clear All Data</button>
                     <small>Remove all stored data and reset to defaults</small>
                 </div>
 
@@ -252,10 +272,10 @@
         </div>
 
         <div class="settings-actions">
-            <button id="saveButton" class="primary-btn">Save Settings</button>
-            <button id="resetButton" class="secondary-btn">Reset to Defaults</button>
-            <button id="exportSettingsBtn" class="secondary-btn">Export Settings</button>
-            <button id="importSettingsBtn" class="secondary-btn">Import Settings</button>
+            <button id="saveButton" class="primary-btn" type="button">Save Settings</button>
+            <button id="resetButton" class="secondary-btn" type="button">Reset to Defaults</button>
+            <button id="exportSettingsBtn" class="secondary-btn" type="button">Export Settings</button>
+            <button id="importSettingsBtn" class="secondary-btn" type="button">Import Settings</button>
             <input type="file" id="importSettingsFile" accept=".json" style="display: none;">
         </div>
 
@@ -263,8 +283,8 @@
 
         <div class="debug-section">
             <h3>Debug Information</h3>
-            <button id="debugButton" class="debug-btn">Show Debug Info</button>
-            <div id="debugInfo" style="display: none;">
+            <button id="debugButton" class="debug-btn" type="button">Show Debug Info</button>
+            <div id="debugInfo" class="hidden">
                 <pre id="debugContent"></pre>
             </div>
         </div>
