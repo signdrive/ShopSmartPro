@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // ✅ Populate category filter
             const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
-            categoryFilter.innerHTML = "<option value=\"all\">All Categories</option>";
+            categoryFilter.innerHTML = `<option value="all">${chrome.i18n.getMessage('allCategories')}</option>`;
             categories.forEach(cat => {
                 const opt = document.createElement("option");
                 opt.value = cat;
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (products.length === 0) {
             trackedResults.innerHTML = `
                 <div class="empty-state">
-                    <p>🔍 No products match your search.</p>
+                    <p>🔍 ${chrome.i18n.getMessage('noProductsMatchSearch')}</p>
                 </div>
             `;
             return;
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const img = document.createElement("img");
         img.src = product.image || chrome.runtime.getURL("img/deals/placeholder.jpg");
-        img.alt = product.title || "Product";
+    img.alt = product.title || chrome.i18n.getMessage('product');
         img.className = "product-image";
         img.addEventListener("error", () => {
             img.src = chrome.runtime.getURL("img/deals/placeholder.jpg");
@@ -115,18 +115,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const title = document.createElement("h3");
         title.className = "product-title";
-        title.textContent = product.title || "Unknown Product";
+    title.textContent = product.title || chrome.i18n.getMessage('unknownProduct');
 
         const priceInfo = document.createElement("div");
         priceInfo.className = "price-info";
 
         const originalPrice = document.createElement("span");
         originalPrice.className = "original-price";
-        originalPrice.textContent = `Original: $${(product.originalPrice ?? product.price ?? 0).toFixed(2)}`;
+    originalPrice.textContent = `${chrome.i18n.getMessage('originalPrice')}: $${(product.originalPrice ?? product.price ?? 0).toFixed(2)}`;
 
         const currentPrice = document.createElement("span");
         currentPrice.className = "current-price";
-        currentPrice.textContent = `Current: $${product.price?.toFixed(2) ?? "N/A"}`;
+    currentPrice.textContent = `${chrome.i18n.getMessage('currentPrice')}: $${product.price?.toFixed(2) ?? "N/A"}`;
 
         priceInfo.append(originalPrice, document.createElement("br"), currentPrice);
 
@@ -136,12 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const viewBtn = document.createElement("button");
         viewBtn.className = "action-btn view-btn";
         viewBtn.setAttribute("data-url", product.url || "");
-        viewBtn.textContent = "View on Amazon";
+    viewBtn.textContent = chrome.i18n.getMessage('viewOnAmazon');
 
         const stopBtn = document.createElement("button");
         stopBtn.className = "action-btn remove-btn";
         stopBtn.setAttribute("data-id", product.id);
-        stopBtn.textContent = "Stop Tracking";
+    stopBtn.textContent = chrome.i18n.getMessage('stopTracking');
 
         actions.append(viewBtn, stopBtn);
 
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 data: {
                     labels: dates,
                     datasets: [{
-                        label: "Price ($)",
+                        label: chrome.i18n.getMessage('priceChartLabel'),
                         data: prices,
                         borderColor: "#0078d4",
                         backgroundColor: "rgba(0, 120, 212, 0.1)",
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // If no data, ensure the chart container is visible and display message
             const chartContainer = canvas.closest(".price-chart-container");
             if (chartContainer) {
-                chartContainer.innerHTML = "<p>No price history available</p>";
+                chartContainer.innerHTML = `<p>${chrome.i18n.getMessage('noPriceHistory')}</p>`;
             }
         }
     }
@@ -222,16 +222,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // Export to CSV
     exportCsvBtn?.addEventListener("click", () => {
         if (allProducts.length === 0) {
-            alert("No products to export.");
+            alert(chrome.i18n.getMessage('noProductsToExport'));
             return;
         }
 
-        const headers = ["Title", "Price", "Original Price", "Category", "URL", "Date Tracked"];
+        const headers = [
+            chrome.i18n.getMessage('csvTitle'),
+            chrome.i18n.getMessage('csvPrice'),
+            chrome.i18n.getMessage('csvOriginalPrice'),
+            chrome.i18n.getMessage('csvCategory'),
+            chrome.i18n.getMessage('csvUrl'),
+            chrome.i18n.getMessage('csvDateTracked')
+        ];
         const rows = allProducts.map(p => [
-            p.title || "Unknown",
+            p.title || chrome.i18n.getMessage('unknown'),
             p.price?.toFixed(2) || "N/A",
             p.originalPrice?.toFixed(2) || "N/A",
-            p.category || "Uncategorized",
+            p.category || chrome.i18n.getMessage('uncategorized'),
             p.url || "",
             new Date(p.trackedAt || Date.now()).toLocaleDateString()
         ]);
@@ -297,4 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initial load
     loadDarkMode();
     loadTrackedProducts();
+    if (typeof applyTranslations === 'function') {
+        applyTranslations();
+    }
 });

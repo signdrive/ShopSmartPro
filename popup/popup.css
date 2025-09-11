@@ -54,6 +54,7 @@ body.dark-mode .header {
     font-size: 1.4em;
     background: linear-gradient(45deg, #FF9900, #FF6B00);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     flex: 1;
     text-align: center;
@@ -788,9 +789,14 @@ body.dark-mode .voice-result {
 }
 
 /* Tooltip on Icon Buttons (used in popup/sidebar) */
-.icon-btn:hover + .tooltiptext,
-.icon-btn:hover ~ .tooltiptext,
-.icon-btn:hover .tooltiptext {
-    /* Handled by structure below */
+/* (No empty ruleset) */
+/* Line clamp utility for compatibility */
+.line-clamp {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
 }
+
 

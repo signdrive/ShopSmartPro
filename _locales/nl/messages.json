@@ -1,0 +1,385 @@
+{
+  "extensionName": { "message": "ShopSmart Pro" },
+  "settings": { "message": "Instellingen" },
+  "help": { "message": "Help" },
+  "about": { "message": "Over" },
+  "close": { "message": "Sluiten" },
+  "save": { "message": "Opslaan" },
+  "reset": { "message": "Resetten" },
+  "export": { "message": "Exporteren" },
+  "import": { "message": "Importeren" },
+  "clear": { "message": "Wissen" },
+  "search": { "message": "Zoeken" },
+  "searchStore": { "message": "Winkel doorzoeken" },
+  "searchEbay": { "message": "eBay doorzoeken" },
+  "comparison": { "message": "Vergelijking" },
+  "deals": { "message": "Aanbiedingen" },
+  "trackedProducts": { "message": "Gevolgde producten" },
+  "notifications": { "message": "Meldingen" },
+  "voiceSearch": { "message": "Spraakgestuurd zoeken" },
+  "startListening": { "message": "Begin met luisteren" },
+  "stopListening": { "message": "Stop met luisteren" },
+  "listening": { "message": "Aan het luisteren... Spreek nu!" },
+  "gotIt": { "message": "Begrepen! Klik op 'Gebruik dit' om te zoeken." },
+  "useThisSearch": { "message": "Gebruik deze zoekopdracht" },
+  "error": { "message": "Fout" },
+  "success": { "message": "Succes" },
+  "loading": { "message": "Laden..." },
+  "openSidePanel": { "message": "Zijpaneel openen" },
+  "sidePanelTitle": { "message": "Zijpaneel" },
+  "country": { "message": "Land:" },
+  "defaultCountry": { "message": "Standaardland:" },
+  "category": { "message": "Categorie:" },
+  "keywords": { "message": "Trefwoorden:" },
+  "whatAreYouLookingFor": { "message": "Waar bent u naar op zoek?" },
+  "searchTrackedProducts": { "message": "Gevolgde producten zoeken..." },
+  "filterByCategory": { "message": "Filteren op categorie" },
+  "allCategories": { "message": "Alle categorieën" },
+  "primeOnly": { "message": "Alleen Prime" },
+  "freeShipping": { "message": "Gratis verzending" },
+  "maxComparisonProducts": { "message": "Maximaal aantal vergelijkingsproducten" },
+  "dataRetention": { "message": "Gegevensbehoud" },
+  "notificationFrequency": { "message": "Meldingsfrequentie" },
+  "recentSearches": { "message": "Recente zoekopdrachten" },
+  "activeTrackers": { "message": "Actieve trackers" },
+  "todaysSearches": { "message": "Zoekopdrachten van vandaag" },
+  "trackedProductsSection": { "message": "Gevolgde producten" },
+  "productTitle": { "message": "Producttitel" },
+  "productPrice": { "message": "Productprijs" },
+  "productMeta": { "message": "Productmeta" },
+  "productShipping": { "message": "Verzending" },
+  "productTotal": { "message": "Totaal" },
+  "dealTitle": { "message": "Aanbiedingstitel" },
+  "dealPrice": { "message": "Aanbiedingsprijs" },
+  "noRecentSearches": { "message": "Geen recente zoekopdrachten" },
+  "noProductsTracked": { "message": "Momenteel geen producten gevolgd" },
+  "noProductsInComparison": { "message": "Geen producten in vergelijking" },
+  "getAlertsWhenPricesDrop": { "message": "Ontvang meldingen wanneer de prijzen dalen" },
+  "testNotificationSent": { "message": "Testmelding verzonden!" },
+  "settingsLoaded": { "message": "Instellingen succesvol geladen." },
+  "settingsSaved": { "message": "Instellingen succesvol opgeslagen!" },
+  "settingsReset": { "message": "Instellingen teruggezet naar standaard." },
+  "settingsExported": { "message": "Instellingen succesvol geëxporteerd." },
+  "settingsImported": { "message": "Instellingen succesvol geïmporteerd." },
+  "allDataCleared": { "message": "Alle gegevens zijn gewist." },
+  "getHelpAndUserGuide": { "message": "Hulp en gebruikershandleiding" },
+  "openExtensionSettings": { "message": "Extensie-instellingen openen" },
+  "helpAlt": { "message": "Help (alt)" },
+  "settingsAlt": { "message": "Instellingen (alt)" },
+  "searchAlt": { "message": "Zoeken (alt)" },
+  "microphoneAlt": { "message": "Microfoon (alt)" },
+  "dealsAlt": { "message": "Aanbiedingen (alt)" },
+  "compareAlt": { "message": "Vergelijken (alt)" },
+  "trackedAlt": { "message": "Gevolgd (alt)" },
+  "errorSavingSettings": { "message": "Fout bij het opslaan van instellingen:" },
+  "errorLoadingSettings": { "message": "Fout bij het laden van instellingen:" },
+  "errorImportingSettings": { "message": "Fout bij het importeren van instellingen:" },
+  "confirmResetSettings": { "message": "Weet u zeker dat u alle instellingen wilt terugzetten naar de standaardwaarden?" },
+  "confirmClearAllData": { "message": "Weet u zeker dat u ALLE gegevens wilt wissen? Dit kan niet ongedaan worden gemaakt." },
+  "pleaseEnterSearchTerm": { "message": "Voer een zoekterm in" },
+  "invalidSettingsFile": { "message": "Ongeldig instellingenbestand:" },
+  "extensionDescription": { "message": "Verbetert uw winkelervaring op Amazon en eBay met prijsregistratie, vergelijkingen en aanbiedingsmeldingen." },
+  "categoryAllDepartments": { "message": "Alle afdelingen" },
+  "categoryAlexaSkills": { "message": "Alexa Skills" },
+  "categoryAmazonDevices": { "message": "Amazon-apparaten" },
+  "categoryAmazonWarehouseDeals": { "message": "Amazon Warehouse Deals" },
+  "categoryAutomotive": { "message": "Auto" },
+  "categoryBaby": { "message": "Baby" },
+  "categoryBeauty": { "message": "Schoonheid" },
+  "categoryBooks": { "message": "Boeken" },
+  "categoryElectronics": { "message": "Elektronica" },
+  "categoryGiftCards": { "message": "Cadeaubonnen" },
+  "categoryGrocery": { "message": "Boodschappen" },
+  "categoryHandmade": { "message": "Handgemaakt" },
+  "categoryJewelry": { "message": "Sieraden" },
+  "categoryKindleStore": { "message": "Kindle Store" },
+  "categoryLuxuryBeauty": { "message": "Luxe schoonheid" },
+  "categoryMusic": { "message": "Muziek" },
+  "categoryMusicalInstruments": { "message": "Muziekinstrumenten" },
+  "categoryOfficeProducts": { "message": "Kantoorproducten" },
+  "categoryPetSupplies": { "message": "Huisdierbenodigdheden" },
+  "categorySoftware": { "message": "Software" },
+  "categoryVideoGames": { "message": "Videogames" },
+  "languageSpanish": { "message": "Spaans" },
+  "languageFrench": { "message": "Frans" },
+  "languageGerman": { "message": "Duits" },
+  "languageItalian": { "message": "Italiaans" },
+  "documentation": { "message": "Documentatie", "description": "Titel van de documentatiepagina" },
+  "completeGuide": { "message": "Uw complete gids voor het beheersen van ShopSmart Pro.", "description": "Ondertitel van de documentatiepagina" },
+  "tableOfContents": { "message": "Inhoudsopgave", "description": "Kop voor de inhoudsopgave" },
+  "welcome": { "message": "Welkom", "description": "Link naar de welkomsectie" },
+  "gettingStarted": { "message": "Aan de slag", "description": "Link naar de sectie Aan de slag" },
+  "features": { "message": "Functies", "description": "Link naar de functiesectie" },
+  "troubleshooting": { "message": "Probleemoplossing", "description": "Link naar de sectie Probleemoplossing" },
+  "faq": { "message": "FAQ", "description": "Link naar de FAQ-sectie" },
+  "privacyAndSecurity": { "message": "Privacy en beveiliging", "description": "Link naar de sectie Privacy en beveiliging" },
+  "welcomeTitle": { "message": "Welkom bij ShopSmart Pro!", "description": "Hoofdtitel van de welkomsectie" },
+  "welcomeDescription": { "message": "ShopSmart Pro is een krachtige browserextensie die is ontworpen om uw online winkelervaring op Amazon en eBay te verbeteren. Deze gids leidt u door de functies en hoe u ze effectief kunt gebruiken.", "description": "Beschrijving in de welkomsectie" },
+  "getStartedSteps": { "message": "Volg deze eenvoudige stappen om aan de slag te gaan:", "description": "Inleiding tot de stappen om aan de slag te gaan" },
+  "stepToolbarIcon": { "message": "Klik op het ShopSmart Pro-pictogram in de werkbalk van uw browser om de hoofdpop-up te openen.", "description": "Eerste stap om aan de slag te gaan" },
+  "stepSearchBox": { "message": "Gebruik het zoekvak om producten op de huidige website (Amazon of eBay) te zoeken.", "description": "Tweede stap om aan de slag te gaan" },
+  "stepSelectCategories": { "message": "Selecteer een categorie om uw zoekresultaten te verfijnen.", "description": "Derde stap om aan de slag te gaan" },
+  "stepSearchOrEnter": { "message": "Klik op 'Winkel doorzoeken' of druk op Enter om de resultaten te bekijken.", "description": "Vierde stap om aan de slag te gaan" },
+  "stepRightClickMenu": { "message": "Klik met de rechtermuisknop op een productpagina om snelle acties te openen, zoals 'Prijs volgen' of 'Toevoegen aan vergelijking'.", "description": "Vijfde stap om aan de slag te gaan" },
+  "featurePriceTracking": { "message": "Prijsregistratie", "description": "Titel van de prijsregistratiefunctie" },
+  "featurePriceTrackingDesc": { "message": "Mis nooit een prijsdaling. Volg een product en ontvang een melding zodra de prijs verandert.", "description": "Beschrijving van de prijsregistratiefunctie" },
+  "featurePriceComparison": { "message": "Productvergelijking", "description": "Titel van de productvergelijkingsfunctie" },
+  "featurePriceComparisonDesc": { "message": "Vergelijk meerdere producten naast elkaar. Voeg producten van elke pagina toe aan uw vergelijkingslijst.", "description": "Beschrijving van de productvergelijkingsfunctie" },
+  "featureDealFinder": { "message": "Aanbiedingenzoeker", "description": "Titel van de aanbiedingenzoekerfunctie" },
+  "featureDealFinderDesc": { "message": "Ontdek de beste aanbiedingen en kortingen die nu beschikbaar zijn met onze ingebouwde aanbiedingenzoeker.", "description": "Beschrijving van de aanbiedingenzoekerfunctie" },
+  "featureVoiceSearch": { "message": "Spraakgestuurd zoeken", "description": "Titel van de spraakgestuurd zoeken-functie" },
+  "featureVoiceSearchDesc": { "message": "Zoek handsfree naar producten met uw stem.", "description": "Beschrijving van de spraakgestuurd zoeken-functie" },
+  "featureSidePanel": { "message": "Zijpaneelintegratie", "description": "Titel van de zijpaneelfunctie" },
+  "featureSidePanelDesc": { "message": "Krijg toegang tot alle functies van ShopSmart Pro zonder uw huidige pagina te verlaten via het handige zijpaneel.", "description": "Beschrijving van de zijpaneelfunctie" },
+  "troubleshootingIntro": { "message": "Ondervindt u problemen? Hier zijn enkele veelvoorkomende problemen en hun oplossingen:", "description": "Inleiding tot de sectie Probleemoplossing" },
+  "troubleNotWorking": { "message": "Werkt de extensie niet op een productpagina? Probeer de pagina opnieuw te laden. Als het probleem aanhoudt, zorg er dan voor dat u zich op een ondersteund Amazon- of eBay-domein bevindt.", "description": "Probleemoplossing stap 1" },
+  "troubleNoDeals": { "message": "Ziet u geen aanbiedingen? Aanbiedingen worden regelmatig bijgewerkt. Probeer het later opnieuw of controleer uw verbinding.", "description": "Probleemoplossing stap 2" },
+  "troubleLogin": { "message": "Inlogproblemen? ShopSmart Pro vereist geen login. Alle gegevens worden lokaal op uw apparaat opgeslagen.", "description": "Probleemoplossing stap 3" },
+  "faqWhichSites": { "message": "Welke sites worden ondersteund?", "description": "FAQ vraag 1" },
+  "faqWhichSitesAnswer": { "message": "ShopSmart Pro ondersteunt momenteel Amazon- en eBay-domeinen in meerdere landen.", "description": "FAQ antwoord 1" },
+  "faqDataSecure": { "message": "Zijn mijn gegevens veilig?", "description": "FAQ vraag 2" },
+  "faqDataSecureAnswer": { "message": "Ja. Al uw gegevens, inclusief gevolgde producten en zoekgeschiedenis, worden lokaal op uw computer opgeslagen. We verzamelen of verkopen uw persoonlijke gegevens niet. Raadpleeg ons privacybeleid voor meer informatie.", "description": "FAQ antwoord 2" },
+  "faqHowToUpdate": { "message": "Hoe update ik de extensie?", "description": "FAQ vraag 3" },
+  "faqHowToUpdateAnswer": { "message": "De extensie wordt automatisch bijgewerkt. U kunt deze ook handmatig bijwerken via de extensiepagina van uw browser.", "description": "FAQ antwoord 3" },
+  "privacyPolicyIntro": { "message": "Wij nemen uw privacy serieus. Onze extensie is ontworpen om te functioneren zonder persoonlijk identificeerbare gebruikersgegevens te verzamelen.", "description": "Inleiding tot de sectie Privacybeleid" },
+  "readFullPrivacyPolicy": { "message": "Lees het volledige privacybeleid", "description": "Link naar het volledige privacybeleid" },
+  "printGuide": { "message": "Gids afdrukken", "description": "Knop om de documentatie af te drukken" },
+  "copyright": { "message": "© 2025 ShopSmart Pro. Alle rechten voorbehouden.", "description": "Copyrightverklaring" },
+  "version": { "message": "Versie 2.0.0", "description": "Versienummer van de extensie" },
+  "clearHistory": { "message": "Geschiedenis wissen", "description": "Knop om de zoekgeschiedenis te wissen" },
+  "todaysSearchesLabel": { "message": "Zoekopdrachten van vandaag:", "description": "Label voor de statistieken van de zoekopdrachten van vandaag" },
+  "activeTrackersLabel": { "message": "Actieve trackers:", "description": "Label voor de statistieken van de actieve trackers" },
+  "voiceSearchTitle": { "message": "Spraakgestuurd zoeken", "description": "Titel van de modal voor spraakgestuurd zoeken" },
+  "voiceStatusInit": { "message": "Klik op de microfoon om te beginnen met luisteren...", "description": "Initiële status van spraakgestuurd zoeken" },
+  "startListeningBtn": { "message": "Begin met luisteren", "description": "Knop om spraakgestuurd luisteren in de modal te starten" },
+  "categoryAppsGames": { "message": "Apps en games", "description": "Categorienaam" },
+  "categoryClothingAccessories": { "message": "Kleding en accessoires", "description": "Categorienaam" },
+  "categoryHealthPersonalCare": { "message": "Gezondheid en persoonlijke verzorging", "description": "Categorienaam" },
+  "categoryHomeKitchen": { "message": "Huis en keuken", "description": "Categorienaam" },
+  "categoryIndustrialScientific": { "message": "Industrieel en wetenschappelijk", "description": "Categorienaam" },
+  "categoryLuggageBags": { "message": "Bagage en tassen", "description": "Categorienaam" },
+  "categoryMoviesTV": { "message": "Films en tv", "description": "Categorienaam" },
+  "categoryPatioLawnGarden": { "message": "Patio, gazon en tuin", "description": "Categorienaam" },
+  "categoryShoesHandbags": { "message": "Schoenen en handtassen", "description": "Categorienaam" },
+  "categorySportsOutdoors": { "message": "Sport en buiten", "description": "Categorienaam" },
+  "categoryToolsHomeImprovement": { "message": "Gereedschap en woningverbetering", "description": "Categorienaam" },
+  "categoryToysGames": { "message": "Speelgoed en spellen", "description": "Categorienaam" },
+  "categoryWatches": { "message": "Horloges", "description": "Categorienaam" },
+  "lightningDealsBrowser": { "message": "Lightning Deals Browser" },
+  "sortBy": { "message": "Sorteren op:" },
+  "highestDiscount": { "message": "Hoogste korting" },
+  "refreshDeals": { "message": "Deals vernieuwen" },
+  "activeDeals": { "message": "Actieve deals" },
+  "totalSavings": { "message": "Totale besparing" },
+  "avgDiscount": { "message": "Gem. korting" },
+  "dealAlerts": { "message": "Aanbiedingsmeldingen" },
+  "enableDealNotifications": { "message": "Aanbiedingsmeldingen inschakelen" },
+  "playSoundForDeals": { "message": "Speel geluid af voor aanbiedingen" },
+  "notifyFor": { "message": "Melden voor:" },
+  "electronics": { "message": "Elektronica" },
+  "home": { "message": "Startpagina" },
+  "books": { "message": "Boeken" },
+  "fashion": { "message": "Mode" },
+  "affiliateTagNotice": { "message": "Sommige aanbiedingen kunnen een affilietetag bevatten." },
+  "supportExtensionNotice": { "message": "Dit helpt de extensie te ondersteunen." },
+  "enableDarkMode": {
+    "message": "Schakel donkere modus in",
+    "description": "Label voor de schakelaar voor donkere modus."
+  },
+  "enableDarkModeDesc": {
+    "message": "Gebruik een donker thema voor alle ShopSmart Pro-interfaces",
+    "description": "Beschrijving voor de schakelaar voor donkere modus."
+  },
+  "syncWithSystem": {
+    "message": "Synchroniseren met systeemweergave",
+    "description": "Label voor synchronisatie met systeem schakelaar."
+  },
+  "syncWithSystemDesc": {
+    "message": "Volg automatisch de licht/donker modus van uw apparaat",
+    "description": "Beschrijving voor synchronisatie met systeem schakelaar."
+  },
+  "affiliateInformation": {
+    "message": "Affiliate-informatie",
+    "description": "Titel voor de sectie affiliate-informatie."
+  },
+  "affiliateInformationDesc": {
+    "message": "Ja! De extensie is volledig gratis. Het wordt ondersteund via het affiliateprogramma, wat u niets extra kost.",
+    "description": "Beschrijving voor de sectie affiliate-informatie."
+  },
+  "enableAllAlerts": {
+    "message": "Schakel alle meldingen in",
+    "description": "Label voor het inschakelen van alle meldingen."
+  },
+  "enableAllAlertsDesc": {
+    "message": "Sta meldingen voor prijsdalingen, aanbiedingen en kortingsbonnen toe",
+    "description": "Beschrijving voor het inschakelen van alle meldingen."
+  },
+  "priceDropAlerts": {
+    "message": "Meldingen bij prijsdaling",
+    "description": "Label voor meldingen bij prijsdaling."
+  },
+  "priceDropAlertsDesc": {
+    "message": "Ontvang een melding wanneer gevolgde producten in prijs dalen",
+    "description": "Beschrijving voor meldingen bij prijsdaling."
+  },
+  "dealNotifications": {
+    "message": "Aanbiedingsmeldingen",
+    "description": "Label voor aanbiedingsmeldingen."
+  },
+  "dealNotificationsDesc": {
+    "message": "Ontvang meldingen voor lightning deals",
+    "description": "Beschrijving voor aanbiedingsmeldingen."
+  },
+  "couponAlerts": {
+    "message": "Kortingsbonmeldingen",
+    "description": "Label voor kortingsbonmeldingen."
+  },
+  "couponAlertsDesc": {
+    "message": "Meld wanneer kortingsbonnen beschikbaar zijn voor producten",
+    "description": "Beschrijving voor kortingsbonmeldingen."
+  },
+  "instant": {
+    "message": "Direct",
+    "description": "Optie voor directe meldingen."
+  },
+  "hourlyDigest": {
+    "message": "Uurelijkse samenvatting",
+    "description": "Optie voor uurelijkse meldingen."
+  },
+  "dailyDigest": {
+    "message": "Dagelijkse samenvatting",
+    "description": "Optie voor dagelijkse meldingen."
+  },
+  "playSoundForAlerts": {
+    "message": "Speel geluid af voor meldingen",
+    "description": "Label voor het afspelen van geluid voor meldingen."
+  },
+  "playSoundForAlertsDesc": {
+    "message": "Speel een kort geluid af wanneer er een melding verschijnt",
+    "description": "Beschrijving voor het afspelen van geluid voor meldingen."
+  },
+  "helpAndDocumentation": {
+    "message": "Help & Documentatie",
+    "description": "Knoptekst voor hulp en documentatie."
+  },
+  "testNotification": {
+    "message": "Testmelding",
+    "description": "Knoptekst voor het testen van meldingen."
+  },
+  "testNotificationDesc": {
+    "message": "Stuur een testmelding om geluid en meldingen te verifiëren",
+    "description": "Beschrijving voor het testen van meldingen."
+  },
+  "enhancePages": {
+    "message": "Verbeter pagina's",
+    "description": "Label voor het verbeteren van pagina's."
+  },
+  "enhancePagesDesc": {
+    "message": "Voeg ShopSmart Pro-functies toe aan Amazon-pagina's",
+    "description": "Beschrijving voor het verbeteren van pagina's."
+  },
+  "voiceSearchDesc": {
+    "message": "Schakel spraakzoekfunctionaliteit in",
+    "description": "Beschrijving voor het inschakelen van spraakzoeken."
+  },
+  "usageAnalytics": {
+    "message": "Gebruik analytics",
+    "description": "Label voor gebruik analytics."
+  },
+  "usageAnalyticsDesc": {
+    "message": "Help ShopSmart Pro te verbeteren door anonieme gebruiksgegevens te delen",
+    "description": "Beschrijving voor gebruik analytics."
+  },
+  "2products": {
+    "message": "2 producten",
+    "description": "Optie voor 2 producten in vergelijking."
+  },
+  "3products": {
+    "message": "3 producten",
+    "description": "Optie voor 3 producten in vergelijking."
+  },
+  "4products": {
+    "message": "4 producten",
+    "description": "Optie voor 4 producten in vergelijking."
+  },
+  "5products": {
+    "message": "5 producten",
+    "description": "Optie voor 5 producten in vergelijking."
+  },
+  "6products": {
+    "message": "6 producten",
+    "description": "Optie voor 6 producten in vergelijking."
+  },
+  "7days": {
+    "message": "7 dagen",
+    "description": "Optie voor 7 dagen gegevensbewaring."
+  },
+  "14days": {
+    "message": "14 dagen",
+    "description": "Optie voor 14 dagen gegevensbewaring."
+  },
+  "30days": {
+    "message": "30 dagen",
+    "description": "Optie voor 30 dagen gegevensbewaring."
+  },
+  "60days": {
+    "message": "60 dagen",
+    "description": "Optie voor 60 dagen gegevensbewaring."
+  },
+  "90days": {
+    "message": "90 dagen",
+    "description": "Optie voor 90 dagen gegevensbewaring."
+  },
+  "180days": {
+    "message": "180 dagen",
+    "description": "Optie voor 180 dagen gegevensbewaring."
+  },
+  "1year": {
+    "message": "1 jaar",
+    "description": "Optie voor 1 jaar gegevensbewaring."
+  },
+  "usageStatistics": {
+    "message": "Gebruik statistieken",
+    "description": "Label voor gebruik statistieken."
+  },
+  "usageStatisticsDesc": {
+    "message": "Deel anonieme gebruiksstatistieken om te helpen de extensie te verbeteren",
+    "description": "Beschrijving voor gebruik statistieken."
+  },
+  "errorReporting": {
+    "message": "Foutrapportage",
+    "description": "Label voor foutrapportage."
+  },
+  "errorReportingDesc": {
+    "message": "Rapporteer automatisch fouten om te helpen bugs te verhelpen",
+    "description": "Beschrijving voor foutrapportage."
+  },
+  "debugInformation": {
+    "message": "Debug-informatie",
+    "description": "Titel voor de sectie debug-informatie."
+  },
+  "showDebugInfo": {
+    "message": "Toon debug-informatie",
+    "description": "Knoptekst om debug-informatie te tonen."
+  },
+  "saveSettings": {
+    "message": "Instellingen opslaan",
+    "description": "Knoptekst om instellingen op te slaan."
+  },
+  "resetToDefaults": {
+    "message": "Reset naar standaardwaarden",
+    "description": "Knoptekst om instellingen te resetten."
+  },
+  "exportSettings": {
+    "message": "Exporteer instellingen",
+    "description": "Knoptekst om instellingen te exporteren."
+  },
+  "importSettings": {
+    "message": "Importeer instellingen",
+    "description": "Knoptekst om instellingen te importeren."
+  },
+  "clearAllData": {
+    "message": "Wis alle gegevens",
+    "description": "Knoptekst om alle gegevens te wissen."
+  }
+}

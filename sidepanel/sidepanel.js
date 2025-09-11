@@ -1,5 +1,10 @@
-// sidebar/sidebar.js - Identical to popup.js, Full-Width Sidebar
-
+    // Listen for theme change messages from other extension pages/popups
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (message.type === 'themeChanged' && message.settings) {
+            applyDarkMode(!!message.settings.darkMode);
+        }
+    });
+// sidepanel/sidepanel.js - FINAL: Chrome-Compatible, Flag-Fixed, Real-Time Sync
 (() => {
     'use strict';
 
@@ -23,6 +28,10 @@
     const primeOnly = document.getElementById('primeOnly');
     const freeShipping = document.getElementById('freeShipping');
 
+    // Side panel specific elements
+    const trackedProductsList = document.getElementById('trackedProductsList');
+    const comparisonList = document.getElementById('comparisonList');
+
     // Voice search elements
     const voiceSearchModal = document.getElementById('voiceSearchModal');
     const startVoiceBtn = document.getElementById('startVoiceBtn');
@@ -44,19 +53,54 @@
 
     const DEFAULT_AFFILIATE_TAG = 'elise200f-20'; // Fallback: USA
 
-    // Country flag mapping
-    const countryFlags = {
-        'ca': '🇨🇦', 'com': '🇺🇸', 'co.uk': '🇬🇧', 'de': '🇩🇪', 'fr': '🇫🇷',
-        'it': '🇮🇹', 'es': '🇪🇸', 'co.jp': '🇯🇵', 'com.au': '🇦🇺', 'com.br': '🇧🇷',
-        'com.mx': '🇲🇽', 'nl': '🇳🇱', 'com.be': '🇧🇪'
-    };
-
     // Default settings
     const defaultSettings = {
         country: 'com',
         defaultCategory: 'search-alias=aps',
         darkMode: false
     };
+
+    // ✅ EMOJI FLAG FUNCTIONS (Chrome-Compatible)
+
+    // Get flag emoji - Always return emoji
+    function getCountryFlag(countryCode) {
+        const flags = {
+            'ca': '🇨🇦',      // Canada
+            'com': '🇺🇸',     // USA
+            'co.uk': '🇬🇧',   // UK
+            'de': '🇩🇪',      // Germany
+            'fr': '🇫🇷',      // France
+            'it': '🇮🇹',      // Italy
+            'es': '🇪🇸',      // Spain
+            'co.jp': '🇯🇵',   // Japan
+            'com.au': '🇦🇺',  // Australia
+            'com.br': '🇧🇷',  // Brazil
+            'com.mx': '🇲🇽',  // Mexico
+            'nl': '🇳🇱',      // Netherlands
+            'com.be': '🇧🇪'   // Belgium
+        };
+        return flags[countryCode] || '🇺🇸';
+    }
+
+    // Fallback: HTML entities for maximum compatibility
+    function getCountryFlagHTML(countryCode) {
+        const flagEntities = {
+            'ca': '&#127464;&#127462;',      // 🇨🇦
+            'com': '&#127482;&#127480;',     // 🇺🇸
+            'co.uk': '&#127468;&#127463;',   // 🇬🇧
+            'de': '&#127465;&#127466;',      // 🇩🇪
+            'fr': '&#127467;&#127479;',      // 🇫🇷
+            'it': '&#127470;&#127481;',      // 🇮🇹
+            'es': '&#127466;&#127480;',      // 🇪🇸
+            'co.jp': '&#127471;&#127477;',   // 🇯🇵
+            'com.au': '&#127462;&#127482;',  // 🇦🇺
+            'com.br': '&#127463;&#127479;',  // 🇧🇷
+            'com.mx': '&#127474;&#127485;',  // 🇲🇽
+            'nl': '&#127475;&#127473;',      // 🇳🇱
+            'com.be': '&#127463;&#127466;'   // 🇧🇪
+        };
+        return flagEntities[countryCode] || '&#127482;&#127480;'; // US
+    }
 
     // Voice recognition
     let recognition = null;
@@ -69,52 +113,57 @@
             return;
         }
 
-        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = 'en-US';
+        try {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
 
-        recognition.onstart = () => {
-            isListening = true;
-            if (startVoiceBtn) {
-                startVoiceBtn.textContent = '🎤 Listening...';
-                startVoiceBtn.classList.add('listening');
-            }
-            if (voiceStatus) voiceStatus.textContent = 'Listening... Speak now!';
-        };
+            recognition.onstart = () => {
+                isListening = true;
+                if (startVoiceBtn) {
+                    startVoiceBtn.textContent = '🎤 Listening...';
+                    startVoiceBtn.classList.add('listening');
+                }
+                if (voiceStatus) voiceStatus.textContent = 'Listening... Speak now!';
+            };
 
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript.trim();
-            if (!transcript) return;
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript.trim();
+                if (!transcript) return;
 
-            if (voiceResult) {
-                voiceResult.textContent = `"${transcript}"`;
-                searchInput.value = transcript;
-                voiceStatus.textContent = 'Got it! Click "Use This" to search.';
-
-                const useButton = document.createElement('button');
-                useButton.textContent = 'Use This Search';
-                useButton.className = 'voice-btn';
-                useButton.style.cssText = 'margin-top: 10px; padding: 8px; background: #0078d4; color: white; border: none; border-radius: 4px; cursor: pointer;';
-                useButton.addEventListener('click', () => {
+                if (voiceResult) {
+                    voiceResult.textContent = `"${transcript}"`;
                     searchInput.value = transcript;
-                    voiceSearchModal.classList.remove('active');
-                    searchInput.focus();
-                });
+                    voiceStatus.textContent = 'Got it! Click "Use This" to search.';
 
-                voiceResult.innerHTML = '';
-                voiceResult.appendChild(useButton);
-            }
-        };
+                    const useButton = document.createElement('button');
+                    useButton.textContent = 'Use This Search';
+                    useButton.className = 'voice-btn';
+                    useButton.style.cssText = 'margin-top: 10px; padding: 8px; background: #0078d4; color: white; border: none; border-radius: 4px; cursor: pointer;';
+                    useButton.addEventListener('click', () => {
+                        searchInput.value = transcript;
+                        voiceSearchModal.classList.remove('active');
+                        searchInput.focus();
+                    });
 
-        recognition.onerror = (event) => {
-            if (voiceStatus) voiceStatus.textContent = `Error: ${event.error}. Please try again.`;
-            resetVoiceUI();
-        };
+                    voiceResult.innerHTML = '';
+                    voiceResult.appendChild(useButton);
+                }
+            };
 
-        recognition.onend = () => {
-            resetVoiceUI();
-        };
+            recognition.onerror = (event) => {
+                if (voiceStatus) voiceStatus.textContent = `Error: ${event.error}. Please try again.`;
+                resetVoiceUI();
+            };
+
+            recognition.onend = () => {
+                resetVoiceUI();
+            };
+        } catch (error) {
+            console.error('Voice recognition initialization failed:', error);
+            if (voiceSearchBtn) voiceSearchBtn.style.display = 'none';
+        }
     }
 
     function resetVoiceUI() {
@@ -126,7 +175,7 @@
     }
 
     // Load settings and initialize
-    chrome.storage.sync.get(['settings', 'searchHistory'], (result) => {
+    chrome.storage.sync.get(['settings', 'searchHistory', 'trackedProducts', 'comparisonProducts'], (result) => {
         const settings = result.settings || defaultSettings;
         updateUIWithSettings(settings);
 
@@ -134,23 +183,64 @@
             displaySearchHistory(result.searchHistory);
         }
 
+        if (Array.isArray(result.trackedProducts)) {
+            displayTrackedProducts(result.trackedProducts);
+        }
+
+        if (Array.isArray(result.comparisonProducts)) {
+            displayComparisonProducts(result.comparisonProducts);
+        }
+
         loadActiveTrackersCount();
 
-        // ✅ Apply dark mode from settings
+        // Apply dark mode
         applyDarkMode(!!settings.darkMode);
     });
 
-    // ✅ Update UI and ensure hidden input is in sync
+    // ✅ Update UI with settings and force emoji flag
     function updateUIWithSettings(settings) {
         const country = settings.country || 'com';
         if (countryInput) countryInput.value = country;
-        if (currentCountry) currentCountry.textContent = countryFlags[country] || '🇺🇸';
+
+        if (currentCountry) {
+            try {
+                const flag = getCountryFlag(country);
+                currentCountry.textContent = flag;
+
+                // Enhanced styling for emoji
+                currentCountry.className = 'current-country emoji-flag';
+                currentCountry.style.cssText = `
+                    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
+                    font-size: 2em !important;
+                    line-height: 1 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    min-width: 40px !important;
+                    height: 40px !important;
+                    margin-right: 10px !important;
+                    flex-shrink: 0 !important;
+                `;
+
+                // Fallback after render
+                setTimeout(() => {
+                    if (currentCountry.textContent.length < 2 || currentCountry.offsetWidth < 20) {
+                        console.log('Emoji failed, using HTML entities');
+                        currentCountry.innerHTML = getCountryFlagHTML(country);
+                    }
+                }, 100);
+            } catch (e) {
+                console.error('Flag rendering error:', e);
+                currentCountry.innerHTML = getCountryFlagHTML(country);
+            }
+        }
+
         if (categorySelect && settings.defaultCategory) {
             categorySelect.value = settings.defaultCategory;
         }
     }
 
-    // ✅ Apply dark mode to popup
+    // ✅ Apply dark mode
     function applyDarkMode(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
@@ -163,7 +253,65 @@
         });
     }
 
-    // ✅ Prevent ANY form submission to popup.html
+    // Display tracked products
+    function displayTrackedProducts(trackedProducts) {
+        if (!trackedProductsList) return;
+
+        if (!trackedProducts || trackedProducts.length === 0) {
+            trackedProductsList.innerHTML = '<div class="empty-state">No products tracked yet</div>';
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        trackedProducts.slice(0, 5).forEach(product => {
+            const productItem = document.createElement('div');
+            productItem.className = 'product-item';
+            productItem.innerHTML = `
+                <div class="product-title">${escapeHtml(product.title || 'Unknown Product')}</div>
+                <div class="product-price">$${product.price || '0.00'}</div>
+                <div class="product-meta">Tracked ${formatDate(product.trackedAt || Date.now())}</div>
+            `;
+            productItem.addEventListener('click', () => {
+                if (product.url) {
+                    chrome.tabs.create({ url: product.url });
+                }
+            });
+            fragment.appendChild(productItem);
+        });
+        trackedProductsList.innerHTML = '';
+        trackedProductsList.appendChild(fragment);
+    }
+
+    // Display comparison products
+    function displayComparisonProducts(comparisonProducts) {
+        if (!comparisonList) return;
+
+        if (!comparisonProducts || comparisonProducts.length === 0) {
+            comparisonList.innerHTML = '<div class="empty-state">No products in comparison</div>';
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        comparisonProducts.slice(0, 3).forEach(product => {
+            const productItem = document.createElement('div');
+            productItem.className = 'product-item';
+            productItem.innerHTML = `
+                <div class="product-title">${escapeHtml(product.title || 'Unknown Product')}</div>
+                <div class="product-price">$${product.price || '0.00'}</div>
+                <div class="product-meta">${product.source || 'Unknown Source'}</div>
+            `;
+            productItem.addEventListener('click', () => {
+                if (product.url) {
+                    chrome.tabs.create({ url: product.url });
+                }
+            });
+            fragment.appendChild(productItem);
+        });
+        comparisonList.innerHTML = '';
+        comparisonList.appendChild(fragment);
+    }
+
+    // Prevent form submission
     if (searchForm) {
         searchForm.setAttribute('novalidate', 'true');
         searchForm.addEventListener('submit', (e) => {
@@ -172,29 +320,26 @@
         }, { passive: false });
     }
 
-    // ✅ Central search function
+    // Perform search
     function performSearch() {
         const keyword = searchInput?.value.trim();
         if (!keyword) return;
 
-        // Get country from hidden input
         const country = countryInput?.value || 'com';
         const category = categorySelect?.value || 'search-alias=aps';
-
-        // ✅ Get correct affiliate tag — falls back to USA
         const tag = AFFILIATE_TAGS[country] || DEFAULT_AFFILIATE_TAG;
-
-        // ✅ Build correct domain
         const domain = country === 'com' ? 'www.amazon.com' : `www.amazon.${country}`;
         const baseUrl = `https://${domain}/s`;
 
-        let url = `${baseUrl}?field-keywords=${encodeURIComponent(keyword)}`;
-        url += `&${category}&tag=${tag}`;
-
+        let url = `${baseUrl}?field-keywords=${encodeURIComponent(keyword)}&${category}&tag=${tag}`;
         if (primeOnly?.checked) url += '&rh=p_85:2470955011';
         if (freeShipping?.checked) url += '&rh=p_76:1249130011';
 
-        chrome.tabs.create({ url });
+        chrome.tabs.create({ url }, () => {
+            if (chrome.runtime.lastError) {
+                console.error('Failed to create tab:', chrome.runtime.lastError);
+            }
+        });
 
         saveSearchHistory(keyword, category);
         trackSearchEvent(keyword, category);
@@ -295,7 +440,7 @@
         });
     }
 
-    // ✅ Button handlers
+    // Button handlers
     settingsButton?.addEventListener('click', () => {
         chrome.runtime.openOptionsPage();
     });
@@ -320,17 +465,15 @@
         chrome.tabs.create({ url: chrome.runtime.getURL('tracked/tracked.html') });
     });
 
-    if (ebayBtn) {
-        ebayBtn.addEventListener('click', () => {
-            const query = searchInput?.value.trim();
-            if (!query) {
-                alert('Please enter a search term');
-                return;
-            }
-            const url = chrome.runtime.getURL(`ebay/ebay.html?search=${encodeURIComponent(query)}`);
-            chrome.tabs.create({ url });
-        });
-    }
+    ebayBtn?.addEventListener('click', () => {
+        const query = searchInput?.value.trim();
+        if (!query) {
+            alert('Please enter a search term');
+            return;
+        }
+        const url = chrome.runtime.getURL(`ebay/ebay.html?search=${encodeURIComponent(query)}`);
+        chrome.tabs.create({ url });
+    });
 
     clearHistoryBtn?.addEventListener('click', clearSearchHistory);
 
@@ -377,7 +520,7 @@
         }
     });
 
-    // Listen for settings updates
+    // Listen for updates
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === 'settingsUpdated') {
             updateUIWithSettings(request.settings);
@@ -387,25 +530,83 @@
 
         if (request.action === 'trackersUpdated') {
             loadActiveTrackersCount();
+            chrome.storage.sync.get(['trackedProducts'], (result) => {
+                if (Array.isArray(result.trackedProducts)) {
+                    displayTrackedProducts(result.trackedProducts);
+                }
+            });
         }
 
-        // ✅ Listen for tracking events
+        if (request.action === 'comparisonUpdated') {
+            chrome.storage.sync.get(['comparisonProducts'], (result) => {
+                if (Array.isArray(result.comparisonProducts)) {
+                    displayComparisonProducts(result.comparisonProducts);
+                }
+            });
+        }
+
         if (request.action === 'productTracked' || request.action === 'trackProduct') {
             loadActiveTrackersCount();
+            chrome.storage.sync.get(['trackedProducts'], (result) => {
+                if (Array.isArray(result.trackedProducts)) {
+                    displayTrackedProducts(result.trackedProducts);
+                }
+            });
         }
 
         return true;
     });
 
+    // Utility functions
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function formatDate(timestamp) {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) {
+            return 'Today';
+        } else if (diffDays === 1) {
+            return 'Yesterday';
+        } else if (diffDays < 7) {
+            return `${diffDays} days ago`;
+        } else {
+            return date.toLocaleDateString();
+        }
+    }
+
+    // Force flag update
+    function forceUpdateFlag() {
+        chrome.storage.sync.get(['settings'], (result) => {
+            const settings = result.settings || { country: 'com' };
+            updateUIWithSettings(settings);
+        });
+    }
+
     // Initialize
     initializeVoiceRecognition();
     if (searchInput) searchInput.focus();
 
-    // Initial load
     loadActiveTrackersCount();
     chrome.storage.sync.get(['searchHistory'], (result) => {
         if (Array.isArray(result.searchHistory)) {
             updateTodaysSearchesCount(result.searchHistory);
         }
     });
+
+    // Force flag update after DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(forceUpdateFlag, 100);
+    });
+
+    setTimeout(() => forceUpdateFlag(), 500);
+    setTimeout(() => forceUpdateFlag(), 1000);
 })();
+
+

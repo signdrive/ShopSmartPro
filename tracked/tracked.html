@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📦 Tracked Products - ShopSmart Pro</title>
+  <title>📦 __MSG_trackedProducts__ - __MSG_extensionName__</title>
   <link rel="stylesheet" href="tracked.css">
+  <script src="../utils/i18n-fix.js"></script>
 </head>
 <body class="light-mode">
   <div class="container">
     <!-- Header -->
     <header class="header">
-      <h1>📦 Tracked Products</h1>
-      <p class="subtitle">Get alerts when prices drop</p>
-      <button id="closeBtn" class="btn btn-danger" aria-label="Close">✕</button>
+  <h1>📦 __MSG_trackedProducts__</h1>
+  <p class="subtitle">__MSG_getAlertsWhenPricesDrop__</p>
+  <button id="closeBtn" class="btn btn-danger" aria-label="__MSG_close__">✕</button>
     </header>
 
     <!-- Controls -->
@@ -21,30 +22,30 @@
         <input 
           type="text" 
           id="searchInput" 
-          placeholder="Search tracked products..." 
+          placeholder="__MSG_searchTrackedProducts__" 
           class="search-input"
-          aria-label="Search tracked products">
-        <select id="categoryFilter" aria-label="Filter by category">
-          <option value="all">All Categories</option>
+          aria-label="__MSG_searchTrackedProducts__">
+        <select id="categoryFilter" aria-label="__MSG_filterByCategory__">
+          <option value="all">__MSG_allCategories__</option>
         </select>
       </div>
-      <button id="exportCsvBtn" class="btn">📤 Export to CSV</button>
+  <button id="exportCsvBtn" class="btn">📤 __MSG_exportToCsv__</button>
     </div>
 
     <!-- Results -->
     <main id="trackedResults" class="results" role="main">
-      <div class="loading">Loading tracked products...</div>
+  <div class="loading">__MSG_loadingTrackedProducts__</div>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-      <p>🔔 <strong>Price alerts active</strong> | Updates every 6 hours</p>
+  <p>🔔 <strong>__MSG_priceAlertsActive__</strong> | __MSG_updatesEvery6Hours__</p>
     </footer>
   </div>
 
   <!-- ✅ CORRECT PATHS -->
   <!-- Goes to /lib folder -->
-  <script src="../lib/chart.min.js"></script>
+  <script src="chart.min.js"></script>
   
   <!-- In same folder -->
   <script src="tracked.js"></script>

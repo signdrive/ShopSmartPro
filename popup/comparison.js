@@ -1,4 +1,42 @@
-// popup/comparison.js - FINAL: Global Dark Mode Sync, No Local Toggle
+// popup/comparison.js
+
+/**
+ * Recursively traverses the DOM to find and replace i18n placeholders.
+ * It looks for nodes and attributes with the pattern __MSG_key__.
+ * @param {Node} node - The starting node to traverse.
+ */
+function applyTranslations(node = document.body) {
+    if (!node) return;
+
+    const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, null, false);
+
+    let currentNode;
+    while (currentNode = walker.nextNode()) {
+        if (currentNode.nodeType === Node.TEXT_NODE) {
+            // Process text content
+            const text = currentNode.nodeValue;
+            const replacedText = text.replace(/__MSG_(\w+)__/g, (match, key) => {
+                return chrome.i18n.getMessage(key) || match;
+            });
+            if (replacedText !== text) {
+                currentNode.nodeValue = replacedText;
+            }
+        } else if (currentNode.nodeType === Node.ELEMENT_NODE) {
+            // Process attributes
+            for (let i = 0; i < currentNode.attributes.length; i++) {
+                const attr = currentNode.attributes[i];
+                const attrValue = attr.value;
+                const replacedAttrValue = attrValue.replace(/__MSG_(\w+)__/g, (match, key) => {
+                    return chrome.i18n.getMessage(key) || match;
+                });
+                if (replacedAttrValue !== attrValue) {
+                    attr.value = replacedAttrValue;
+                }
+            }
+        }
+    }
+}
+
 class ProductComparison {
     constructor() {
         this.products = [];
@@ -35,8 +73,7 @@ class ProductComparison {
         }
     }
 
-    // ✅ Load dark mode from global settings
-    async loadTheme() {
+     async loadTheme() {
         try {
             const result = await new Promise(resolve => {
                 chrome.storage.sync.get(['settings'], res => resolve(res));
@@ -48,14 +85,12 @@ class ProductComparison {
         }
     }
 
-    // ✅ Apply theme class only
-    updateTheme(isDark) {
+     updateTheme(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
         document.body.classList.toggle('light-mode', !isDark);
     }
 
-    // ✅ Listen for global settings update
-    setupEventListeners() {
+ setupEventListeners() {
         if (this.clearBtn) {
             this.clearBtn.addEventListener('click', () => this.clearComparison());
         }
@@ -70,10 +105,10 @@ class ProductComparison {
                 const url = chrome.runtime.getURL('popup/comparison.html');
                 navigator.clipboard.writeText(url)
                     .then(() => {
-                        alert('🔗 Comparison link copied to clipboard!');
+                        alert(chrome.i18n.getMessage('comparisonLinkCopied'));
                     })
                     .catch(() => {
-                        alert('❌ Could not copy link. Please try again.');
+                        alert(chrome.i18n.getMessage('couldNotCopyLink'));
                     });
             });
         }
@@ -102,8 +137,7 @@ class ProductComparison {
             });
         }
 
-        // ✅ Listen for global settings update
-        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             if (request.action === 'settingsUpdated') {
                 const isDark = !!request.settings.darkMode;
                 this.updateTheme(isDark);
@@ -117,7 +151,7 @@ class ProductComparison {
             return true;
         });
 
-        // Delegate events for dynamic buttons
+    
         this.comparisonResults?.addEventListener('click', (e) => {
             const viewBtn = e.target.closest('.view-btn');
             const trackBtn = e.target.closest('.track-btn');
@@ -151,7 +185,7 @@ class ProductComparison {
         chrome.runtime.sendMessage({ action: 'trackProduct', product });
         const btn = document.querySelector(`.track-btn[data-id="${id}"]`);
         if (btn) {
-            btn.textContent = '✅ Tracking';
+            btn.textContent = chrome.i18n.getMessage('trackingProduct');
             btn.disabled = true;
         }
     }
@@ -169,7 +203,7 @@ class ProductComparison {
             this.products = result.comparisonProducts;
             this.renderComparison();
         } catch (error) {
-            this.showError('Failed to load saved products');
+            this.showError(chrome.i18n.getMessage('failedToLoadSavedProducts'));
             this.products = [];
             this.renderComparison();
         }
@@ -187,7 +221,7 @@ class ProductComparison {
                 });
             });
         } catch (error) {
-            this.showError('Failed to save products');
+            this.showError(chrome.i18n.getMessage('failedToSaveProducts'));
         }
     }
 
@@ -225,11 +259,11 @@ class ProductComparison {
             empty.className = 'loading';
 
             const text = document.createElement('div');
-            text.textContent = 'Select products to compare';
+            text.textContent = chrome.i18n.getMessage('selectProductsToCompare');
             empty.appendChild(text);
 
             const hint = document.createElement('small');
-            hint.textContent = 'Click "Compare" on any product listing';
+            hint.textContent = chrome.i18n.getMessage('clickCompareOnProductListing');
             empty.appendChild(hint);
 
             this.comparisonResults.appendChild(empty);
@@ -241,10 +275,10 @@ class ProductComparison {
             warning.className = 'warning';
 
             const strong = document.createElement('strong');
-            strong.textContent = '⚠️ Too Many Products';
+            strong.textContent = chrome.i18n.getMessage('tooManyProductsWarningTitle');
 
             const small = document.createElement('small');
-            small.textContent = 'For best experience, keep comparisons under 5 products.';
+            small.textContent = chrome.i18n.getMessage('tooManyProductsWarningText');
 
             warning.appendChild(strong);
             warning.appendChild(document.createElement('br'));
@@ -266,7 +300,7 @@ class ProductComparison {
 
             const img = document.createElement('img');
             img.src = product.image || chrome.runtime.getURL('img/deals/placeholder.jpg');
-            img.alt = product.title || 'Product';
+            img.alt = product.title || chrome.i18n.getMessage('product');
             img.className = 'product-image';
             img.addEventListener('error', () => {
                 img.src = chrome.runtime.getURL('img/deals/placeholder.jpg');
@@ -274,15 +308,15 @@ class ProductComparison {
 
             const title = document.createElement('h3');
             title.className = 'product-title';
-            title.textContent = product.title || 'Unknown Product';
+            title.textContent = product.title || chrome.i18n.getMessage('unknownProduct');
 
             const price = document.createElement('div');
             price.className = 'product-price';
-            price.textContent = `$${product.price?.toFixed(2) || 'N/A'}`;
+            price.textContent = product.price ? `$${product.price.toFixed(2)}` : chrome.i18n.getMessage('notAvailable');
 
             const rating = document.createElement('div');
             rating.className = 'product-rating';
-            rating.textContent = `⭐ ${product.rating || 'N/A'}`;
+            rating.textContent = product.rating ? `⭐ ${product.rating}` : `⭐ ${chrome.i18n.getMessage('notAvailable')}`;
 
             const actions = document.createElement('div');
             actions.className = 'action-buttons';
@@ -290,17 +324,17 @@ class ProductComparison {
             const viewBtn = document.createElement('button');
             viewBtn.className = 'action-btn view-btn';
             viewBtn.dataset.url = product.url || '';
-            viewBtn.textContent = 'View';
+            viewBtn.textContent = chrome.i18n.getMessage('view');
 
             const trackBtn = document.createElement('button');
             trackBtn.className = 'action-btn track-btn';
             trackBtn.dataset.id = product.id;
-            trackBtn.textContent = 'Track';
+            trackBtn.textContent = chrome.i18n.getMessage('track');
 
             const removeBtn = document.createElement('button');
             removeBtn.className = 'action-btn remove-btn';
             removeBtn.dataset.id = product.id;
-            removeBtn.textContent = 'Remove';
+            removeBtn.textContent = chrome.i18n.getMessage('remove');
 
             actions.append(viewBtn, trackBtn, removeBtn);
             card.append(img, title, price, rating, actions);
@@ -322,7 +356,7 @@ class ProductComparison {
         tableSection.className = 'comparison-section';
 
         const heading = document.createElement('h3');
-        heading.textContent = '📊 Feature Comparison';
+        heading.textContent = chrome.i18n.getMessage('featureComparison');
         tableSection.appendChild(heading);
 
         const table = document.createElement('table');
@@ -332,12 +366,12 @@ class ProductComparison {
         const hRow = document.createElement('tr');
 
         const thFeature = document.createElement('th');
-        thFeature.textContent = 'Feature';
+        thFeature.textContent = chrome.i18n.getMessage('feature');
         hRow.appendChild(thFeature);
 
         this.products.forEach((_, i) => {
             const th = document.createElement('th');
-            th.textContent = `Product ${i + 1}`;
+            th.textContent = `${chrome.i18n.getMessage('product')} ${i + 1}`;
             hRow.appendChild(th);
         });
 
@@ -368,13 +402,18 @@ class ProductComparison {
     }
 
     formatFeatureName(f) {
-        return { price: '💰 Price', rating: '⭐ Rating' }[f] || f;
+        const names = {
+            price: chrome.i18n.getMessage('price'),
+            rating: chrome.i18n.getMessage('rating')
+        };
+        return names[f] || f;
     }
 
     formatFeatureValue(f, p) {
-        if (f === 'price') return p.price ? `$${p.price.toFixed(2)}` : 'N/A';
-        if (f === 'rating') return p.rating ? `⭐ ${p.rating}` : 'N/A';
-        return 'N/A';
+        const notAvailable = chrome.i18n.getMessage('notAvailable');
+        if (f === 'price') return p.price ? `$${p.price.toFixed(2)}` : notAvailable;
+        if (f === 'rating') return p.rating ? `⭐ ${p.rating}` : `⭐ ${notAvailable}`;
+        return notAvailable;
     }
 
     getFeatureClass(feature, product) {
@@ -390,15 +429,20 @@ class ProductComparison {
 
     exportToCsv() {
         if (this.products.length === 0) {
-            alert('No products to export.');
+            alert(chrome.i18n.getMessage('noProductsToExport'));
             return;
         }
 
-        const headers = ['Title', 'Price', 'Rating', 'URL'];
+        const headers = [
+            chrome.i18n.getMessage('csvTitle'),
+            chrome.i18n.getMessage('csvPrice'),
+            chrome.i18n.getMessage('csvRating'),
+            chrome.i18n.getMessage('csvUrl')
+        ];
         const rows = this.products.map(p => [
-            p.title || 'Unknown',
-            `$${p.price?.toFixed(2) || 'N/A'}`,
-            p.rating || 'N/A',
+            p.title || chrome.i18n.getMessage('unknownProduct'),
+            p.price ? `$${p.price.toFixed(2)}` : chrome.i18n.getMessage('notAvailable'),
+            p.rating || chrome.i18n.getMessage('notAvailable'),
             p.url || ''
         ]);
 
@@ -416,11 +460,11 @@ class ProductComparison {
 
     saveCurrentList() {
         if (this.products.length === 0) {
-            alert('No products to save.');
+            alert(chrome.i18n.getMessage('noProductsToSave'));
             return;
         }
 
-        const name = this.listNameInput?.value.trim() || `Comparison ${new Date().toLocaleDateString()}`;
+        const name = this.listNameInput?.value.trim() || `${chrome.i18n.getMessage('comparison')} ${new Date().toLocaleDateString()}`;
 
         const list = {
             name,
@@ -433,7 +477,7 @@ class ProductComparison {
             lists = lists.filter(l => l.name !== name);
             lists.unshift(list);
             chrome.storage.sync.set({ savedComparisons: lists }, () => {
-                alert(`✅ Saved as "${name}"`);
+                alert(chrome.i18n.getMessage('listSavedAs', [name]));
                 if (this.listNameInput) this.listNameInput.value = '';
                 this.loadSavedLists();
             });
@@ -446,9 +490,9 @@ class ProductComparison {
             const select = this.loadListSelect;
             if (!select) return;
 
-            const placeholder = select.querySelector('option[disabled]');
-            select.innerHTML = '';
-            if (placeholder) select.appendChild(placeholder);
+            const currentVal = select.value;
+            const placeholderText = chrome.i18n.getMessage('loadSavedComparisonOption');
+            select.innerHTML = `<option value="" disabled>${placeholderText}</option>`;
 
             lists.forEach(list => {
                 const option = document.createElement('option');
@@ -456,6 +500,7 @@ class ProductComparison {
                 option.textContent = list.name;
                 select.appendChild(option);
             });
+            select.value = currentVal;
         });
     }
 
@@ -465,41 +510,45 @@ class ProductComparison {
             const found = lists.find(l => l.name === name);
             if (found) {
                 this.products = found.products;
+                this.saveComparison();
                 this.renderComparison();
+                if (this.listNameInput) this.listNameInput.value = name;
+            } else {
+                alert(chrome.i18n.getMessage('couldNotFindList', [name]));
             }
         });
     }
 
     deleteSavedList(name) {
-        if (confirm(`Delete saved list "${name}"?`)) {
-            chrome.storage.sync.get(['savedComparisons'], (result) => {
-                let lists = result.savedComparisons || [];
-                lists = lists.filter(l => l.name !== name);
+        chrome.storage.sync.get(['savedComparisons'], (result) => {
+            let lists = result.savedComparisons || [];
+            const initialLength = lists.length;
+            lists = lists.filter(l => l.name !== name);
+
+            if (lists.length < initialLength) {
                 chrome.storage.sync.set({ savedComparisons: lists }, () => {
-                    const option = this.loadListSelect.querySelector(`option[value="${name}"]`);
-                    if (option) option.remove();
-                    this.loadListSelect.value = '';
-                    alert(`✅ List "${name}" deleted.`);
+                    alert(chrome.i18n.getMessage('listDeleted', [name]));
+                    this.loadSavedLists();
                 });
-            });
-        }
+            } else {
+                alert(chrome.i18n.getMessage('couldNotFindList', [name]));
+            }
+        });
     }
 
-    showError(msg) {
-        if (!this.comparisonResults) return;
-        this.comparisonResults.innerHTML = '';
-
+    showError(message, duration = 3000) {
         const errorDiv = document.createElement('div');
-        errorDiv.style.cssText = 'color: #dc3545; text-align: center; padding: 20px; font-size: 0.9rem;';
-
-        const text = document.createTextNode(`❌ ${msg}`);
-        errorDiv.appendChild(text);
-
-        this.comparisonResults.appendChild(errorDiv);
+        errorDiv.className = 'error-toast';
+        errorDiv.textContent = message;
+        document.body.appendChild(errorDiv);
+        setTimeout(() => {
+            errorDiv.remove();
+        }, duration);
     }
 }
 
-// Initialize
+// Initialize the class when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     new ProductComparison();
+    applyTranslations();
 });

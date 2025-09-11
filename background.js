@@ -70,54 +70,48 @@ function isRateLimited(senderId) {
 
 // Initialize on install
 chrome.runtime.onInstalled.addListener(() => {
-  // Use Promise to ensure completion
-  new Promise((resolve) => {
-    chrome.storage.sync.set({
-      settings: {
-        country: DEFAULT_COUNTRY,
-        affiliateTag: DEFAULT_AFFILIATE_TAG,
-        ebayClientId: EBAY_CLIENT_ID,
-        maxComparisonProducts: 4,
-        enableNotifications: true,
-        priceAlerts: true,
-        dealAlerts: true,
-        soundAlerts: true,
-        trackPrices: true
-      },
-      searchHistory: [],
-      trackedProducts: [],
-      comparisonProducts: [],
-      savedComparisons: []
-    }, resolve);
-  }).then(() => {
+  chrome.storage.sync.set({
+    settings: {
+      country: DEFAULT_COUNTRY,
+      affiliateTag: DEFAULT_AFFILIATE_TAG,
+      ebayClientId: EBAY_CLIENT_ID,
+      maxComparisonProducts: 4,
+      enableNotifications: true,
+      priceAlerts: true,
+      dealAlerts: true,
+      soundAlerts: true,
+      trackPrices: true,
+      darkMode: false,
+      syncWithSystem: true
+    },
+    searchHistory: [],
+    trackedProducts: [],
+    comparisonProducts: [],
+    savedComparisons: []
+  }, () => {
     // Create context menus after storage is set
-    return new Promise((resolve) => {
-      chrome.contextMenus.removeAll(() => {
-        chrome.contextMenus.create({
-          id: "search-store",
-          title: "Search for \"%s\"",
-          contexts: ["selection"]
-        });
-        chrome.contextMenus.create({
-          id: "search-store-new-tab",
-          title: "Search in New Tab",
-          contexts: ["selection"]
-        });
-        chrome.contextMenus.create({
-          id: "compare-product",
-          title: "Compare with ShopSmart Pro",
-          contexts: ["selection"]
-        });
-        resolve();
+    chrome.contextMenus.removeAll(() => {
+      chrome.contextMenus.create({
+        id: "search-store",
+        title: "Search for \"%s\"",
+        contexts: ["selection"]
+      });
+      chrome.contextMenus.create({
+        id: "search-store-new-tab",
+        title: "Search in New Tab",
+        contexts: ["selection"]
+      });
+      chrome.contextMenus.create({
+        id: "compare-product",
+        title: "Compare with ShopSmart Pro",
+        contexts: ["selection", "link", "image"]
       });
     });
-  }).catch(err => {
-    console.error('Failed to initialize:', err);
-  });
 
-  // Set up price check alarm
-  chrome.alarms.clearAll(() => {
-    chrome.alarms.create("priceCheck", { periodInMinutes: 360 });
+    // Set up price check alarm
+    chrome.alarms.clearAll(() => {
+      chrome.alarms.create("priceCheck", { periodInMinutes: 360 });
+    });
   });
 });
 
@@ -155,45 +149,55 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 // Handle messages
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.action) {
-    case "fetchEbaySearch":
-      handleFetchEbaySearch(request, sender.tab ? sender.tab.id : null, sendResponse)
-        .catch(err => {
-          console.error("eBay search error:", err);
-          sendResponse({ error: err.message, success: false });
+  try {
+    switch (request.action) {
+      case "fetchEbaySearch":
+        handleFetchEbaySearch(request, sender.tab ? sender.tab.id : null)
+          .then(sendResponse)
+          .catch(err => {
+            console.error("eBay search error:", err);
+            sendResponse({ error: err.message, success: false });
+          });
+        return true; // Keep channel open
+
+      case "getSettings":
+        chrome.storage.sync.get(["settings"], (res) => {
+          sendResponse({ settings: res.settings || {} });
         });
-      return true; // Keep message channel open
+        return true;
 
-    case "getSettings":
-      chrome.storage.sync.get(["settings"], (res) => {
-        sendResponse({ settings: res.settings || {} });
-      });
-      return true;
+      case "addToComparison":
+        addToComparison(request.product);
+        sendResponse({ status: "added" });
+        return true;
 
-    case "addToComparison":
-      addToComparison(request.product);
-      sendResponse({ status: "added" });
-      return true;
+      case "openComparison":
+        openComparisonPage();
+        sendResponse({ status: "success" });
+        return true;
 
-    case "openComparison":
-      openComparisonPage();
-      sendResponse({ status: "success" });
-      return true;
+      case "openDeals":
+        openDealsPage();
+        sendResponse({ status: "success" });
+        return true;
 
-    case "openDeals":
-      openDealsPage();
-      sendResponse({ status: "success" });
-      return true;
+      case "trackProduct":
+        trackProduct(request.product, sendResponse);
+        return true;
 
-    case "trackProduct":
-      trackProduct(request.product, sender, sendResponse);
-      return true;
+      case "createAffiliateLink":
+        createAffiliateLink(request, sendResponse);
+        return true;
 
-    case "createAffiliateLink":
-      createAffiliateLink(request, sendResponse);
-      return true;
+      default:
+        sendResponse({ error: "Unknown action" });
+        return true;
+    }
+  } catch (error) {
+    console.error("Message handler error:", error);
+    sendResponse({ error: error.message });
+    return true;
   }
-  return false;
 });
 
 // ✅ Add to comparison
@@ -212,7 +216,7 @@ function addToComparison(product) {
 }
 
 // ✅ Track Product
-function trackProduct(product, sender, sendResponse) {
+function trackProduct(product, sendResponse) {
   if (!product?.id) {
     sendResponse({ success: false, error: "Invalid product" });
     return;
@@ -223,7 +227,6 @@ function trackProduct(product, sender, sendResponse) {
     const exists = trackedProducts.some(p => p.id === product.id);
 
     if (!exists) {
-      // ✅ Add full product data
       const trackedItem = {
         ...product,
         trackedAt: Date.now(),
@@ -234,7 +237,6 @@ function trackProduct(product, sender, sendResponse) {
 
       trackedProducts.unshift(trackedItem);
       chrome.storage.sync.set({ trackedProducts }, () => {
-        // ✅ Show notification
         if (chrome.notifications) {
           chrome.notifications.create(`tracked-${product.id}`, {
             type: "basic",
@@ -243,10 +245,7 @@ function trackProduct(product, sender, sendResponse) {
             message: `Now tracking: ${product.title.substring(0, 50)}...`
           });
         }
-
-        // ✅ Update popup counter
         chrome.runtime.sendMessage({ action: "trackersUpdated" });
-
         sendResponse({ status: "tracked" });
       });
     } else {
@@ -304,20 +303,18 @@ async function getEbayAccessToken() {
 }
 
 // Handle eBay search with pagination
-async function handleFetchEbaySearch(request, senderTabId, sendResponse) {
+async function handleFetchEbaySearch(request, senderTabId) {
   const { query, page = 1, limit = 20 } = request;
   const senderId = senderTabId || "unknown";
 
   if (isRateLimited(senderId)) {
-    sendResponse({ error: "Too many requests. Please wait.", success: false });
-    return;
+    throw new Error("Too many requests. Please wait.");
   }
 
   const cacheKey = `ebay_${query}_${DEFAULT_COUNTRY}_page${page}_limit${limit}`;
   const cached = ebayCache.get(cacheKey);
   if (cached && Date.now() < cached.expiry) {
-    sendResponse(cached);
-    return;
+    return cached;
   }
 
   try {
@@ -354,7 +351,7 @@ async function handleFetchEbaySearch(request, senderTabId, sendResponse) {
     };
     
     ebayCache.set(cacheKey, { ...payload, expiry: Date.now() + CACHE_TTL });
-    sendResponse(payload);
+    return payload;
     
   } catch (error) {
     console.warn("API failed, using mock data", error.message);
@@ -370,7 +367,7 @@ async function handleFetchEbaySearch(request, senderTabId, sendResponse) {
     };
     
     ebayCache.set(cacheKey, { ...mockPayload, expiry: Date.now() + CACHE_TTL });
-    sendResponse(mockPayload);
+    return mockPayload;
   }
 }
 
@@ -391,3 +388,14 @@ chrome.alarms.onAlarm.addListener(alarm => {
     });
   }
 });
+
+// ✅ Open side panel when extension icon is clicked (Chrome only)
+if (chrome.sidePanel) {
+  chrome.action.onClicked.addListener(async (tab) => {
+    try {
+      await chrome.sidePanel.open({ windowId: tab.windowId });
+    } catch (error) {
+      console.error("Failed to open side panel:", error);
+    }
+  });
+}

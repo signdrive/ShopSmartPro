@@ -75,10 +75,10 @@ class VoiceSearch {
         return [
             { code: 'en-US', name: 'English (US)' },
             { code: 'en-GB', name: 'English (UK)' },
-            { code: 'es-ES', name: 'Spanish' },
-            { code: 'fr-FR', name: 'French' },
-            { code: 'de-DE', name: 'German' },
-            { code: 'it-IT', name: 'Italian' }
+            { code: 'es-ES', name: chrome.i18n.getMessage('languageSpanish') },
+            { code: 'fr-FR', name: chrome.i18n.getMessage('languageFrench') },
+            { code: 'de-DE', name: chrome.i18n.getMessage('languageGerman') },
+            { code: 'it-IT', name: chrome.i18n.getMessage('languageItalian') }
         ];
     }
 

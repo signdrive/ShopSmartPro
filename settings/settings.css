@@ -1,5 +1,3 @@
-/* settings/settings.css - FINAL: Mobile-Friendly + Dark Mode Support */
-
 /* Mobile-first reset */
 * {
     box-sizing: border-box;
@@ -99,389 +97,458 @@ body.dark-mode .tab-btn.active {
     color: #FFB347;
 }
 
-/* Tab Content */
+/* Tab content */
+.tab-content {
+    min-height: 400px;
+}
+
 .tab-pane {
     display: none;
-    padding: 20px 0;
 }
 
 .tab-pane.active {
     display: block;
 }
 
-/* Setting Group - Mobile Optimized */
+/* Setting groups */
 .setting-group {
-    margin: 20px 0;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border-left: 4px solid #007bff;
-    transition: background 0.3s, border-left-color 0.3s;
-}
-
-body.dark-mode .setting-group {
-    background: #2d2d2d;
-    border-left-color: #42a5f5;
+    margin-bottom: 20px;
+    padding: 15px 0;
 }
 
 .setting-group label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     font-weight: bold;
-    color: #555;
-    transition: color 0.3s;
+    color: #333;
     font-size: 1rem;
 }
 
 body.dark-mode .setting-group label {
-    color: #ccc;
-}
-
-/* Mobile-Friendly Inputs */
-.setting-group select,
-.setting-group input[type="text"] {
-    width: 100%;
-    padding: 14px; /* Minimum 44px height */
-    border: 2px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px; /* Readable on mobile */
-    margin-top: 5px;
-    background: white;
-    color: #333;
-    transition: border-color 0.3s;
-    min-height: 44px;
-}
-
-body.dark-mode .setting-group select,
-body.dark-mode .setting-group input[type="text"] {
-    background: #2d2d2d;
     color: #e0e0e0;
-    border-color: #555;
-}
-
-.setting-group select:focus,
-.setting-group input[type="text"]:focus {
-    border-color: #FF9900;
-    outline: none;
-    box-shadow: 0 0 5px rgba(255, 153, 0, 0.3);
-}
-
-body.dark-mode .setting-group select:focus,
-body.dark-mode .setting-group input[type="text"]:focus {
-    border-color: #FF9900;
-    box-shadow: 0 0 5px rgba(255, 153, 0, 0.2);
-}
-
-/* Checkboxes - Bigger Touch Target */
-.setting-group input[type="checkbox"] {
-    margin-right: 12px;
-    transform: scale(1.4); /* Larger checkbox */
-    accent-color: #FF9900; /* Orange checkmark */
 }
 
 .setting-group small {
     display: block;
-    margin-top: 8px;
     color: #666;
-    font-size: 14px;
-    transition: color 0.3s;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    line-height: 1.4;
 }
 
 body.dark-mode .setting-group small {
     color: #aaa;
 }
 
-/* Affiliate Info */
-.affiliate-info {
-    margin: 25px 0;
-    padding: 20px;
-    background: #f0f8ff;
+/* ✅ ENHANCED THEME SETTINGS STYLING */
+.theme-setting {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
     border-radius: 8px;
-    border-left: 4px solid #0073bb;
-    transition: background 0.3s, border-left-color 0.3s;
+    padding: 20px;
+    margin: 15px 0;
+    transition: all 0.3s;
 }
 
-body.dark-mode .affiliate-info {
-    background: #1a237e;
-    border-left-color: #42a5f5;
+body.dark-mode .theme-setting {
+    background: #2a2a2a;
+    border-color: #404040;
 }
 
-.affiliate-info h3 {
-    margin-top: 0;
-    color: #0073bb;
-    transition: color 0.3s;
-    font-size: 1.1rem;
+.theme-setting:hover {
+    border-color: #FF9900;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 153, 0, 0.1);
 }
 
-body.dark-mode .affiliate-info h3 {
-    color: #42a5f5;
+/* Form elements */
+select.mobile-friendly,
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: white;
+    color: #333;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
 }
 
-.affiliate-info p {
-    margin: 8px 0;
-    font-size: 15px;
-    color: #555;
+body.dark-mode select.mobile-friendly,
+body.dark-mode input[type="number"] {
+    background: #333;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+select.mobile-friendly:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: #FF9900;
+    box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.1);
+}
+
+/* Custom checkbox styling */
+.checkbox-label {
+    display: flex !important;
+    align-items: center;
+    cursor: pointer;
+    font-weight: normal !important;
+    font-size: 1rem;
+    margin-bottom: 0 !important;
+    position: relative;
+    padding-left: 35px;
     line-height: 1.5;
 }
 
-body.dark-mode .affiliate-info p {
-    color: #ccc;
-}
-
-.affiliate-info strong {
-    color: #B12704;
-    font-size: 16px;
-}
-
-body.dark-mode .affiliate-info strong {
-    color: #ff6b6b;
-}
-
-/* Action Buttons - Mobile Responsive */
-.settings-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin: 30px 0;
-}
-
-@media (min-width: 600px) {
-    .settings-actions {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.settings-actions button {
-    padding: 16px; /* Minimum 44px height */
-    border: none;
-    border-radius: 8px;
+.checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
-    transition: all 0.3s;
-    text-align: center;
-    max-width: 100%; /* Prevent overflow */
-    width: 100%; /* Full width */
+    height: 0;
+    width: 0;
 }
 
-#saveButton {
+.checkmark {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    height: 24px;
+    width: 24px;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+body.dark-mode .checkmark {
+    background-color: #333;
+    border-color: #555;
+}
+
+.checkbox-label:hover .checkmark {
+    border-color: #FF9900;
+}
+
+.checkbox-label input:checked ~ .checkmark {
+    background-color: #FF9900;
+    border-color: #FF9900;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Buttons */
+button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    min-height: 48px; /* Touch-friendly */
+}
+
+.save-btn {
     background: #28a745;
     color: white;
 }
 
-#saveButton:hover {
+.save-btn:hover {
     background: #218838;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
-body.dark-mode #saveButton {
-    background: #2e7d32;
-}
-
-body.dark-mode #saveButton:hover {
-    background: #1b5e20;
-}
-
-#resetButton {
+.reset-btn {
     background: #6c757d;
     color: white;
 }
 
-#resetButton:hover {
+.reset-btn:hover {
     background: #5a6268;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
-body.dark-mode #resetButton {
-    background: #546e7a;
-}
-
-body.dark-mode #resetButton:hover {
-    background: #455a64;
-}
-
-#exportSettingsBtn {
+.export-btn {
     background: #17a2b8;
     color: white;
 }
 
-#exportSettingsBtn:hover {
+.export-btn:hover {
     background: #138496;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
-body.dark-mode #exportSettingsBtn {
-    background: #00838f;
-}
-
-body.dark-mode #exportSettingsBtn:hover {
-    background: #006064;
-}
-
-#importSettingsBtn {
+.import-btn {
     background: #ffc107;
     color: #212529;
 }
 
-#importSettingsBtn:hover {
+.import-btn:hover {
     background: #e0a800;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
-body.dark-mode #importSettingsBtn {
-    background: #ff8f00;
+.clear-btn {
+    background: #dc3545;
     color: white;
 }
 
-body.dark-mode #importSettingsBtn:hover {
-    background: #dd7700;
+.clear-btn:hover {
+    background: #c82333;
+    transform: translateY(-2px);
 }
 
-.danger-btn {
-    background: #dc3545 !important;
-    color: white !important;
+.help-btn,
+.about-btn {
+    background: #007bff;
+    color: white;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
-.danger-btn:hover {
-    background: #c82333 !important;
-    transform: translateY(-1px);
+.help-btn:hover,
+.about-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
 }
 
-body.dark-mode .danger-btn {
-    background: #c62828 !important;
+.test-btn {
+    background: #6f42c1;
+    color: white;
 }
 
-body.dark-mode .danger-btn:hover {
-    background: #a52828 !important;
+.test-btn:hover {
+    background: #5a32a3;
+    transform: translateY(-2px);
 }
 
-/* Status Message */
-#statusMessage {
-    margin: 15px 0;
-    padding: 16px;
+.debug-btn {
+    background: #fd7e14;
+    color: white;
+}
+
+.debug-btn:hover {
+    background: #e8650e;
+    transform: translateY(-2px);
+}
+
+/* Settings actions */
+.settings-actions {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.settings-actions button {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Status message */
+.status-message {
+    padding: 12px;
     border-radius: 6px;
+    margin: 20px 0;
     font-weight: bold;
     text-align: center;
-    font-size: 16px;
+    transition: all 0.3s;
 }
 
-#statusMessage.success {
+.status-message.success {
     background: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
 
-body.dark-mode #statusMessage.success {
-    background: #155724;
-    color: #d4edda;
-    border-color: #1d6c3c;
-}
-
-#statusMessage.error {
+.status-message.error {
     background: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
 
-body.dark-mode #statusMessage.error {
-    background: #721c24;
-    color: #f8d7da;
-    border-color: #8c262f;
+body.dark-mode .status-message.success {
+    background: #1e4620;
+    color: #a3d9a5;
+    border-color: #2d5a2f;
 }
 
-/* Debug Section */
-.debug-section {
-    margin: 30px 0;
-    padding: 20px;
-    background: #f8f9fa;
+body.dark-mode .status-message.error {
+    background: #4a1e1e;
+    color: #f5a3a3;
+    border-color: #5a2d2d;
+}
+
+/* Affiliate info */
+.affiliate-info {
+    background: #e7f3ff;
+    border: 1px solid #b8daff;
     border-radius: 8px;
-    transition: background 0.3s;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+body.dark-mode .affiliate-info {
+    background: #1a2332;
+    border-color: #2d4a6b;
+}
+
+.affiliate-info h3 {
+    color: #0066cc;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+body.dark-mode .affiliate-info h3 {
+    color: #66b3ff;
+}
+
+.affiliate-info p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Debug section */
+.debug-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
 }
 
 body.dark-mode .debug-section {
-    background: #2d2d2d;
+    border-top-color: #333;
 }
 
-.debug-section h3 {
-    margin-top: 0;
-    color: #495057;
-    transition: color 0.3s;
-    font-size: 1.1rem;
-}
-
-body.dark-mode .debug-section h3 {
-    color: #ccc;
-}
-
-#debugInfo {
+.debug-info {
     margin-top: 15px;
-    padding: 16px;
-    background: #e9ecef;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
     border-radius: 6px;
-    font-family: monospace;
-    font-size: 14px;
-    max-height: 300px;
-    overflow: auto;
-    transition: background 0.3s;
-}
-
-body.dark-mode #debugInfo {
-    background: #1e1e1e;
-    color: #e0e0e0;
-}
-
-#debugButton {
-    padding: 12px 16px;
-    background: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#debugButton:hover {
-    background: #5a6268;
-    transform: translateY(-1px);
-}
-
-body.dark-mode #debugButton {
-    background: #546e7a;
-}
-
-body.dark-mode #debugButton:hover {
-    background: #455a64;
-}
-
-/* Help & About Buttons */
-.help-btn, .about-btn {
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 16px;
+    padding: 15px;
     transition: all 0.3s;
 }
 
-.help-btn {
-    background: #17a2b8;
-    color: white;
+body.dark-mode .debug-info {
+    background: #2a2a2a;
+    border-color: #404040;
 }
 
-.about-btn {
-    background: #6c757d;
-    color: white;
+.debug-info.hidden {
+    display: none;
 }
 
-.help-btn:hover, .about-btn:hover {
-    transform: translateY(-1px);
+.debug-info pre {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #495057;
 }
 
-body.dark-mode .help-btn {
-    background: #00838f;
+body.dark-mode .debug-info pre {
+    color: #adb5bd;
 }
 
-body.dark-mode .about-btn {
-    background: #546e7a;
+/* Horizontal rules */
+hr {
+    border: none;
+    height: 1px;
+    background: #eee;
+    margin: 25px 0;
 }
+
+body.dark-mode hr {
+    background: #333;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        min-width: unset;
+    }
+    
+    .settings-container {
+        padding: 20px;
+    }
+    
+    .settings-actions {
+        flex-direction: column;
+    }
+    
+    .settings-actions button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .tab-btn {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+    }
+    
+    h1 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-container {
+        padding: 15px;
+    }
+    
+    .setting-group {
+        padding: 10px 0;
+    }
+    
+    .checkbox-label {
+        font-size: 0.9rem;
+    }
+    
+    button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ✅ ENHANCED DARK MODE TRANSITIONS */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ✅ IMPROVED FOCUS STATES FOR ACCESSIBILITY */
+button:focus,
+select:focus,
+input:focus {
+    outline: 2px solid #FF9900;
+    outline-offset: 2px;
+}
+
+/* ✅ BETTER HOVER EFFECTS */
+.setting-group:hover {
+    background: rgba(255, 153, 0, 0.02);
+    border-radius: 6px;
+    padding: 15px;
+    margin: 5px -15px 20px -15px;
+}
+
+body.dark-mode .setting-group:hover {
+    background: rgba(255, 179, 71, 0.05);
+}
+

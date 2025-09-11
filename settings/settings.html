@@ -3,122 +3,121 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - ShopSmart Pro</title>
+    <title data-i18n-title="settingsPageTitle">__MSG_settings__ - __MSG_extensionName__</title>
     <link rel="stylesheet" href="settings.css">
+    <script src="../utils/i18n-fix.js"></script>
+    <script src="settings.js" defer></script>
 </head>
-<body class="light-mode">
+<body>
     <div class="settings-container">
-        <h1>ShopSmart Pro Settings</h1>
+    <h1 data-i18n="extensionSettings">__MSG_extensionSettings__</h1>
         
         <div class="settings-tabs" role="tablist">
-            <button class="tab-btn active" data-tab="general" role="tab" aria-selected="true" aria-controls="general-tab">General</button>
-            <button class="tab-btn" data-tab="notifications" role="tab" aria-selected="false" aria-controls="notifications-tab">Notifications</button>
-            <button class="tab-btn" data-tab="advanced" role="tab" aria-selected="false" aria-controls="advanced-tab">Advanced</button>
+            <button class="tab-btn active" data-tab="general" role="tab" aria-selected="true" aria-controls="general-tab" data-i18n="general">__MSG_general__</button>
+            <button class="tab-btn" data-tab="notifications" role="tab" aria-selected="false" aria-controls="notifications-tab" data-i18n="notifications">__MSG_notifications__</button>
+            <button class="tab-btn" data-tab="advanced" role="tab" aria-selected="false" aria-controls="advanced-tab" data-i18n="advanced">__MSG_advanced__</button>
         </div>
 
         <div class="tab-content" id="tabContent">
             <!-- General Settings -->
             <div id="general-tab" class="tab-pane active" role="tabpanel" aria-labelledby="general-tab">
                 <div class="setting-group">
-                    <label for="countrySelect">Default Country:</label>
+                    <label for="countrySelect" data-i18n="defaultCountry">__MSG_defaultCountry__</label>
                     <select id="countrySelect" class="mobile-friendly">
-                        <option value="ca">Amazon Canada (.ca)</option>
-                        <option value="com">Amazon USA (.com)</option>
-                        <option value="co.uk">Amazon UK (.co.uk)</option>
-                        <option value="de">Amazon Germany (.de)</option>
-                        <option value="fr">Amazon France (.fr)</option>
-                        <option value="it">Amazon Italy (.it)</option>
-                        <option value="es">Amazon Spain (.es)</option>
-                        <option value="co.jp">Amazon Japan (.co.jp)</option>
-                        <option value="com.au">Amazon Australia (.com.au)</option>
-                        <option value="com.br">Amazon Brazil (.com.br)</option>
-                        <option value="com.mx">Amazon Mexico (.com.mx)</option>
-                        <option value="nl">Amazon Netherlands (.nl)</option>
+                        <option value="ca" data-i18n="amazonCanada">__MSG_amazonCanada__</option>
+                        <option value="com" data-i18n="amazonUSA">__MSG_amazonUSA__</option>
+                        <option value="co.uk" data-i18n="amazonUK">__MSG_amazonUK__</option>
+                        <option value="de" data-i18n="amazonGermany">__MSG_amazonGermany__</option>
+                        <option value="fr" data-i18n="amazonFrance">__MSG_amazonFrance__</option>
+                        <option value="it" data-i18n="amazonItaly">__MSG_amazonItaly__</option>
+                        <option value="es" data-i18n="amazonSpain">__MSG_amazonSpain__</option>
+                        <option value="co.jp" data-i18n="amazonJapan">__MSG_amazonJapan__</option>
+                        <option value="com.au" data-i18n="amazonAustralia">__MSG_amazonAustralia__</option>
+                        <option value="com.br" data-i18n="amazonBrazil">__MSG_amazonBrazil__</option>
+                        <option value="com.mx" data-i18n="amazonMexico">__MSG_amazonMexico__</option>
+                        <option value="nl" data-i18n="amazonNetherlands">__MSG_amazonNetherlands__</option>
                     </select>
                 </div>
 
                 <div class="setting-group">
-                    <label for="defaultCategory">Default Category:</label>
+                    <label for="defaultCategory" data-i18n="defaultCategory">__MSG_defaultCategory__</label>
                     <select id="defaultCategory" class="mobile-friendly">
-                        <option value="search-alias=aps">All Departments</option>
-                        <option value="search-alias=alexa-skills">Alexa Skills</option>
-                        <option value="search-alias=amazon-devices">Amazon Devices</option>
-                        <option value="search-alias=warehouse-deals">Amazon Warehouse Deals</option>
-                        <option value="search-alias=mobile-apps">Apps & Games</option>
-                        <option value="search-alias=automotive">Automotive</option>
-                        <option value="search-alias=baby">Baby</option>
-                        <option value="search-alias=beauty">Beauty</option>
-                        <option value="search-alias=apparel">Clothing & Accessories</option>
-                        <option value="search-alias=stripbooks">Books</option>
-                        <option value="search-alias=electronics">Electronics</option>
-                        <option value="search-alias=gift-cards">Gift Cards</option>
-                        <option value="search-alias=grocery">Grocery</option>
-                        <option value="search-alias=handmade">Handmade</option>
-                        <option value="search-alias=hpc">Health & Personal Care</option>
-                        <option value="search-alias=kitchen">Home & Kitchen</option>
-                        <option value="search-alias=industrial">Industrial & Scientific</option>
-                        <option value="search-alias=jewelry">Jewelry</option>
-                        <option value="search-alias=digital-text">Kindle Store</option>
-                        <option value="search-alias=french-books">Livres en français</option>
-                        <option value="search-alias=luggage">Luggage & Bags</option>
-                        <option value="search-alias=luxury-beauty">Luxury Beauty</option>
-                        <option value="search-alias=dvd">Movies & TV</option>
-                        <option value="search-alias=popular">Music</option>
-                        <option value="search-alias=mi">Musical Instruments, Stage & Studio</option>
-                        <option value="search-alias=office-products">Office Products</option>
-                        <option value="search-alias=lawngarden">Patio, Lawn & Garden</option>
-                        <option value="search-alias=pets">Pet Supplies</option>
-                        <option value="search-alias=shoes">Shoes & Handbags</option>
-                        <option value="search-alias=software">Software</option>
-                        <option value="search-alias=sporting">Sports & Outdoors</option>
-                        <option value="search-alias=tools">Tools & Home Improvement</option>
-                        <option value="search-alias=toys">Toys & Games</option>
-                        <option value="search-alias=videogames">Video Games</option>
-                        <option value="search-alias=watches">Watches</option>
+                        <option value="search-alias=aps">__MSG_categoryAllDepartments__</option>
+                        <option value="search-alias=alexa-skills">__MSG_categoryAlexaSkills__</option>
+                        <option value="search-alias=amazon-devices">__MSG_categoryAmazonDevices__</option>
+                        <option value="search-alias=warehouse-deals">__MSG_categoryAmazonWarehouseDeals__</option>
+                        <option value="search-alias=mobile-apps">__MSG_categoryAppsGames__</option>
+                        <option value="search-alias=automotive">__MSG_categoryAutomotive__</option>
+                        <option value="search-alias=baby">__MSG_categoryBaby__</option>
+                        <option value="search-alias=beauty">__MSG_categoryBeauty__</option>
+                        <option value="search-alias=stripbooks">__MSG_categoryBooks__</option>
+                        <option value="search-alias=popular">__MSG_categoryCdsAndVinyl__</option>
+                        <option value="search-alias=fashion">__MSG_categoryClothingAccessories__</option>
+                        <option value="search-alias=computers">__MSG_categoryComputers__</option>
+                        <option value="search-alias=electronics">__MSG_categoryElectronics__</option>
+                        <option value="search-alias=garden">__MSG_categoryGardenAndOutdoor__</option>
+                        <option value="search-alias=grocery">__MSG_categoryGrocery__</option>
+                        <option value="search-alias=handmade">__MSG_categoryHandmade__</option>
+                        <option value="search-alias=hpc">__MSG_categoryHealthPersonalCare__</option>
+                        <option value="search-alias=kitchen">__MSG_categoryHomeKitchen__</option>
+                        <option value="search-alias=industrial">__MSG_categoryIndustrialScientific__</option>
+                        <option value="search-alias=jewelry">__MSG_categoryJewelry__</option>
+                        <option value="search-alias=digital-music">__MSG_categoryMusic__</option>
+                        <option value="search-alias=pets">__MSG_categoryPetSupplies__</option>
+                        <option value="search-alias=instant-video">__MSG_categoryPrimeVideo__</option>
+                        <option value="search-alias=shoes">__MSG_categoryShoes__</option>
+                        <option value="search-alias=sporting">__MSG_categorySportsOutdoors__</option>
+                        <option value="search-alias=tools">__MSG_categoryToolsHomeImprovement__</option>
+                        <option value="search-alias=toys-and-games">__MSG_categoryToysGames__</option>
+                        <option value="search-alias=videogames">__MSG_categoryVideoGames__</option>
                     </select>
                 </div>
 
+                <hr>
+
                 <div class="setting-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="autoRedirect" checked>
+                    <label class="checkbox-label" for="autoRedirect">
+                        <input type="checkbox" id="autoRedirect">
                         <span class="checkmark"></span>
-                        Auto-redirect to Amazon
+                        <span data-i18n="autoRedirect">__MSG_autoRedirect__</span>
                     </label>
-                    <small>Automatically redirect when searching from popup</small>
+                    <small data-i18n="autoRedirectDesc">__MSG_autoRedirectDesc__</small>
                 </div>
 
                 <div class="setting-group">
-                    <label class="checkbox-label">
+                    <label class="checkbox-label" for="saveHistory">
                         <input type="checkbox" id="saveHistory" checked>
                         <span class="checkmark"></span>
-                        Save search history
+                        <span data-i18n="saveSearchHistory">__MSG_saveSearchHistory__</span>
                     </label>
-                    <small>Remember your recent searches</small>
+                    <small data-i18n="saveSearchHistoryDesc">__MSG_saveSearchHistoryDesc__</small>
                 </div>
 
-                <!-- ✅ Dark Mode Toggle -->
-                <div class="setting-group">
+                <hr>
+
+                <!-- âœ… DARK MODE TOGGLE - PROMINENTLY PLACED -->
+                <div class="setting-group theme-setting">
                     <label class="checkbox-label">
                         <input type="checkbox" id="darkMode">
                         <span class="checkmark"></span>
-                        Enable Dark Mode
+                        <span data-i18n="enableDarkMode">__MSG_enableDarkMode__</span>
                     </label>
-                    <small>Use dark theme across all ShopSmart Pro interfaces</small>
+                    <small data-i18n="enableDarkModeDesc">__MSG_enableDarkModeDesc__</small>
                 </div>
 
-                <!-- ✅ Sync with System -->
-                <div class="setting-group">
+                <!-- âœ… SYNC WITH SYSTEM -->
+                <div class="setting-group theme-setting">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="syncWithSystem">
+                        <input type="checkbox" id="syncWithSystem" checked>
                         <span class="checkmark"></span>
-                        Sync with system appearance
+                        <span data-i18n="syncWithSystem">__MSG_syncWithSystem__</span>
                     </label>
-                    <small>Automatically follow your device's light/dark mode</small>
+                    <small data-i18n="syncWithSystemDesc">__MSG_syncWithSystemDesc__</small>
                 </div>
 
                 <div class="affiliate-info">
-                    <h3>Affiliate Information</h3>
-                    <p>Yes! The extension is completely free. It's supported through affiliate program, which doesn't cost you anything extra.</p>
+                    <h3 data-i18n="affiliateInformation">__MSG_affiliateInformation__</h3>
+                    <p data-i18n="affiliateInformationDesc">__MSG_affiliateInformationDesc__</p>
                 </div>
             </div>
 
@@ -128,9 +127,9 @@
                     <label class="checkbox-label">
                         <input type="checkbox" id="enableNotifications" checked>
                         <span class="checkmark"></span>
-                        Enable all alerts
+                        <span data-i18n="enableAllAlerts">__MSG_enableAllAlerts__</span>
                     </label>
-                    <small>Allow price drops, deals, and coupon notifications</small>
+                    <small data-i18n="enableAllAlertsDesc">__MSG_enableAllAlertsDesc__</small>
                 </div>
 
                 <hr>
@@ -139,55 +138,55 @@
                     <label class="checkbox-label">
                         <input type="checkbox" id="priceAlerts" checked>
                         <span class="checkmark"></span>
-                        Price drop alerts
+                        <span data-i18n="priceDropAlerts">__MSG_priceDropAlerts__</span>
                     </label>
-                    <small>Get notified when tracked products drop in price</small>
+                    <small data-i18n="priceDropAlertsDesc">__MSG_priceDropAlertsDesc__</small>
                 </div>
 
                 <div class="setting-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="dealAlerts" checked>
                         <span class="checkmark"></span>
-                        Deal notifications
+                        <span data-i18n="dealNotifications">__MSG_dealNotifications__</span>
                     </label>
-                    <small>Receive notifications for lightning deals</small>
+                    <small data-i18n="dealNotificationsDesc">__MSG_dealNotificationsDesc__</small>
                 </div>
 
                 <div class="setting-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="couponAlerts">
                         <span class="checkmark"></span>
-                        Coupon alerts
+                        <span data-i18n="couponAlerts">__MSG_couponAlerts__</span>
                     </label>
-                    <small>Notify when coupons are available for products</small>
+                    <small data-i18n="couponAlertsDesc">__MSG_couponAlertsDesc__</small>
                 </div>
 
                 <div class="setting-group">
-                    <label for="notificationFrequency">Notification Frequency:</label>
+                    <label for="notificationFrequency" data-i18n="notificationFrequency">__MSG_notificationFrequency__</label>
                     <select id="notificationFrequency" class="mobile-friendly">
-                        <option value="instant">Instant</option>
-                        <option value="hourly">Hourly Digest</option>
-                        <option value="daily">Daily Digest</option>
+                        <option value="instant" data-i18n="instant">__MSG_instant__</option>
+                        <option value="hourly" data-i18n="hourlyDigest">__MSG_hourlyDigest__</option>
+                        <option value="daily" data-i18n="dailyDigest">__MSG_dailyDigest__</option>
                     </select>
                 </div>
 
                 <div class="setting-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="soundAlerts">
+                        <input type="checkbox" id="soundAlerts" checked>
                         <span class="checkmark"></span>
-                        Play sound for alerts
+                        <span data-i18n="playSoundForAlerts">__MSG_playSoundForAlerts__</span>
                     </label>
-                    <small>Play a short sound when any notification appears</small>
+                    <small data-i18n="playSoundForAlertsDesc">__MSG_playSoundForAlertsDesc__</small>
                 </div>
 
                 <div class="settings-actions">
-                    <button id="helpButton" class="help-btn" type="button">📖 Help & Documentation</button>
-                    <button id="aboutButton" class="about-btn" type="button">ℹ️ About</button>
+                    <button id="helpButton" class="help-btn" type="button" data-i18n="helpAndDocumentation">__MSG_helpAndDocumentation__</button>
+                    <button id="aboutButton" class="about-btn" type="button" data-i18n="about">__MSG_about__</button>
                 </div>
 
                 <div class="setting-group">
-                    <button id="testNotificationBtn" class="test-btn" type="button">🧪 Test Notification</button>
-                    <small>Send a test alert to verify sound and notifications</small>
+                    <button id="testNotificationBtn" class="test-btn" type="button" data-i18n="testNotification">__MSG_testNotification__</button>
+                    <small data-i18n="testNotificationDesc">__MSG_testNotificationDesc__</small>
                 </div>
             </div>
 
@@ -197,99 +196,105 @@
                     <label class="checkbox-label">
                         <input type="checkbox" id="enhancePages" checked>
                         <span class="checkmark"></span>
-                        Enhance pages
+                        <span data-i18n="enhancePages">__MSG_enhancePages__</span>
                     </label>
-                    <small>Add extra features to product pages</small>
+                    <small data-i18n="enhancePagesDesc">__MSG_enhancePagesDesc__</small>
                 </div>
 
                 <div class="setting-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="voiceSearch">
                         <span class="checkmark"></span>
-                        Enable voice search
+                        <span data-i18n="voiceSearch">__MSG_voiceSearch__</span>
                     </label>
-                    <small>Allow voice input for searches</small>
+                    <small data-i18n="voiceSearchDesc">__MSG_voiceSearchDesc__</small>
                 </div>
 
                 <div class="setting-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="analytics" checked>
                         <span class="checkmark"></span>
-                        Enable analytics
+                        <span data-i18n="usageAnalytics">__MSG_usageAnalytics__</span>
                     </label>
-                    <small>Track your affiliate performance</small>
+                    <small data-i18n="usageAnalyticsDesc">__MSG_usageAnalyticsDesc__</small>
                 </div>
 
-                <!-- ✅ Comparison Limit Setting -->
+                <hr>
+
                 <div class="setting-group">
-                    <label for="maxComparisonProducts">Maximum Products in Comparison:</label>
+                    <label for="maxComparisonProducts" data-i18n="maxComparisonProducts">__MSG_maxComparisonProducts__</label>
                     <select id="maxComparisonProducts" class="mobile-friendly">
-                        <option value="4">4 (Recommended)</option>
-                        <option value="6">6</option>
-                        <option value="8">8</option>
-                        <option value="10">10</option>
+                        <option value="2" data-i18n="2products">__MSG_2products__</option>
+                        <option value="3" data-i18n="3products">__MSG_3products__</option>
+                        <option value="4" selected data-i18n="4products">__MSG_4products__</option>
+                        <option value="5" data-i18n="5products">__MSG_5products__</option>
+                        <option value="6" data-i18n="6products">__MSG_6products__</option>
                     </select>
-                    <small>Maximum number of products you can compare at once</small>
                 </div>
 
-                <!-- ✅ Data Retention for Saved Comparisons -->
                 <div class="setting-group">
-                    <label for="dataRetention">Data Retention:</label>
+                    <label for="dataRetention" data-i18n="dataRetention">__MSG_dataRetention__</label>
                     <select id="dataRetention" class="mobile-friendly">
-                        <option value="7">7 days</option>
-                        <option value="30" selected>30 days</option>
-                        <option value="90">90 days</option>
-                        <option value="365">1 year</option>
-                        <option value="forever">Forever (save permanently)</option>
+                        <option value="7" data-i18n="7days">__MSG_7days__</option>
+                        <option value="14" data-i18n="14days">__MSG_14days__</option>
+                        <option value="30" selected data-i18n="30days">__MSG_30days__</option>
+                        <option value="60" data-i18n="60days">__MSG_60days__</option>
+                        <option value="90" data-i18n="90days">__MSG_90days__</option>
+                        <option value="180" data-i18n="180days">__MSG_180days__</option>
+                        <option value="365" data-i18n="1year">__MSG_1year__</option>
                     </select>
-                    <small>How long to keep your saved comparisons and history</small>
                 </div>
 
-                <div class="setting-group">
-                    <button id="clearDataBtn" class="danger-btn" type="button">Clear All Data</button>
-                    <small>Remove all stored data and reset to defaults</small>
-                </div>
+                <hr>
 
-                <!-- Privacy Settings -->
                 <div class="setting-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="usageStatistics" checked>
                         <span class="checkmark"></span>
-                        Help improve ShopSmart Pro
+                        <span data-i18n="usageStatistics">__MSG_usageStatistics__</span>
                     </label>
-                    <small>Allow anonymous usage statistics to help us improve the extension (recommended)</small>
+                    <small data-i18n="usageStatisticsDesc">__MSG_usageStatisticsDesc__</small>
                 </div>
 
                 <div class="setting-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="errorReporting" checked>
                         <span class="checkmark"></span>
-                        Automatic error reporting
+                        <span data-i18n="errorReporting">__MSG_errorReporting__</span>
                     </label>
-                    <small>Send error reports to help fix issues faster</small>
+                    <small data-i18n="errorReportingDesc">__MSG_errorReportingDesc__</small>
+                </div>
+
+                <div class="debug-section">
+                    <h3 data-i18n="debugInformation">__MSG_debugInformation__</h3>
+                    <button id="debugButton" class="debug-btn" type="button" data-i18n="showDebugInfo">__MSG_showDebugInfo__</button>
+                    <div id="debugInfo" class="debug-info hidden">
+                        <pre id="debugContent"></pre>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Action Buttons -->
         <div class="settings-actions">
-            <button id="saveButton" class="primary-btn" type="button">Save Settings</button>
-            <button id="resetButton" class="secondary-btn" type="button">Reset to Defaults</button>
-            <button id="exportSettingsBtn" class="secondary-btn" type="button">Export Settings</button>
-            <button id="importSettingsBtn" class="secondary-btn" type="button">Import Settings</button>
+            <button id="saveButton" class="save-btn" type="button" data-i18n="saveSettings">__MSG_saveSettings__</button>
+            <button id="resetButton" class="reset-btn" type="button" data-i18n="resetToDefaults">__MSG_resetToDefaults__</button>
+        </div>
+
+        <div class="settings-actions">
+            <button id="exportSettingsBtn" class="export-btn" type="button" data-i18n="exportSettings">__MSG_exportSettings__</button>
+            <button id="importSettingsBtn" class="import-btn" type="button" data-i18n="importSettings">__MSG_importSettings__</button>
             <input type="file" id="importSettingsFile" accept=".json" style="display: none;">
         </div>
 
-        <div id="statusMessage" role="alert" aria-live="polite"></div>
-
-        <div class="debug-section">
-            <h3>Debug Information</h3>
-            <button id="debugButton" class="debug-btn" type="button">Show Debug Info</button>
-            <div id="debugInfo" class="hidden">
-                <pre id="debugContent"></pre>
-            </div>
+        <div class="settings-actions">
+            <button id="clearDataBtn" class="clear-btn" type="button" data-i18n="clearAllData">__MSG_clearAllData__</button>
         </div>
+
+        <div id="statusMessage" class="status-message"></div>
     </div>
 
     <script src="settings.js"></script>
 </body>
 </html>
+

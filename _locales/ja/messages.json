@@ -1,0 +1,385 @@
+{
+  "extensionName": { "message": "ShopSmart Pro" },
+  "extensionDescription": { "message": "価格追跡、比較、お得な情報アラートでAmazonとeBayのショッピング体験を向上させます。" },
+  "sidePanelTitle": { "message": "サイドパネル" },
+  "settings": { "message": "設定" },
+  "help": { "message": "ヘルプ" },
+  "about": { "message": "概要" },
+  "close": { "message": "閉じる" },
+  "save": { "message": "保存" },
+  "reset": { "message": "リセット" },
+  "export": { "message": "エクスポート" },
+  "import": { "message": "インポート" },
+  "clear": { "message": "クリア" },
+  "search": { "message": "検索" },
+  "searchStore": { "message": "ストアを検索" },
+  "searchEbay": { "message": "eBayを検索" },
+  "comparison": { "message": "比較" },
+  "deals": { "message": "お得な情報" },
+  "trackedProducts": { "message": "追跡中の商品" },
+  "notifications": { "message": "通知" },
+  "voiceSearch": { "message": "音声検索" },
+  "startListening": { "message": "聞き取りを開始" },
+  "stopListening": { "message": "聞き取りを停止" },
+  "listening": { "message": "聞き取り中...今すぐ話してください！" },
+  "gotIt": { "message": "了解しました！「これを使用」をクリックして検索してください。" },
+  "useThisSearch": { "message": "この検索を使用" },
+  "error": { "message": "エラー" },
+  "success": { "message": "成功" },
+  "loading": { "message": "読み込み中..." },
+  "openSidePanel": { "message": "サイドパネルを開く" },
+  "country": { "message": "国：" },
+  "defaultCountry": { "message": "デフォルトの国：" },
+  "category": { "message": "カテゴリ：" },
+  "keywords": { "message": "キーワード：" },
+  "whatAreYouLookingFor": { "message": "何をお探しですか？" },
+  "searchTrackedProducts": { "message": "追跡中の商品を検索..." },
+  "filterByCategory": { "message": "カテゴリで絞り込む" },
+  "allCategories": { "message": "すべてのカテゴリ" },
+  "primeOnly": { "message": "プライムのみ" },
+  "freeShipping": { "message": "送料無料" },
+  "maxComparisonProducts": { "message": "最大比較商品数" },
+  "dataRetention": { "message": "データ保持" },
+  "notificationFrequency": { "message": "通知頻度" },
+  "recentSearches": { "message": "最近の検索" },
+  "activeTrackers": { "message": "アクティブなトラッカー" },
+  "todaysSearches": { "message": "今日の検索" },
+  "trackedProductsSection": { "message": "追跡中の商品" },
+  "productTitle": { "message": "商品タイトル" },
+  "productPrice": { "message": "商品価格" },
+  "productMeta": { "message": "商品メタ" },
+  "productShipping": { "message": "配送" },
+  "productTotal": { "message": "合計" },
+  "dealTitle": { "message": "お得な情報タイトル" },
+  "dealPrice": { "message": "お得な情報価格" },
+  "noRecentSearches": { "message": "最近の検索はありません" },
+  "noProductsTracked": { "message": "現在追跡中の商品はありません" },
+  "noProductsInComparison": { "message": "比較中の商品はありません" },
+  "getAlertsWhenPricesDrop": { "message": "価格が下がったときにアラートを受け取る" },
+  "testNotificationSent": { "message": "テスト通知が送信されました！" },
+  "settingsLoaded": { "message": "設定が正常に読み込まれました。" },
+  "settingsSaved": { "message": "設定が正常に保存されました！" },
+  "settingsReset": { "message": "設定がデフォルトにリセットされました。" },
+  "settingsExported": { "message": "設定が正常にエクスポートされました。" },
+  "settingsImported": { "message": "設定が正常にインポートされました。" },
+  "allDataCleared": { "message": "すべてのデータが消去されました。" },
+  "getHelpAndUserGuide": { "message": "ヘルプとユーザーガイドを入手" },
+  "openExtensionSettings": { "message": "拡張機能の設定を開く" },
+  "helpAlt": { "message": "ヘルプ（代替）" },
+  "settingsAlt": { "message": "設定（代替）" },
+  "searchAlt": { "message": "検索（代替）" },
+  "microphoneAlt": { "message": "マイク（代替）" },
+  "dealsAlt": { "message": "お得な情報（代替）" },
+  "compareAlt": { "message": "比較（代替）" },
+  "trackedAlt": { "message": "追跡中（代替）" },
+  "errorSavingSettings": { "message": "設定の保存中にエラーが発生しました：" },
+  "errorLoadingSettings": { "message": "設定の読み込み中にエラーが発生しました：" },
+  "errorImportingSettings": { "message": "設定のインポート中にエラーが発生しました：" },
+  "confirmResetSettings": { "message": "すべての設定をデフォルトにリセットしてもよろしいですか？" },
+  "confirmClearAllData": { "message": "すべてのデータを消去してもよろしいですか？この操作は元に戻せません。" },
+  "pleaseEnterSearchTerm": { "message": "検索語を入力してください" },
+  "invalidSettingsFile": { "message": "無効な設定ファイル：" },
+  "categoryAllDepartments": { "message": "すべての部門" },
+  "categoryAlexaSkills": { "message": "Alexaスキル" },
+  "categoryAmazonDevices": { "message": "Amazonデバイス" },
+  "categoryAmazonWarehouseDeals": { "message": "Amazonアウトレット" },
+  "categoryAutomotive": { "message": "自動車" },
+  "categoryBaby": { "message": "ベビー" },
+  "categoryBeauty": { "message": "ビューティー" },
+  "categoryBooks": { "message": "本" },
+  "categoryElectronics": { "message": "エレクトロニクス" },
+  "categoryGiftCards": { "message": "ギフトカード" },
+  "categoryGrocery": { "message": "食料品" },
+  "categoryHandmade": { "message": "ハンドメイド" },
+  "categoryJewelry": { "message": "ジュエリー" },
+  "categoryKindleStore": { "message": "Kindleストア" },
+  "categoryLuxuryBeauty": { "message": "高級ビューティー" },
+  "categoryMusic": { "message": "音楽" },
+  "categoryMusicalInstruments": { "message": "楽器" },
+  "categoryOfficeProducts": { "message": "オフィス用品" },
+  "categoryPetSupplies": { "message": "ペット用品" },
+  "categorySoftware": { "message": "ソフトウェア" },
+  "categoryVideoGames": { "message": "ビデオゲーム" },
+  "languageSpanish": { "message": "スペイン語" },
+  "languageFrench": { "message": "フランス語" },
+  "languageGerman": { "message": "ドイツ語" },
+  "languageItalian": { "message": "イタリア語" },
+  "documentation": { "message": "ドキュメント", "description": "ドキュメントページのタイトル" },
+  "completeGuide": { "message": "ShopSmart Proをマスターするための完全ガイド。", "description": "ドキュメントページのサブタイトル" },
+  "tableOfContents": { "message": "目次", "description": "目次の見出し" },
+  "welcome": { "message": "ようこそ", "description": "ようこそセクションへのリンク" },
+  "gettingStarted": { "message": "はじめに", "description": "はじめにセクションへのリンク" },
+  "features": { "message": "機能", "description": "機能セクションへのリンク" },
+  "troubleshooting": { "message": "トラブルシューティング", "description": "トラブルシューティングセクションへのリンク" },
+  "faq": { "message": "よくある質問", "description": "よくある質問セクションへのリンク" },
+  "privacyAndSecurity": { "message": "プライバシーとセキュリティ", "description": "プライバシーとセキュリティセクションへのリンク" },
+  "welcomeTitle": { "message": "ShopSmart Proへようこそ！", "description": "ようこそセクションのメインタイトル" },
+  "welcomeDescription": { "message": "ShopSmart Proは、AmazonとeBayでのオンラインショッピング体験を向上させるために設計された強力なブラウザ拡張機能です。このガイドでは、その機能と効果的な使用方法について説明します。", "description": "ようこそセクションの説明" },
+  "getStartedSteps": { "message": "始めるには、次の簡単な手順に従ってください：", "description": "開始手順の紹介" },
+  "stepToolbarIcon": { "message": "ブラウザのツールバーにあるShopSmart Proアイコンをクリックして、メインポップアップを開きます。", "description": "開始するための最初のステップ" },
+  "stepSearchBox": { "message": "検索ボックスを使用して、現在のウェブサイト（AmazonまたはeBay）で商品を検索します。", "description": "開始するための2番目のステップ" },
+  "stepSelectCategories": { "message": "カテゴリを選択して、検索結果を絞り込みます。", "description": "開始するための3番目のステップ" },
+  "stepSearchOrEnter": { "message": "「ストアを検索」をクリックするか、Enterキーを押して結果を表示します。", "description": "開始するための4番目のステップ" },
+  "stepRightClickMenu": { "message": "商品ページを右クリックして、「価格を追跡」や「比較に追加」などのクイックアクションにアクセスします。", "description": "開始するための5番目のステップ" },
+  "featurePriceTracking": { "message": "価格追跡", "description": "価格追跡機能のタイトル" },
+  "featurePriceTrackingDesc": { "message": "値下げを見逃すことはありません。商品を追跡し、価格が変更されるとすぐに通知を受け取ります。", "description": "価格追跡機能の説明" },
+  "featurePriceComparison": { "message": "商品比較", "description": "商品比較機能のタイトル" },
+  "featurePriceComparisonDesc": { "message": "複数の商品を並べて比較します。どのページからでも比較リストに商品を追加できます。", "description": "商品比較機能の説明" },
+  "featureDealFinder": { "message": "お得な情報ファインダー", "description": "お得な情報ファインダー機能のタイトル" },
+  "featureDealFinderDesc": { "message": "組み込みのお得な情報ファインダーで、現在利用可能なお得な情報や割引を見つけましょう。", "description": "お得な情報ファインダー機能の説明" },
+  "featureVoiceSearch": { "message": "音声検索", "description": "音声検索機能のタイトル" },
+  "featureVoiceSearchDesc": { "message": "音声を使用してハンズフリーで商品を検索します。", "description": "音声検索機能の説明" },
+  "featureSidePanel": { "message": "サイドパネル統合", "description": "サイドパネル機能のタイトル" },
+  "featureSidePanelDesc": { "message": "便利なサイドパネルを介して、現在のページを離れることなくShopSmart Proのすべての機能にアクセスします。", "description": "サイドパネル機能の説明" },
+  "troubleshootingIntro": { "message": "問題が発生していますか？一般的な問題とその解決策をいくつか紹介します：", "description": "トラブルシューティングセクションの紹介" },
+  "troubleNotWorking": { "message": "商品ページで拡張機能が機能しませんか？ページをリロードしてみてください。問題が解決しない場合は、サポートされているAmazonまたはeBayドメインにいることを確認してください。", "description": "トラブルシューティングステップ1" },
+  "troubleNoDeals": { "message": "お得な情報が表示されませんか？お得な情報は定期的に更新されます。後でもう一度試すか、接続を確認してください。", "description": "トラブルシューティングステップ2" },
+  "troubleLogin": { "message": "ログインに問題がありますか？ShopSmart Proはログインを必要としません。すべてのデータはデバイスにローカルに保存されます。", "description": "トラブルシューティングステップ3" },
+  "faqWhichSites": { "message": "どのサイトがサポートされていますか？", "description": "よくある質問1" },
+  "faqWhichSitesAnswer": { "message": "ShopSmart Proは現在、複数の国でAmazonとeBayのドメインをサポートしています。", "description": "よくある質問の回答1" },
+  "faqDataSecure": { "message": "私のデータは安全ですか？", "description": "よくある質問2" },
+  "faqDataSecureAnswer": { "message": "はい。追跡中の商品や検索履歴を含むすべてのデータは、お使いのコンピュータにローカルに保存されます。個人データを収集または販売することはありません。詳細については、プライバシーポリシーをご覧ください。", "description": "よくある質問の回答2" },
+  "faqHowToUpdate": { "message": "拡張機能を更新するにはどうすればよいですか？", "description": "よくある質問3" },
+  "faqHowToUpdateAnswer": { "message": "拡張機能は自動的に更新されます。ブラウザの拡張機能ページから手動で更新することもできます。", "description": "よくある質問の回答3" },
+  "privacyPolicyIntro": { "message": "私たちはあなたのプライバシーを真剣に受け止めています。私たちの拡張機能は、個人を特定できるユーザーデータを収集せずに機能するように設計されています。", "description": "プライバシーポリシーセクションの紹介" },
+  "readFullPrivacyPolicy": { "message": "完全なプライバシーポリシーを読む", "description": "完全なプライバシーポリシーへのリンク" },
+  "printGuide": { "message": "ガイドを印刷", "description": "ドキュメントを印刷するボタン" },
+  "copyright": { "message": "© 2025 ShopSmart Pro. 無断複写・転載を禁じます。", "description": "著作権表示" },
+  "version": { "message": "バージョン2.0.0", "description": "拡張機能のバージョン番号" },
+  "clearHistory": { "message": "履歴をクリア", "description": "検索履歴をクリアするボタン" },
+  "todaysSearchesLabel": { "message": "今日の検索：", "description": "今日の検索統計のラベル" },
+  "activeTrackersLabel": { "message": "アクティブなトラッカー：", "description": "アクティブなトラッカー統計のラベル" },
+  "voiceSearchTitle": { "message": "音声検索", "description": "音声検索モーダルのタイトル" },
+  "voiceStatusInit": { "message": "マイクをクリックして聞き取りを開始します...", "description": "音声検索の初期ステータス" },
+  "startListeningBtn": { "message": "聞き取りを開始", "description": "モーダルで音声聞き取りを開始するボタン" },
+  "categoryAppsGames": { "message": "アプリ＆ゲーム", "description": "カテゴリ名" },
+  "categoryClothingAccessories": { "message": "服＆ファッション小物", "description": "カテゴリ名" },
+  "categoryHealthPersonalCare": { "message": "ヘルス＆パーソナルケア", "description": "カテゴリ名" },
+  "categoryHomeKitchen": { "message": "ホーム＆キッチン", "description": "カテゴリ名" },
+  "categoryIndustrialScientific": { "message": "産業・研究開発用品", "description": "カテゴリ名" },
+  "categoryLuggageBags": { "message": "スーツケース・バッグ", "description": "カテゴリ名" },
+  "categoryMoviesTV": { "message": "映画＆テレビ", "description": "カテゴリ名" },
+  "categoryPatioLawnGarden": { "message": "パティオ、芝生＆ガーデン", "description": "カテゴリ名" },
+  "categoryShoesHandbags": { "message": "シューズ＆ハンドバッグ", "description": "カテゴリ名" },
+  "categorySportsOutdoors": { "message": "スポーツ＆アウトドア", "description": "カテゴリ名" },
+  "categoryToolsHomeImprovement": { "message": "工具＆DIY", "description": "カテゴリ名" },
+  "categoryToysGames": { "message": "おもちゃ＆ゲーム", "description": "カテゴリ名" },
+  "categoryWatches": { "message": "腕時計", "description": "カテゴリ名" },
+  "lightningDealsBrowser": { "message": "Lightning Deals Browser" },
+  "sortBy": { "message": "並べ替え:" },
+  "highestDiscount": { "message": "最高割引額" },
+  "refreshDeals": { "message": "割引情報を更新" },
+  "activeDeals": { "message": "有効な割引情報" },
+  "totalSavings": { "message": "合計割引額" },
+  "avgDiscount": { "message": "平均割引額" },
+  "dealAlerts": { "message": "割引情報アラート" },
+  "enableDealNotifications": { "message": "割引情報通知を有効にする" },
+  "playSoundForDeals": { "message": "割引情報通知音を再生する" },
+  "notifyFor": { "message": "通知対象:" },
+  "electronics": { "message": "家電製品" },
+  "home": { "message": "ホーム" },
+  "books": { "message": "書籍" },
+  "fashion": { "message": "ファッション" },
+  "affiliateTagNotice": { "message": "一部の取引にはアフィリエイトタグが含まれる場合があります。" },
+  "supportExtensionNotice": { "message": "これは拡張機能のサポートに役立ちます。" },
+  "enableDarkMode": {
+    "message": "ダークモードを有効にする",
+    "description": "ダークモード切替のラベル"
+  },
+  "enableDarkModeDesc": {
+    "message": "すべてのShopSmart Proインターフェースでダークテーマを使用",
+    "description": "ダークモード切替の説明"
+  },
+  "syncWithSystem": {
+    "message": "システムの外観と同期",
+    "description": "システムとの同期切替のラベル"
+  },
+  "syncWithSystemDesc": {
+    "message": "デバイスのライト/ダークモードに自動的に従う",
+    "description": "システムとの同期切替の説明"
+  },
+  "affiliateInformation": {
+    "message": "アフィリエイト情報",
+    "description": "アフィリエイト情報セクションのタイトル"
+  },
+  "affiliateInformationDesc": {
+    "message": "はい！この拡張機能は完全に無料です。アフィリエイトプログラムを通じてサポートされており、追加料金はかかりません。",
+    "description": "アフィリエイト情報セクションの説明"
+  },
+  "enableAllAlerts": {
+    "message": "すべてのアラートを有効にする",
+    "description": "すべての通知を有効にするラベル"
+  },
+  "enableAllAlertsDesc": {
+    "message": "価格の下落、お得な情報、クーポンの通知を許可",
+    "description": "すべての通知を有効にする説明"
+  },
+  "priceDropAlerts": {
+    "message": "価格下落アラート",
+    "description": "価格下落アラートのラベル"
+  },
+  "priceDropAlertsDesc": {
+    "message": "追跡中の商品が価格を下げたときに通知を受け取る",
+    "description": "価格下落アラートの説明"
+  },
+  "dealNotifications": {
+    "message": "お得な情報通知",
+    "description": "お得な情報通知のラベル"
+  },
+  "dealNotificationsDesc": {
+    "message": "ライトニングディールの通知を受け取る",
+    "description": "お得な情報通知の説明"
+  },
+  "couponAlerts": {
+    "message": "クーポンアラート",
+    "description": "クーポンアラートのラベル"
+  },
+  "couponAlertsDesc": {
+    "message": "商品に利用可能なクーポンがあると通知",
+    "description": "クーポンアラートの説明"
+  },
+  "instant": {
+    "message": "即時",
+    "description": "即時通知のオプション"
+  },
+  "hourlyDigest": {
+    "message": "毎時ダイジェスト",
+    "description": "毎時通知ダイジェストのオプション"
+  },
+  "dailyDigest": {
+    "message": "毎日ダイジェスト",
+    "description": "毎日通知ダイジェストのオプション"
+  },
+  "playSoundForAlerts": {
+    "message": "アラートの音を再生",
+    "description": "アラートの音を再生するラベル"
+  },
+  "playSoundForAlertsDesc": {
+    "message": "通知が表示されると短い音を再生",
+    "description": "アラートの音を再生する説明"
+  },
+  "helpAndDocumentation": {
+    "message": "ヘルプ＆ドキュメンテーション",
+    "description": "ヘルプとドキュメンテーションのボタンテキスト"
+  },
+  "testNotification": {
+    "message": "テスト通知",
+    "description": "通知テストのボタンテキスト"
+  },
+  "testNotificationDesc": {
+    "message": "音と通知を確認するためにテストアラートを送信",
+    "description": "通知テストの説明"
+  },
+  "enhancePages": {
+    "message": "ページを強化",
+    "description": "ページを強化するラベル"
+  },
+  "enhancePagesDesc": {
+    "message": "AmazonページにShopSmart Proの機能を追加",
+    "description": "ページを強化する説明"
+  },
+  "voiceSearchDesc": {
+    "message": "音声検索機能を有効にする",
+    "description": "音声検索を有効にする説明"
+  },
+  "usageAnalytics": {
+    "message": "使用状況分析",
+    "description": "使用状況分析のラベル"
+  },
+  "usageAnalyticsDesc": {
+    "message": "匿名の使用データを共有してShopSmart Proの改善に協力",
+    "description": "使用状況分析の説明"
+  },
+  "2products": {
+    "message": "2 商品",
+    "description": "比較用の 2 商品オプション"
+  },
+  "3products": {
+    "message": "3 商品",
+    "description": "比較用の 3 商品オプション"
+  },
+  "4products": {
+    "message": "4 商品",
+    "description": "比較用の 4 商品オプション"
+  },
+  "5products": {
+    "message": "5 商品",
+    "description": "比較用の 5 商品オプション"
+  },
+  "6products": {
+    "message": "6 商品",
+    "description": "比較用の 6 商品オプション"
+  },
+  "7days": {
+    "message": "7 日",
+    "description": "データ保持の 7 日オプション"
+  },
+  "14days": {
+    "message": "14 日",
+    "description": "データ保持の 14 日オプション"
+  },
+  "30days": {
+    "message": "30 日",
+    "description": "データ保持の 30 日オプション"
+  },
+  "60days": {
+    "message": "60 日",
+    "description": "データ保持の 60 日オプション"
+  },
+  "90days": {
+    "message": "90 日",
+    "description": "データ保持の 90 日オプション"
+  },
+  "180days": {
+    "message": "180 日",
+    "description": "データ保持の 180 日オプション"
+  },
+  "1year": {
+    "message": "1 年",
+    "description": "データ保持の 1 年オプション"
+  },
+  "usageStatistics": {
+    "message": "使用統計",
+    "description": "使用統計のラベル"
+  },
+  "usageStatisticsDesc": {
+    "message": "拡張機能の改善に役立つ匿名の使用統計を共有",
+    "description": "使用統計の説明"
+  },
+  "errorReporting": {
+    "message": "エラー報告",
+    "description": "エラー報告のラベル"
+  },
+  "errorReportingDesc": {
+    "message": "エラーを自動的に報告してバグ修正に協力",
+    "description": "エラー報告の説明"
+  },
+  "debugInformation": {
+    "message": "デバッグ情報",
+    "description": "デバッグ情報セクションのタイトル"
+  },
+  "showDebugInfo": {
+    "message": "デバッグ情報を表示",
+    "description": "デバッグ情報を表示するボタンテキスト"
+  },
+  "saveSettings": {
+    "message": "設定を保存",
+    "description": "設定を保存するボタンテキスト"
+  },
+  "resetToDefaults": {
+    "message": "デフォルトにリセット",
+    "description": "設定をリセットするボタンテキスト"
+  },
+  "exportSettings": {
+    "message": "設定をエクスポート",
+    "description": "設定をエクスポートするボタンテキスト"
+  },
+  "importSettings": {
+    "message": "設定をインポート",
+    "description": "設定をインポートするボタンテキスト"
+  },
+  "clearAllData": {
+    "message": "すべてのデータをクリア",
+    "description": "すべてのデータをクリアするボタンテキスト"
+  }
+}

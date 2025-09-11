@@ -3,102 +3,93 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 Lightning Deals Browser - ShopSmart Pro</title>
+    <title>🔥 __MSG_lightningDealsBrowser__ - __MSG_extensionName__</title>
     <link rel="stylesheet" href="deals.css">
+    <script src="deals.js" defer></script>
 </head>
 <body class="light-mode">
     <div class="deals-container">
-        <h1>🔥 Lightning Deals Browser</h1>
+        <!-- Header -->
+        <h1>🔥 <span class="i18n" data-key="lightningDealsBrowser">Lightning Deals Browser</span></h1>
+        <p style="text-align: center; color: #666; margin: 10px 0;">
+            <small><span class="i18n" data-key="poweredByAmazon">Hand-picked savings from Amazon</span></small>
+        </p>
 
-        <div class="controls">
-            <div class="filter-group">
-                <label for="categoryFilter">Category:</label>
-                <select id="categoryFilter">
-                    <option value="all">All Categories</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="home">Home & Kitchen</option>
-                    <option value="books">Books</option>
-                    <option value="fashion">Fashion</option>
-                    <option value="sports">Sports & Outdoors</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="sortFilter">Sort by:</label>
-                <select id="sortFilter">
-                    <option value="discount">Highest Discount</option>
-                    <option value="price">Lowest Price</option>
-                    <option value="time">Ending Soonest</option>
-                </select>
-            </div>
-
-            <button id="refreshBtn" class="refresh-btn">🔄 Refresh Deals</button>
+        <!-- Country Selector -->
+        <div class="country-select">
+            <label for="countrySelect"><span class="i18n" data-key="selectCountry">Select Your Country</span></label>
+            <select id="countrySelect">
+                <option value="com">🇺🇸 USA</option>
+                <option value="ca">🇨🇦 Canada</option>
+                <option value="co.uk">🇬🇧 UK</option>
+                <option value="fr">🇫🇷 France</option>
+                <option value="de">🇩🇪 Germany</option>
+                <option value="es">🇪🇸 Spain</option>
+                <option value="it">🇮🇹 Italy</option>
+                <option value="nl">🇳🇱 Netherlands</option>
+                <option value="jp">🇯🇵 Japan</option>
+            </select>
         </div>
 
+        <!-- Deal Highlights -->
+        <div class="deal-highlights">
+            <div class="deal-card" data-category="electronics" data-search="wireless+headphones">
+                <img src="https://via.placeholder.com/300x200?text=Headphones" alt="Wireless Headphones" class="deal-image">
+                <h3>🎧 Wireless Headphones</h3>
+                <p><span class="i18n" data-key="topNoiseCancelling">Top noise-cancelling picks under $100</span></p>
+                <button class="view-deal-btn">🔍 <span class="i18n" data-key="viewDeals">View Deals</span></button>
+            </div>
+
+            <div class="deal-card" data-category="kitchen" data-search="air+fryer">
+                <img src="https://via.placeholder.com/300x200?text=Air+Fryer" alt="Air Fryer" class="deal-image">
+                <h3>🍟 Air Fryers</h3>
+                <p><span class="i18n" data-key="healthyCooking">Healthy cooking with up to 50% off</span></p>
+                <button class="view-deal-btn">🔍 <span class="i18n" data-key="viewDeals">View Deals</span></button>
+            </div>
+
+            <div class="deal-card" data-category="toys" data-search="lego+set">
+                <img src="https://via.placeholder.com/300x200?text=LEGO" alt="LEGO Set" class="deal-image">
+                <h3>🧩 LEGO Sets</h3>
+                <p><span class="i18n" data-key="bestsellingBuilds">Bestselling builds for kids & collectors</span></p>
+                <button class="view-deal-btn">🔍 <span class="i18n" data-key="viewDeals">View Deals</span></button>
+            </div>
+
+            <div class="deal-card" data-category="beauty" data-search="skincare+set">
+                <img src="https://via.placeholder.com/300x200?text=Skincare" alt="Skincare Set" class="deal-image">
+                <h3>🧴 Skincare Sets</h3>
+                <p><span class="i18n" data-key="luxuryBrands">Luxury brands with 30%+ off</span></p>
+                <button class="view-deal-btn">🔍 <span class="i18n" data-key="viewDeals">View Deals</span></button>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
         <div class="stats-bar">
             <div class="stat">
-                <span class="stat-label">Active Deals:</span>
-                <span class="stat-value" id="activeDealsCount">0</span>
+                <span class="stat-label"><span class="i18n" data-key="activeDeals">Active Deals</span></span>
+                <span class="stat-value">4</span>
             </div>
             <div class="stat">
-                <span class="stat-label">Total Savings:</span>
-                <span class="stat-value" id="totalSavings">$0</span>
+                <span class="stat-label"><span class="i18n" data-key="totalSavings">Total Savings</span></span>
+                <span class="stat-value">~35%</span>
             </div>
             <div class="stat">
-                <span class="stat-label">Avg Discount:</span>
-                <span class="stat-value" id="avgDiscount">0%</span>
+                <span class="stat-label"><span class="i18n" data-key="avgDiscount">Avg Discount</span></span>
+                <span class="stat-value"><span class="i18n" data-key="daily">Daily</span></span>
             </div>
         </div>
 
-        <div class="deals-grid" id="dealsGrid">
-            <div class="loading">Loading deals...</div>
+        <!-- View All Deals Button -->
+        <div style="text-align: center; margin: 20px 0;">
+            <button id="openAmazonDeals" class="cta-btn">
+                🛍️ <span class="i18n" data-key="viewAllLiveDeals">View All Live Deals on Amazon</span>
+            </button>
         </div>
 
-        <div class="deal-alerts">
-            <h3>💡 Deal Alerts</h3>
-            <div class="alert-settings">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="enableAlerts" checked>
-                    <span class="checkmark"></span>
-                    Enable deal notifications
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="soundAlerts">
-                    <span class="checkmark"></span>
-                    Play sound for deals
-                </label>
-                <div class="alert-categories">
-                    <h4>Notify for:</h4>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="electronics" checked>
-                        <span class="checkmark"></span>
-                        Electronics
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="home" checked>
-                        <span class="checkmark"></span>
-                        Home
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="books">
-                        <span class="checkmark"></span>
-                        Books
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="fashion">
-                        <span class="checkmark"></span>
-                        Fashion
-                    </label>
-                </div>
-            </div>
-        </div>
-
+        <!-- Affiliate Notice -->
         <div class="affiliate-notice">
-            <p>🔗 All deals include affiliate tag</p>
-            <p><small>Purchases made through these links support the extension development</small></p>
+            <p>🔗 <span class="i18n" data-key="affiliateTagNotice">As an Amazon Associate, we earn from qualifying purchases.</span></p>
+            <p><small><span class="i18n" data-key="supportExtensionNotice">Your support helps maintain this free extension.</span></small></p>
         </div>
     </div>
-
-    <script src="deals.js"></script>
 </body>
 </html>

@@ -1,0 +1,461 @@
+{
+  "extensionName": { "message": "ShopSmart Pro" },
+  "extensionDescription": { "message": "Améliore votre expérience d'achat sur Amazon et eBay avec le suivi des prix, les comparaisons et les alertes de bonnes affaires." },
+  "sidePanelTitle": { "message": "Panneau Latéral" },
+  "settings": { "message": "Paramètres" },
+  "help": { "message": "Aide" },
+  "about": { "message": "À propos" },
+  "close": { "message": "Fermer" },
+  "save": { "message": "Enregistrer" },
+  "reset": { "message": "Réinitialiser" },
+  "export": { "message": "Exporter" },
+  "import": { "message": "Importer" },
+  "clear": { "message": "Effacer" },
+  "search": { "message": "Rechercher" },
+  "searchStore": { "message": "Rechercher dans la boutique" },
+  "searchEbay": { "message": "Rechercher sur eBay" },
+  "comparison": { "message": "Comparaison" },
+  "deals": { "message": "Offres" },
+  "trackedProducts": { "message": "Produits suivis" },
+  "notifications": { "message": "Notifications" },
+  "voiceSearch": { "message": "Recherche vocale" },
+  "startListening": { "message": "Commencer l'écoute" },
+  "stopListening": { "message": "Arrêter l'écoute" },
+  "listening": { "message": "Écoute en cours... Parlez maintenant !" },
+  "gotIt": { "message": "Compris ! Cliquez sur « Utiliser ceci » pour effectuer une recherche." },
+  "useThisSearch": { "message": "Utiliser cette recherche" },
+  "error": { "message": "Erreur" },
+  "success": { "message": "Succès" },
+  "loading": { "message": "Chargement..." },
+  "openSidePanel": { "message": "Ouvrir le panneau latéral" },
+  "country": { "message": "Pays :" },
+  "defaultCountry": { "message": "Pays par défaut :" },
+  "category": { "message": "Catégorie :" },
+  "keywords": { "message": "Mots-clés :" },
+  "whatAreYouLookingFor": { "message": "Que recherchez-vous ?" },
+  "searchTrackedProducts": { "message": "Rechercher des produits suivis..." },
+  "filterByCategory": { "message": "Filtrer par catégorie" },
+  "allCategories": { "message": "Toutes les catégories" },
+  "primeOnly": { "message": "Prime uniquement" },
+  "freeShipping": { "message": "Livraison gratuite" },
+  "maxComparisonProducts": { "message": "Nombre maximal de produits de comparaison" },
+  "dataRetention": { "message": "Conservation des données" },
+  "notificationFrequency": { "message": "Fréquence des notifications" },
+  "recentSearches": { "message": "Recherches récentes" },
+  "activeTrackers": { "message": "Suivis actifs" },
+  "todaysSearches": { "message": "Recherches du jour" },
+  "trackedProductsSection": { "message": "Produits suivis" },
+  "productTitle": { "message": "Titre du produit" },
+  "productPrice": { "message": "Prix du produit" },
+  "productMeta": { "message": "Métadonnées du produit" },
+  "productShipping": { "message": "Livraison" },
+  "productTotal": { "message": "Total" },
+  "dealTitle": { "message": "Titre de l'offre" },
+  "dealPrice": { "message": "Prix de l'offre" },
+  "noRecentSearches": { "message": "Aucune recherche récente" },
+  "noProductsTracked": { "message": "Aucun produit suivi pour le moment" },
+  "noProductsInComparison": { "message": "Aucun produit en comparaison" },
+  "getAlertsWhenPricesDrop": { "message": "Recevoir des alertes en cas de baisse de prix" },
+  "testNotificationSent": { "message": "Notification de test envoyée !" },
+  "settingsLoaded": { "message": "Paramètres chargés avec succès." },
+  "settingsSaved": { "message": "Paramètres enregistrés avec succès !" },
+  "settingsReset": { "message": "Paramètres réinitialisés aux valeurs par défaut." },
+  "settingsExported": { "message": "Paramètres exportés avec succès." },
+  "settingsImported": { "message": "Paramètres importés avec succès." },
+  "allDataCleared": { "message": "Toutes les données ont été effacées." },
+  "getHelpAndUserGuide": { "message": "Obtenir de l'aide et le guide d'utilisation" },
+  "openExtensionSettings": { "message": "Ouvrir les paramètres de l'extension" },
+  "helpAlt": { "message": "Aide (alt)" },
+  "settingsAlt": { "message": "Paramètres (alt)" },
+  "searchAlt": { "message": "Recherche (alt)" },
+  "microphoneAlt": { "message": "Micro (alt)" },
+  "dealsAlt": { "message": "Offres spéciales (alt)" },
+  "compareAlt": { "message": "Comparer (alt)" },
+  "trackedAlt": { "message": "Suivi (alt)" },
+  "errorSavingSettings": { "message": "Erreur lors de l'enregistrement des paramètres :" },
+  "errorLoadingSettings": { "message": "Erreur lors du chargement des paramètres :" },
+  "errorImportingSettings": { "message": "Erreur lors de l'importation des paramètres :" },
+  "confirmResetSettings": { "message": "Voulez-vous vraiment réinitialiser tous les paramètres par défaut ?" },
+  "confirmClearAllData": { "message": "Voulez-vous vraiment effacer TOUTES les données ? Cette opération est irréversible." },
+  "pleaseEnterSearchTerm": { "message": "Veuillez saisir un terme de recherche" },
+  "invalidSettingsFile": { "message": "Fichier de paramètres non valide :" },
+  "categoryAllDepartments": { "message": "Tous les départements" },
+  "categoryAlexaSkills": { "message": "Skills Alexa" },
+  "categoryAmazonDevices": { "message": "Appareils Amazon" },
+  "categoryAmazonWarehouseDeals": { "message": "Offres d'entrepôt Amazon" },
+  "categoryAutomotive": { "message": "Automobile" },
+  "categoryBaby": { "message": "Bébé" },
+  "categoryBeauty": { "message": "Beauté" },
+  "categoryBooks": { "message": "Livres" },
+  "categoryElectronics": { "message": "Électronique" },
+  "categoryGiftCards": { "message": "Cartes cadeaux" },
+  "categoryGrocery": { "message": "Épicerie" },
+  "categoryHandmade": { "message": "Fait main" },
+  "categoryJewelry": { "message": "Bijoux" },
+  "categoryKindleStore": { "message": "Boutique Kindle" },
+  "categoryLuxuryBeauty": { "message": "Beauté de luxe" },
+  "categoryMusic": { "message": "Musique" },
+  "categoryMusicalInstruments": { "message": "Instruments de musique" },
+  "categoryOfficeProducts": { "message": "Fournitures de bureau" },
+  "categoryPetSupplies": { "message": "Fournitures pour animaux" },
+  "categorySoftware": { "message": "Logiciel" },
+  "categoryVideoGames": { "message": "Jeux vidéo" },
+  "languageSpanish": { "message": "Espagnol" },
+  "languageFrench": { "message": "Français" },
+  "languageGerman": { "message": "Allemand" },
+  "languageItalian": { "message": "Italien" },
+  "documentation": { "message": "Documentation", "description": "Titre de la page de documentation" },
+  "completeGuide": { "message": "Votre guide complet pour maîtriser ShopSmart Pro.", "description": "Sous-titre de la page de documentation" },
+  "tableOfContents": { "message": "Table des matières", "description": "En-tête de la table des matières" },
+  "welcome": { "message": "Bienvenue", "description": "Lien vers la section d'accueil" },
+  "gettingStarted": { "message": "Mise en route", "description": "Lien vers la section de mise en route" },
+  "features": { "message": "Fonctionnalités", "description": "Lien vers la section des fonctionnalités" },
+  "troubleshooting": { "message": "Dépannage", "description": "Lien vers la section de dépannage" },
+  "faq": { "message": "FAQ", "description": "Lien vers la section FAQ" },
+  "privacyAndSecurity": { "message": "Confidentialité et sécurité", "description": "Lien vers la section confidentialité et sécurité" },
+  "welcomeTitle": { "message": "Bienvenue dans ShopSmart Pro !", "description": "Titre principal de la section d'accueil" },
+  "welcomeDescription": { "message": "ShopSmart Pro est une extension de navigateur puissante conçue pour améliorer votre expérience d'achat en ligne sur Amazon et eBay. Ce guide vous présentera ses fonctionnalités et vous expliquera comment les utiliser efficacement.", "description": "Description dans la section d'accueil" },
+  "getStartedSteps": { "message": "Suivez ces étapes simples pour commencer :", "description": "Présentation des étapes de démarrage" },
+  "stepToolbarIcon": { "message": "Cliquez sur l'icône ShopSmart Pro dans la barre d'outils de votre navigateur pour ouvrir la fenêtre contextuelle principale.", "description": "Première étape pour bien démarrer" },
+  "stepSearchBox": { "message": "Utilisez le champ de recherche pour rechercher des produits sur le site actuel (Amazon ou eBay).", "description": "Deuxième étape pour bien démarrer" },
+  "stepSelectCategories": { "message": "Sélectionnez une catégorie pour affiner vos résultats de recherche.", "description": "Troisième étape pour bien démarrer" },
+  "stepSearchOrEnter": { "message": "Cliquez sur « Rechercher dans la boutique » ou appuyez sur Entrée pour afficher les résultats.", "description": "Quatrième étape pour bien démarrer" },
+  "stepRightClickMenu": { "message": "Faites un clic droit sur n'importe quelle page produit pour accéder à des actions rapides comme « Suivre le prix » ou « Ajouter au comparateur ».", "description": "Cinquième étape pour bien démarrer" },
+  "featurePriceTracking": { "message": "Suivi des prix", "description": "Titre de la fonctionnalité de suivi des prix" },
+  "featurePriceTrackingDesc": { "message": "Ne ratez aucune baisse de prix. Suivez l'évolution de chaque produit et recevez une notification dès que son prix change.", "description": "Description de la fonctionnalité de suivi des prix" },
+  "featurePriceComparison": { "message": "Comparaison de produits", "description": "Titre de la fonctionnalité de comparaison de produits" },
+  "featurePriceComparisonDesc": { "message": "Comparez plusieurs produits côte à côte. Ajoutez des produits de n'importe quelle page à votre liste de comparaison.", "description": "Description de la fonctionnalité de comparaison de produits" },
+  "featureDealFinder": { "message": "Recherche d'offres", "description": "Titre de la fonctionnalité de recherche d'offres" },
+  "featureDealFinderDesc": { "message": "Découvrez les meilleures offres et réductions disponibles dès maintenant grâce à notre outil de recherche d'offres intégré.", "description": "Description de la fonctionnalité de recherche d'offres" },
+  "featureVoiceSearch": { "message": "Recherche vocale", "description": "Titre de la fonctionnalité de recherche vocale" },
+  "featureVoiceSearchDesc": { "message": "Recherchez des produits avec votre voix pour une expérience mains libres.", "description": "Description de la fonctionnalité de recherche vocale" },
+  "featureSidePanel": { "message": "Intégration du panneau latéral", "description": "Titre de la fonctionnalité du panneau latéral" },
+  "featureSidePanelDesc": { "message": "Accédez à toutes les fonctionnalités de ShopSmart Pro sans quitter votre page actuelle grâce au panneau latéral pratique.", "description": "Description de la fonctionnalité du panneau latéral" },
+  "troubleshootingIntro": { "message": "Vous rencontrez des problèmes ? Voici quelques problèmes courants et leurs solutions :", "description": "Présentation de la section de dépannage" },
+  "troubleNotWorking": { "message": "L'extension ne fonctionne pas sur une page produit ? Essayez de recharger la page. Si le problème persiste, assurez-vous d'être sur un domaine Amazon ou eBay pris en charge.", "description": "Dépannage étape 1" },
+  "troubleNoDeals": { "message": "Vous ne voyez aucune offre ? Les offres sont mises à jour régulièrement. Réessayez plus tard ou vérifiez votre connexion.", "description": "Dépannage étape 2" },
+  "troubleLogin": { "message": "Problèmes de connexion ? ShopSmart Pro ne nécessite pas de connexion. Toutes les données sont stockées localement sur votre appareil.", "description": "Dépannage étape 3" },
+  "faqWhichSites": { "message": "Quels sites sont pris en charge ?", "description": "FAQ question 1" },
+  "faqWhichSitesAnswer": { "message": "ShopSmart Pro prend actuellement en charge les domaines Amazon et eBay dans plusieurs pays.", "description": "FAQ réponse 1" },
+  "faqDataSecure": { "message": "Mes données sont-elles sécurisées ?", "description": "FAQ, question 2" },
+  "faqDataSecureAnswer": { "message": "Oui. Toutes vos données, y compris les produits suivis et l'historique de recherche, sont stockées localement sur votre ordinateur. Nous ne collectons ni ne vendons vos données personnelles. Consultez notre politique de confidentialité pour plus de détails.", "description": "FAQ answer 2" },
+  "faqHowToUpdate": { "message": "Comment mettre à jour l'extension ?", "description": "FAQ question 3" },
+  "faqHowToUpdateAnswer": { "message": "L'extension se mettra à jour automatiquement. Vous pouvez également la mettre à jour manuellement depuis la page des extensions de votre navigateur.", "description": "FAQ answer 3" },
+  "privacyPolicyIntro": { "message": "Nous prenons votre vie privée au sérieux. Notre extension est conçue pour fonctionner sans collecter de données personnelles sur les utilisateurs.", "description": "Introduction à la section sur la politique de confidentialité" },
+  "readFullPrivacyPolicy": { "message": "Lire la politique de confidentialité complète", "description": "Lien vers la politique de confidentialité complète" },
+  "printGuide": { "message": "Imprimer le guide", "description": "Bouton pour imprimer la documentation" },
+  "copyright": { "message": "© 2025 ShopSmart Pro. Tous droits réservés.", "description": "Avis de droit d'auteur" },
+  "version": { "message": "Version 2.0.0", "description": "Numéro de version de l'extension" },
+  "clearHistory": { "message": "Effacer l'historique", "description": "Bouton pour effacer l'historique de recherche" },
+  "todaysSearchesLabel": { "message": "Recherches du jour :", "description": "Étiquette pour les statistiques de recherches du jour" },
+  "activeTrackersLabel": { "message": "Suivis actifs :", "description": "Étiquette pour les statistiques des suivis actifs" },
+  "voiceSearchTitle": { "message": "Recherche vocale", "description": "Titre de la modale de recherche vocale" },
+  "voiceStatusInit": { "message": "Cliquez sur le microphone pour commencer l'écoute...", "description": "Statut initial de la recherche vocale" },
+  "startListeningBtn": { "message": "Commencer l'écoute", "description": "Bouton pour démarrer l'écoute vocale dans la modale" },
+  "categoryAppsGames": { "message": "Applications et jeux", "description": "Nom de la catégorie" },
+  "categoryClothingAccessories": { "message": "Vêtements et accessoires", "description": "Nom de la catégorie" },
+  "categoryHealthPersonalCare": { "message": "Santé et soins personnels", "description": "Nom de la catégorie" },
+  "categoryHomeKitchen": { "message": "Maison et cuisine", "description": "Nom de la catégorie" },
+  "categoryIndustrialScientific": { "message": "Industriel et Scientifique", "description": "Nom de la catégorie" },
+  "categoryLivresEnFrancais": { "message": "Livres en français", "description": "Nom de la catégorie" },
+  "categoryLuggageBags": { "message": "Bagages et Sacs", "description": "Nom de la catégorie" },
+  "categoryMoviesTV": { "message": "Films et TV", "description": "Nom de la catégorie" },
+  "categoryPatioLawnGarden": { "message": "Patio, Pelouse et Jardin", "description": "Nom de la catégorie" },
+  "categoryShoesHandbags": { "message": "Chaussures et Sacs à Main", "description": "Nom de la catégorie" },
+  "categorySportsOutdoors": { "message": "Sports et Plein Air", "description": "Nom de la catégorie" },
+  "categoryToolsHomeImprovement": { "message": "Outils et Bricolage", "description": "Nom de la catégorie" },
+  "categoryToysGames": { "message": "Jouets et Jeux", "description": "Nom de la catégorie" },
+  "categoryWatches": { "message": "Montres", "description": "Nom de la catégorie" },
+  "lightningDealsBrowser": { "message": "Navigateur d'offres Lightning" },
+  "sortBy": { "message": "Trier par :" },
+  "highestDiscount": { "message": "Remise la plus élevée" },
+  "refreshDeals": { "message": "Actualiser les offres" },
+  "activeDeals": { "message": "Offres actives" },
+  "totalSavings": { "message": "Économies totales" },
+  "avgDiscount": { "message": "Remise moyenne" },
+  "dealAlerts": { "message": "Alertes d'offres" },
+  "enableDealNotifications": { "message": "Activer les notifications d'offres" },
+  "playSoundForDeals": { "message": "Lire un son pour les offres" },
+  "notifyFor": { "message": "Notifier pour :" },
+  "electronics": { "message": "Électronique" },
+  "home": { "message": "Maison" },
+  "books": { "message": "Livres" },
+  "fashion": { "message": "Mode" },
+  "affiliateTagNotice": { "message": "Certaines offres peuvent inclure une balise d'affiliation." },
+  "supportExtensionNotice": { "message": "Ceci contribue à la prise en charge de l'extension." },
+  "extensionSettings": { "message": "Paramètres de l'extension" },
+  "general": { "message": "Général" },
+  "advanced": { "message": "Avancé" },
+  "amazonCanada": { "message": "Amazon Canada" },
+  "amazonUSA": { "message": "Amazon États-Unis" },
+  "amazonUK": { "message": "Amazon Royaume-Uni" },
+  "amazonGermany": { "message": "Amazon Allemagne" },
+  "amazonFrance": { "message": "Amazon France" },
+  "amazonItaly": { "message": "Amazon Italie" },
+  "amazonSpain": { "message": "Amazon Espagne" },
+  "amazonJapan": { "message": "Amazon Japon" },
+  "amazonAustralia": { "message": "Amazon Australie" },
+  "amazonBrazil": { "message": "Amazon Brésil" },
+  "amazonMexico": { "message": "Amazon Mexique" },
+  "amazonNetherlands": { "message": "Amazon Pays-Bas" },
+  "defaultCategory": { "message": "Catégorie par défaut" },
+  "autoRedirect": { "message": "Redirection automatique vers Amazon" },
+  "autoRedirectDesc": { "message": "Rediriger automatiquement lors de la recherche depuis la fenêtre contextuelle" },
+  "saveSearchHistory": { "message": "Enregistrer l'historique des recherches" },
+  "saveSearchHistoryDesc": { "message": "Mémoriser vos recherches récentes" },
+  "categoryCdsAndVinyl": { "message": "CD et vinyles" },
+  "categoryComputers": { "message": "Ordinateurs" },
+  "categoryGardenAndOutdoor": { "message": "Jardin et plein air" },
+  "categoryPrimeVideo": { "message": "Prime Video" },
+  "categoryShoes": { "message": "Chaussures" },
+  "lowestPrice": { "message": "Prix le plus bas" },
+  "endingSoonest": { "message": "Se termine bientôt" },
+  "loadingDeals": { "message": "Chargement des offres..." },
+  "productComparisonTitle": { "message": "🛒 Comparaison de produits - ShopSmart Pro" },
+  "comparePricesRatingsFeatures": { "message": "Comparez les prix, les évaluations et les fonctionnalités en un coup d'œil" },
+  "noProductsAddedYet": { "message": "🔍 Aucun produit ajouté pour le moment." },
+  "clickCompareToAdd": { "message": "Cliquez sur « Comparer » sur n'importe quelle liste de produits pour ajouter des articles ici." },
+  "loadSavedComparison": { "message": "Charger une comparaison enregistrée" },
+  "loadSavedComparisonOption": { "message": "💾 Charger la comparaison enregistrée" },
+  "deleteSelectedList": { "message": "Supprimer la liste sélectionnée" },
+  "listNamePlaceholder": { "message": "ex: Configuration de mon bureau à domicile" },
+  "nameThisComparisonList": { "message": "Nommez cette liste de comparaison" },
+  "saveList": { "message": "💾 Enregistrer la liste" },
+  "exportToCsv": { "message": "📤 Exporter en CSV" },
+  "shareLink": { "message": "🔗 Partager le lien" },
+  "clearAll": { "message": "🗑️ Tout effacer" },
+  "productComparison": { "message": "Comparaison de produits" },
+  "selectProductsToCompare": { "message": "Sélectionnez les produits à comparer" },
+  "clickCompareOnListing": { "message": "Cliquez sur « Comparer » sur n'importe quelle fiche produit" },
+  "linkCopiedToClipboard": { "message": "🔗 Lien de comparaison copié dans le presse-papiers !" },
+  "couldNotCopyLink": { "message": "❌ Impossible de copier le lien. Veuillez réessayer." },
+  "trackingButtonText": { "message": "✅ Suivi" },
+  "failedToLoadSavedProducts": { "message": "Échec du chargement des produits enregistrés" },
+  "failedToSaveProducts": { "message": "Échec de l'enregistrement des produits" },
+  "tooManyProductsWarning": { "message": "⚠️ Trop de produits" },
+  "tooManyProductsHint": { "message": "Pour une meilleure expérience, gardez les comparaisons en dessous de 5 produits." },
+  "viewBtn": { "message": "Voir" },
+  "trackBtn": { "message": "Suivre" },
+  "removeBtn": { "message": "Supprimer" },
+  "featureComparison": { "message": "📊 Comparaison des fonctionnalités" },
+  "featureHeader": { "message": "Fonctionnalité" },
+  "productHeader": { "message": "Produit $1", "placeholders": { "1": { "content": "$1" } } },
+  "priceFeature": { "message": "💰 Prix" },
+  "ratingFeature": { "message": "⭐ Évaluation" },
+  "noProductsToExport": { "message": "Aucun produit à exporter." },
+  "csvTitle": { "message": "Titre" },
+  "csvPrice": { "message": "Prix" },
+  "csvRating": { "message": "Évaluation" },
+  "csvUrl": { "message": "URL" },
+  "savedAs": { "message": "✅ Enregistré sous « $1 »", "placeholders": { "1": { "content": "$1" } } },
+  "confirmDeleteList": { "message": "Supprimer la liste enregistrée « $1 » ?", "placeholders": { "1": { "content": "$1" } } },
+  "listDeleted": { "message": "✅ Liste « $1 » supprimée.", "placeholders": { "1": { "content": "$1" } } },
+  "priceAlertsActive": {
+    "message": "Alertes de prix actives",
+    "description": "Texte indiquant que les alertes de prix sont actives."
+  },
+  "updatesEvery6Hours": {
+    "message": "Mises à jour toutes les 6 heures",
+    "description": "Texte indiquant la fréquence de mise à jour des données de prix."
+  },
+  "enableDarkMode": {
+    "message": "Activer le mode sombre",
+    "description": "Étiquette pour le basculement en mode sombre."
+  },
+  "enableDarkModeDesc": {
+    "message": "Utiliser le thème sombre sur toutes les interfaces de ShopSmart Pro",
+    "description": "Description pour le basculement en mode sombre."
+  },
+  "syncWithSystem": {
+    "message": "Synchroniser avec l'apparence du système",
+    "description": "Étiquette pour le basculement de la synchronisation avec le système."
+  },
+  "syncWithSystemDesc": {
+    "message": "Suivre automatiquement le mode clair/sombre de votre appareil",
+    "description": "Description pour le basculement de la synchronisation avec le système."
+  },
+  "affiliateInformation": {
+    "message": "Informations d'affiliation",
+    "description": "Titre de la section des informations d'affiliation."
+  },
+  "affiliateInformationDesc": {
+    "message": "Oui ! L'extension est entièrement gratuite. Elle est financée par un programme d'affiliation, ce qui ne vous coûte rien de plus.",
+    "description": "Description de la section des informations d'affiliation."
+  },
+  "enableAllAlerts": {
+    "message": "Activer toutes les alertes",
+    "description": "Étiquette pour activer toutes les notifications."
+  },
+  "enableAllAlertsDesc": {
+    "message": "Autoriser les notifications de baisse de prix, d'offres et de coupons",
+    "description": "Description pour l'activation de toutes les notifications."
+  },
+  "priceDropAlerts": {
+    "message": "Alertes de baisse de prix",
+    "description": "Étiquette pour les alertes de baisse de prix."
+  },
+  "priceDropAlertsDesc": {
+    "message": "Recevez une notification lorsque le prix des produits suivis baisse",
+    "description": "Description des alertes de baisse de prix."
+  },
+  "dealNotifications": {
+    "message": "Notifications d'offres",
+    "description": "Étiquette pour les notifications d'offres."
+  },
+  "dealNotificationsDesc": {
+    "message": "Recevoir des notifications pour les offres éclair",
+    "description": "Description des notifications d'offres."
+  },
+  "couponAlerts": {
+    "message": "Alertes de coupons",
+    "description": "Étiquette pour les alertes de coupons."
+  },
+  "couponAlertsDesc": {
+    "message": "Notifier lorsque des coupons sont disponibles pour les produits",
+    "description": "Description des alertes de coupons."
+  },
+  "instant": {
+    "message": "Instantané",
+    "description": "Option pour les notifications instantanées."
+  },
+  "hourlyDigest": {
+    "message": "Résumé horaire",
+    "description": "Option pour un résumé horaire des notifications."
+  },
+  "dailyDigest": {
+    "message": "Résumé quotidien",
+    "description": "Option pour un résumé quotidien des notifications."
+  },
+  "playSoundForAlerts": {
+    "message": "Jouer un son pour les alertes",
+    "description": "Étiquette pour jouer un son pour les alertes."
+  },
+  "playSoundForAlertsDesc": {
+    "message": "Jouer un son court lorsqu'une notification apparaît",
+    "description": "Description pour jouer un son pour les alertes."
+  },
+  "helpAndDocumentation": {
+    "message": "Aide et documentation",
+    "description": "Texte du bouton d'aide et de documentation."
+  },
+  "testNotification": {
+    "message": "Notification de test",
+    "description": "Texte du bouton pour tester les notifications."
+  },
+  "testNotificationDesc": {
+    "message": "Envoyer une alerte de test pour vérifier le son et les notifications",
+    "description": "Description pour tester les notifications."
+  },
+  "enhancePages": {
+    "message": "Améliorer les pages",
+    "description": "Étiquette pour l'amélioration des pages."
+  },
+  "enhancePagesDesc": {
+    "message": "Ajouter les fonctionnalités de ShopSmart Pro aux pages Amazon",
+    "description": "Description de l'amélioration des pages."
+  },
+  "voiceSearchDesc": {
+    "message": "Activer la fonctionnalité de recherche vocale",
+    "description": "Description de l'activation de la recherche vocale."
+  },
+  "usageAnalytics": {
+    "message": "Analyse d'utilisation",
+    "description": "Étiquette pour l'analyse d'utilisation."
+  },
+  "usageAnalyticsDesc": {
+    "message": "Aidez à améliorer ShopSmart Pro en partageant des données d'utilisation anonymes",
+    "description": "Description de l'analyse d'utilisation."
+  },
+  "2products": {
+    "message": "2 produits",
+    "description": "Option pour 2 produits en comparaison."
+  },
+  "3products": {
+    "message": "3 produits",
+    "description": "Option pour 3 produits en comparaison."
+  },
+  "4products": {
+    "message": "4 produits",
+    "description": "Option pour 4 produits en comparaison."
+  },
+  "5products": {
+    "message": "5 produits",
+    "description": "Option pour 5 produits en comparaison."
+  },
+  "6products": {
+    "message": "6 produits",
+    "description": "Option pour 6 produits en comparaison."
+  },
+  "7days": {
+    "message": "7 jours",
+    "description": "Option pour une conservation des données de 7 jours."
+  },
+  "14days": {
+    "message": "14 jours",
+    "description": "Option pour une conservation des données de 14 jours."
+  },
+  "30days": {
+    "message": "30 jours",
+    "description": "Option pour une conservation des données de 30 jours."
+  },
+  "60days": {
+    "message": "60 jours",
+    "description": "Option pour une conservation des données de 60 jours."
+  },
+  "90days": {
+    "message": "90 jours",
+    "description": "Option pour une conservation des données de 90 jours."
+  },
+  "180days": {
+    "message": "180 jours",
+    "description": "Option pour une conservation des données de 180 jours."
+  },
+  "1year": {
+    "message": "1 an",
+    "description": "Option pour une conservation des données d'un an."
+  },
+  "usageStatistics": {
+    "message": "Statistiques d'utilisation",
+    "description": "Étiquette pour les statistiques d'utilisation."
+  },
+  "usageStatisticsDesc": {
+    "message": "Partagez des statistiques d'utilisation anonymes pour aider à améliorer l'extension",
+    "description": "Description des statistiques d'utilisation."
+  },
+  "errorReporting": {
+    "message": "Rapport d'erreurs",
+    "description": "Étiquette pour le rapport d'erreurs."
+  },
+  "errorReportingDesc": {
+    "message": "Signaler automatiquement les erreurs pour aider à corriger les bogues",
+    "description": "Description du rapport d'erreurs."
+  },
+  "debugInformation": {
+    "message": "Informations de débogage",
+    "description": "Titre de la section des informations de débogage."
+  },
+  "showDebugInfo": {
+    "message": "Afficher les informations de débogage",
+    "description": "Texte du bouton pour afficher les informations de débogage."
+  },
+  "saveSettings": {
+    "message": "Enregistrer les paramètres",
+    "description": "Texte du bouton pour enregistrer les paramètres."
+  },
+  "resetToDefaults": {
+    "message": "Réinitialiser aux valeurs par défaut",
+    "description": "Texte du bouton pour réinitialiser les paramètres."
+  },
+  "exportSettings": {
+    "message": "Exporter les paramètres",
+    "description": "Texte du bouton pour exporter les paramètres."
+  },
+  "importSettings": {
+    "message": "Importer les paramètres",
+    "description": "Texte du bouton pour importer les paramètres."
+  },
+  "clearAllData": {
+    "message": "Effacer toutes les données",
+    "description": "Texte du bouton pour effacer toutes les données."
+  }
+}

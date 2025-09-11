@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🛒 Product Comparison - ShopSmart Pro</title>
+    <title>__MSG_productComparisonTitle__</title>
     <link rel="stylesheet" href="comparison.css" />
     <!-- Prevent CSP warnings -->
     <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none';">
@@ -12,16 +12,16 @@
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1>🛒 Product Comparison</h1>
-            <p class="subtitle">Compare prices, ratings, and features at a glance</p>
+            <h1>__MSG_productComparison__</h1>
+            <p class="subtitle">__MSG_comparePricesRatingsFeatures__</p>
         </header>
 
         <!-- Results Grid -->
         <main id="comparisonResults" class="results">
             <!-- Will be filled by comparison.js -->
             <div class="empty-state">
-                <p>🔍 No products added yet.</p>
-                <p class="hint">Click “Compare” on any product listing to add items here.</p>
+                <p>__MSG_noProductsAddedYet__</p>
+                <p class="hint">__MSG_clickCompareToAdd__</p>
             </div>
         </main>
 
@@ -29,28 +29,28 @@
         <footer class="actions">
             <!-- Load Saved List -->
             <div class="saved-lists-control">
-                <label for="loadList" class="sr-only">Load a saved comparison</label>
-                <select id="loadList" class="load-list-select" aria-label="Select a saved list">
-                    <option value="">💾 Load Saved Comparison</option>
+                <label for="loadList" class="sr-only">__MSG_loadSavedComparison__</label>
+                <select id="loadList" class="load-list-select" aria-label="__MSG_loadSavedComparison__">
+                    <option value="">__MSG_loadSavedComparisonOption__</option>
                 </select>
-                <button id="deleteList" class="btn btn-danger btn-sm" title="Delete selected list">🗑️</button>
+                <button id="deleteList" class="btn btn-danger btn-sm" title="__MSG_deleteSelectedList__">🗑️</button>
             </div>
 
             <!-- Save List -->
             <input 
                 type="text" 
                 id="listName" 
-                placeholder="e.g., My Home Office Setup" 
+                placeholder="__MSG_listNamePlaceholder__" 
                 class="save-list-input" 
-                aria-label="Name this comparison list"
+                aria-label="__MSG_nameThisComparisonList__"
             />
 
             <!-- Buttons -->
-            <button id="saveList" class="btn btn-primary btn-block">💾 Save List</button>
-            <button id="exportCsv" class="btn btn-secondary btn-block">📤 Export to CSV</button>
-            <button id="shareBtn" class="btn btn-secondary btn-block">🔗 Share Link</button>
-            <button id="clearComparison" class="btn btn-danger btn-block">🗑️ Clear All</button>
-            <button id="closeComparison" class="btn btn-primary btn-block">✕ Close</button>
+            <button id="saveList" class="btn btn-primary btn-block">__MSG_saveList__</button>
+            <button id="exportCsv" class="btn btn-secondary btn-block">__MSG_exportToCsv__</button>
+            <button id="shareBtn" class="btn btn-secondary btn-block">__MSG_shareLink__</button>
+            <button id="clearComparison" class="btn btn-danger btn-block">__MSG_clearAll__</button>
+            <button id="closeComparison" class="btn btn-primary btn-block">__MSG_close__</button>
         </footer>
     </div>
 

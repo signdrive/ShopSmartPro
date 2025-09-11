@@ -78,7 +78,7 @@
         recognition.onstart = () => {
             isListening = true;
             if (startVoiceBtn) {
-                startVoiceBtn.textContent = '🎤 Listening...';
+                    startVoiceBtn.textContent = chrome.i18n.getMessage('voiceListening');
                 startVoiceBtn.classList.add('listening');
             }
             if (voiceStatus) voiceStatus.textContent = 'Listening... Speak now!';
@@ -91,10 +91,10 @@
             if (voiceResult) {
                 voiceResult.textContent = `"${transcript}"`;
                 searchInput.value = transcript;
-                voiceStatus.textContent = 'Got it! Click "Use This" to search.';
+                    voiceStatus.textContent = chrome.i18n.getMessage('voiceGotIt');
 
                 const useButton = document.createElement('button');
-                useButton.textContent = 'Use This Search';
+                    useButton.textContent = chrome.i18n.getMessage('voiceUseThisSearch');
                 useButton.className = 'voice-btn';
                 useButton.style.cssText = 'margin-top: 10px; padding: 8px; background: #0078d4; color: white; border: none; border-radius: 4px; cursor: pointer;';
                 useButton.addEventListener('click', () => {
@@ -109,7 +109,7 @@
         };
 
         recognition.onerror = (event) => {
-            if (voiceStatus) voiceStatus.textContent = `Error: ${event.error}. Please try again.`;
+                if (voiceStatus) voiceStatus.textContent = chrome.i18n.getMessage('voiceError') + `: ${event.error}. ` + chrome.i18n.getMessage('pleaseTryAgain');
             resetVoiceUI();
         };
 
@@ -121,7 +121,7 @@
     function resetVoiceUI() {
         isListening = false;
         if (startVoiceBtn) {
-            startVoiceBtn.textContent = '🎤 Start Listening';
+                startVoiceBtn.textContent = chrome.i18n.getMessage('voiceStartListening');
             startVoiceBtn.classList.remove('listening');
         }
     }
@@ -253,7 +253,7 @@
         if (!history || history.length === 0) {
             const noHistoryItem = document.createElement('div');
             noHistoryItem.className = 'history-item';
-            noHistoryItem.textContent = 'No recent searches';
+                noHistoryItem.textContent = chrome.i18n.getMessage('noRecentSearches');
             searchHistory.appendChild(noHistoryItem);
             if (todaySearches) todaySearches.textContent = '0';
             return;
@@ -295,7 +295,7 @@
                 searchHistory.innerHTML = '';
                 const noHistoryItem = document.createElement('div');
                 noHistoryItem.className = 'history-item';
-                noHistoryItem.textContent = 'No recent searches';
+                    noHistoryItem.textContent = chrome.i18n.getMessage('noRecentSearches');
                 searchHistory.appendChild(noHistoryItem);
             }
             if (todaySearches) todaySearches.textContent = '0';
@@ -335,7 +335,7 @@
         ebayBtn.addEventListener('click', () => {
             const query = searchInput?.value.trim();
             if (!query) {
-                alert('Please enter a search term');
+                    alert(chrome.i18n.getMessage('pleaseEnterSearchTerm'));
                 return;
             }
             const url = chrome.runtime.getURL(`ebay/ebay.html?search=${encodeURIComponent(query)}`);

@@ -1,18 +1,14 @@
-/* deals/deals.css - FINAL: Unified Look & Feel, Matches Popup/Settings */
+/* deals/deals.css - FINAL: Responsive + Dark Mode Support */
 
-* {
-    box-sizing: border-box;
-}
-
-/* Unified background gradient (same as popup.html) */
 body {
-    font-family: "Trebuchet MS", sans-serif;
-    margin: 0;
-    padding: 10px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 800px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    background: #f5f5f5;
     color: #333;
-    min-height: 100vh;
-    transition: background 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 body.dark-mode {
@@ -20,113 +16,158 @@ body.dark-mode {
     color: #e0e0e0;
 }
 
-/* Container matches popup design */
 .deals-container {
-    max-width: 1200px;
-    margin: 0 auto;
     background: white;
-    border-radius: 15px;
+    border-radius: 12px;
     padding: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: background 0.3s, box-shadow 0.3s;
 }
 
 body.dark-mode .deals-container {
     background: #1e1e1e;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
     text-align: center;
-    margin: 0 0 20px 0;
     color: #333;
+    margin-bottom: 15px;
     font-size: 1.8em;
-    background: linear-gradient(45deg, #FF9900, #FF6B00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid #FF9900;
+    padding-bottom: 10px;
+    transition: color 0.3s, border-bottom-color 0.3s;
 }
 
 body.dark-mode h1 {
-    color: #e0e0e0;
-    text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
+    color: #FFB347;
+    border-bottom-color: #FF9900;
 }
 
-/* Controls */
-.controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 15px;
-    justify-content: center;
+.country-select {
+    text-align: center;
+    margin: 20px 0;
 }
 
-.filter-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.country-select label {
+    display: block;
+    margin-bottom: 8px;
     font-weight: bold;
-    color: #555;
+    color: #333;
 }
 
-.filter-group label {
-    white-space: nowrap;
-    font-size: 0.95em;
-    min-width: 60px;
+body.dark-mode .country-select label {
+    color: #e0e0e0;
 }
 
-.filter-group select {
-    flex: 1;
-    padding: 12px;
-    border: 2px solid #ddd;
+.country-select select {
+    padding: 10px;
+    border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 16px;
+    width: 200px;
     background: white;
     color: #333;
-    min-height: 44px;
+    transition: border-color 0.3s;
 }
 
-body.dark-mode .filter-group select {
+body.dark-mode .country-select select {
     background: #2d2d2d;
     color: #e0e0e0;
-    border-color: #555;
+    border-color: #444;
 }
 
-.refresh-btn {
-    background: #28a745;
+.deal-highlights {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin: 25px 0;
+}
+
+@media (min-width: 600px) {
+    .deal-highlights {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.deal-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+body.dark-mode .deal-card {
+    background: #2d2d2d;
+    border-color: #444;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.deal-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .deal-card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.deal-image {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+}
+
+body.dark-mode .deal-image {
+    background: #1e1e1e;
+    border-color: #444;
+}
+
+.view-deal-btn {
+    padding: 10px 16px;
+    background: #FF9900;
     color: white;
     border: none;
-    padding: 14px 20px;
     border-radius: 6px;
-    cursor: pointer;
     font-weight: bold;
-    font-size: 16px;
+    cursor: pointer;
+    font-size: 14px;
     transition: all 0.3s;
-    min-height: 48px;
-    width: 100%;
+    box-shadow: 0 2px 8px rgba(255, 153, 0, 0.2);
 }
 
-.refresh-btn:hover {
-    background: #218838;
+.view-deal-btn:hover {
+    background: #E68A00;
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
 }
 
-/* Stats Bar */
 .stats-bar {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
     padding: 16px;
     background: #f8f9fa;
-    border-radius: 10px;
-    border-left: 4px solid #007bff;
-    font-weight: bold;
+    border-radius: 8px;
+    font-size: 0.95em;
+    color: #555;
+    margin: 25px 0;
+    border: 1px solid #eee;
+    transition: background 0.3s, border-color 0.3s;
 }
 
 body.dark-mode .stats-bar {
     background: #2d2d2d;
-    border-left-color: #42a5f5;
+    color: #ccc;
+    border-color: #444;
 }
 
 .stat {
@@ -137,7 +178,6 @@ body.dark-mode .stats-bar {
     display: block;
     font-size: 0.9em;
     color: #666;
-    margin-bottom: 4px;
 }
 
 body.dark-mode .stat-label {
@@ -145,230 +185,57 @@ body.dark-mode .stat-label {
 }
 
 .stat-value {
-    font-size: 1.3em;
-    color: #1976d2;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #B12704;
 }
 
 body.dark-mode .stat-value {
-    color: #42a5f5;
+    color: #ff6b6b;
 }
 
-/* Deals Grid */
-.deals-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-    margin: 15px 0;
-}
-
-.deal-card {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    min-height: 380px;
-}
-
-body.dark-mode .deal-card {
-    background: #2d2d2d;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.deal-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.deal-image {
+.cta-btn {
+    display: block;
     width: 100%;
-    height: 160px;
-    object-fit: cover;
-}
-
-.deal-info {
-    padding: 16px;
-}
-
-.deal-title {
-    font-size: 1em;
-    margin: 0 0 8px 0;
-    color: #333;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.3;
-}
-
-body.dark-mode .deal-title {
-    color: #e0e0e0;
-}
-
-.deal-price {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #1976d2;
-    margin: 6px 0;
-}
-
-body.dark-mode .deal-price {
-    color: #42a5f5;
-}
-
-.deal-original-price {
-    text-decoration: line-through;
-    color: #666;
-    font-size: 0.9em;
-}
-
-body.dark-mode .deal-original-price {
-    color: #999;
-}
-
-.deal-discount {
-    font-weight: bold;
-    color: #dc3545;
-    font-size: 1.1em;
-}
-
-body.dark-mode .deal-discount {
-    color: #ef5350;
-}
-
-.deal-meta {
-    margin: 8px 0;
-    font-size: 0.9em;
-    color: #666;
-}
-
-body.dark-mode .deal-meta {
-    color: #aaa;
-}
-
-.time-left.ending-soon {
-    color: #dc3545;
-    font-weight: bold;
-}
-
-.deal-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.view-deal-btn,
-.track-deal-btn {
-    flex: 1;
-    padding: 10px 8px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: all 0.2s;
-    min-height: 40px;
-}
-
-.view-deal-btn {
-    background: #FF9900;
-    color: white;
-}
-
-.view-deal-btn:hover {
-    background: #e68a00;
-}
-
-.track-deal-btn {
+    padding: 14px;
     background: #007bff;
     color: white;
-}
-
-.track-deal-btn:hover {
-    background: #0056b3;
-}
-
-.track-deal-btn.tracking {
-    background: #28a745;
-    cursor: not-allowed;
-}
-
-/* Loading & Empty States */
-.loading,
-.empty-state {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-    font-size: 1.1em;
-}
-
-body.dark-mode .loading,
-body.dark-mode .empty-state {
-    color: #ccc;
-}
-
-/* Deal Alerts */
-.deal-alerts {
-    margin: 20px 0;
-    padding: 16px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border-left: 4px solid #0073bb;
-}
-
-body.dark-mode .deal-alerts {
-    background: #1a237e;
-    border-left-color: #42a5f5;
-}
-
-.deal-alerts h3 {
-    margin: 0 0 15px 0;
-    color: #0073bb;
-}
-
-body.dark-mode .deal-alerts h3 {
-    color: #42a5f5;
-}
-
-.alert-settings {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    font-weight: normal;
-    cursor: pointer;
-    font-size: 0.95em;
-    color: #555;
-}
-
-body.dark-mode .checkbox-label {
-    color: #ccc;
-}
-
-.checkbox-label input[type="checkbox"] {
-    margin-right: 8px;
-    transform: scale(1.4);
-    accent-color: #FF9900;
-}
-
-/* Affiliate Notice */
-.affiliate-notice {
-    margin: 20px 0 10px;
-    padding: 12px;
-    background: #f8f9fa;
+    border: none;
     border-radius: 8px;
-    font-size: 0.9em;
-    color: #666;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
     text-align: center;
+    margin: 20px auto;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+}
+
+.cta-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+}
+
+.affiliate-notice {
+    margin: 30px 0 10px;
+    padding: 15px;
+    background: #f0f8ff;
+    border-radius: 8px;
+    border-left: 4px solid #0073bb;
+    font-size: 0.9em;
+    color: #555;
+    transition: background 0.3s, border-left-color 0.3s;
 }
 
 body.dark-mode .affiliate-notice {
-    background: #2d2d2d;
-    color: #aaa;
+    background: #1a237e;
+    border-left-color: #42a5f5;
+    color: #ccc;
+}
+
+.affiliate-notice p {
+    margin: 5px 0;
 }
 
 .affiliate-notice small {
@@ -377,133 +244,4 @@ body.dark-mode .affiliate-notice {
 
 body.dark-mode .affiliate-notice small {
     color: #aaa;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    body {
-        padding: 8px;
-    }
-    
-    .deals-container {
-        padding: 16px;
-    }
-    
-    h1 {
-        font-size: 1.5em;
-    }
-    
-    .filter-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .filter-group select {
-        width: 100%;
-    }
-    
-    .refresh-btn {
-        width: 100%;
-    }
-    
-    .stats-bar {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 12px;
-    }
-    
-    .deals-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 12px;
-    }
-    
-    .deal-image {
-        height: 140px;
-    }
-    
-    .deal-title {
-        font-size: 0.95em;
-    }
-    
-    .deal-price {
-        font-size: 1.1em;
-    }
-    
-    .deal-actions {
-        gap: 6px;
-    }
-    
-    .view-deal-btn,
-    .track-deal-btn {
-        font-size: 14px;
-        padding: 8px;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 6px;
-    }
-    
-    .deals-container {
-        padding: 12px;
-    }
-    
-    h1 {
-        font-size: 1.3em;
-    }
-    
-    .filter-group label {
-        font-size: 0.9em;
-    }
-    
-    .filter-group select {
-        font-size: 16px;
-        padding: 12px;
-    }
-    
-    .refresh-btn {
-        font-size: 16px;
-        padding: 14px;
-    }
-    
-    .stats-bar {
-        padding: 10px;
-    }
-    
-    .stat-label {
-        font-size: 0.85em;
-    }
-    
-    .stat-value {
-        font-size: 1.1em;
-    }
-    
-    .deals-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .deal-image {
-        height: 120px;
-    }
-    
-    .deal-title {
-        font-size: 0.9em;
-    }
-    
-    .deal-price {
-        font-size: 1em;
-    }
-    
-    .deal-original-price,
-    .deal-discount {
-        font-size: 0.85em;
-    }
-    
-    .view-deal-btn,
-    .track-deal-btn {
-        font-size: 14px;
-        padding: 10px;
-    }
 }

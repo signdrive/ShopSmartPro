@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>__MSG_extensionName__</title>
-    <link rel="stylesheet" href="popup.css">
+    <title>__MSG_extensionName__ - __MSG_sidePanelTitle__</title>
+    <link rel="stylesheet" href="sidepanel.css">
     <script src="../utils/i18n-fix.js"></script>
 </head>
 <body class="light-mode">
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <span class="current-country" id="currentCountry">ðŸ‡ºðŸ‡¸</span>
+            <span class="current-country" id="currentCountry">🇺🇸</span>
             <h2>__MSG_extensionName__</h2>
             <div class="header-buttons">
                 <!-- Updated Help Button with Image -->
@@ -36,13 +36,13 @@
             <button class="icon-btn" id="compareBtn" title="__MSG_comparison__">
                 <img src="/img/ebay/comparision.png" alt="__MSG_compareAlt__" width="24" height="24">
             </button>
-            <!-- âœ… New: Tracked Products Button -->
+            <!--  New: Tracked Products Button -->
             <button class="icon-btn" id="trackedBtn" title="__MSG_trackedProducts__">
                 <img src="/img/ebay/tracked.png" alt="__MSG_trackedAlt__" width="24" height="24">
             </button>
-            <!-- âœ… New: eBay Button with Image -->
+            <!--  New: eBay Button with Image -->
             <button class="icon-btn" id="searchEbayBtn" title="__MSG_searchEbay__">
-                <img src="/img/ebay/ebay-button.png" alt="__MSG_searchAlt__" width="24" height="24">
+                <img src="/img/ebay/ebay-button.png" alt="__MSG_searchEbay__" width="24" height="24">
             </button>
         </div>
 
@@ -55,7 +55,7 @@
             <div class="form-group">
                 <label for="categorySelect">__MSG_category__</label>
                 <select name="url" id="categorySelect" class="mobile-friendly">
-                    <option value="search-alias=aps">__MSG_allCategories__</option>
+                    <option value="search-alias=aps">__MSG_categoryAllDepartments__</option>
                     <option value="search-alias=alexa-skills">__MSG_categoryAlexaSkills__</option>
                     <option value="search-alias=amazon-devices">__MSG_categoryAmazonDevices__</option>
                     <option value="search-alias=warehouse-deals">__MSG_categoryAmazonWarehouseDeals__</option>
@@ -95,12 +95,11 @@
 
             <!-- Keywords Input -->
             <div class="form-group">
-                <label for="keywords" data-i18n="keywords">__MSG_keywords__</label>
+                <label for="searchInput">__MSG_keywords__</label>
                 <input 
                     type="text" 
-                    id="keywords" 
-                    name="keywords" 
-                    data-i18n-placeholder="whatAreYouLookingFor" 
+                    name="keyword" 
+                    id="searchInput" 
                     placeholder="__MSG_whatAreYouLookingFor__" 
                     autocomplete="off"
                     class="mobile-friendly">
@@ -108,64 +107,78 @@
 
             <!-- Advanced Filters -->
             <div class="advanced-options">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="prime-only" name="prime-only">
-                    <label for="prime-only" data-i18n="primeOnly">__MSG_primeOnly__</label>
-                    <input type="checkbox" id="free-shipping" name="free-shipping">
-                    <label for="free-shipping" data-i18n="freeShipping">__MSG_freeShipping__</label>
-                </div>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="primeOnly">
+                    <span class="checkmark"></span>
+                    __MSG_primeOnly__
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="freeShipping">
+                    <span class="checkmark"></span>
+                    __MSG_freeShipping__
+                </label>
             </div>
 
             <!-- Submit Button (Updated with Image) -->
-            <button type="submit" class="search-btn" id="searchButton" data-i18n="searchStore">
-                <img src="/img/ebay/amazon-search-icon.png" alt="Search" class="btn-icon">
+            <button type="submit" class="search-btn" id="searchButton">
+                <img src="/img/ebay/amazon-search-icon.png" alt="__MSG_searchAlt__" class="btn-icon">
                 __MSG_searchStore__
             </button>
         </form>
 
         <!-- Recent Searches -->
         <div class="recent-searches" id="recentSearchesSection">
-            <h3 data-i18n="recentSearches">__MSG_recentSearches__</h3>
-            <div class="search-history" id="searchHistory">
-                <ul id="recent-searches-list">
-                    <li data-i18n="noRecentSearches">__MSG_noRecentSearches__</li>
-                </ul>
-            </div>
-            <button id="clear-history-button" class="clear-history-btn" data-i18n="clearHistory">__MSG_clearHistory__</button>
+            <h4>__MSG_recentSearches__</h4>
+            <div class="search-history" id="searchHistory"></div>
+            <button id="clearHistoryBtn" class="clear-history-btn">__MSG_clearHistory__</button>
         </div>
 
         <!-- Quick Stats -->
         <div class="quick-stats">
             <div class="stat-item">
-                <span class="stat-label" data-i18n="todaysSearchesLabel">__MSG_todaysSearchesLabel__</span>
+                <span class="stat-label">__MSG_todaysSearchesLabel__</span>
                 <span class="stat-value" id="todaySearches">0</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label" data-i18n="activeTrackersLabel">__MSG_activeTrackersLabel__</span>
+                <span class="stat-label">__MSG_activeTrackersLabel__</span>
                 <span class="stat-value" id="activeTrackers">0</span>
             </div>
         </div>
 
-    <!-- Open Side Panel Button -->
-    <button id="openSidePanelBtn" class="open-sidepanel-btn" data-i18n="openSidePanel" style="width:100%;margin-top:12px;padding:10px 0;background:#ff9900;color:#fff;border:none;border-radius:6px;font-size:1em;cursor:pointer;">__MSG_openSidePanel__</button>
+        <!-- Tracked Products Section (Additional for Side Panel) -->
+        <div class="tracked-products-section" id="trackedProductsSection">
+            <h4>__MSG_trackedProductsSection__</h4>
+            <div class="tracked-products-list" id="trackedProductsList">
+                <div class="empty-state">__MSG_noProductsTracked__</div>
+            </div>
+        </div>
+
+        <!-- Comparison Products Section (Additional for Side Panel) -->
+        <div class="comparison-section" id="comparisonSection">
+            <h4>__MSG_comparison__</h4>
+            <div class="comparison-list" id="comparisonList">
+                <div class="empty-state">__MSG_noProductsInComparison__</div>
+            </div>
+        </div>
     </div>
 
     <!-- Voice Search Modal -->
     <div class="voice-search-modal" id="voiceSearchModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 data-i18n="voiceSearchTitle">__MSG_voiceSearchTitle__</h3>
+                <h3>__MSG_voiceSearchTitle__</h3>
                 <button class="close-modal" id="closeVoiceModal">×</button>
             </div>
             <div class="modal-body">
-                <div class="voice-status" id="voiceStatus" data-i18n="voiceStatusInit">__MSG_voiceStatusInit__</div>
-                <button class="voice-btn" id="startVoiceBtn" data-i18n="startListeningBtn">__MSG_startListeningBtn__</button>
+                <div class="voice-status" id="voiceStatus">__MSG_voiceStatusInit__</div>
+                <button class="voice-btn" id="startVoiceBtn">🎤 __MSG_startListeningBtn__</button>
                 <div class="voice-result" id="voiceResult"></div>
             </div>
         </div>
     </div>
 
     <!-- Script -->
-    <script src="popup.js"></script>
+    <script src="sidepanel.js"></script>
 </body>
 </html>
+

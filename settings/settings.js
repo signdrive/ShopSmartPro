@@ -1,6 +1,48 @@
-// settings/settings.js - FINAL: System Dark Mode Sync + Manual Override
+   // settings/settings.js - FINAL: System Dark Mode Sync + Manual Override
+
+/*
+function applyTranslations() {
+    console.log("Applying translations...");
+    // For elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        const translation = chrome.i18n.getMessage(key);
+        console.log(`Element: ${element.tagName}, Key: ${key}, Translation: ${translation}`);
+        if (translation) {
+            // For <option> elements, setting textContent can be tricky.
+            // It's safer to set the text property.
+            if (element.tagName === 'OPTION') {
+                console.log(`Setting option text for ${key} to "${translation}"`);
+                element.text = translation;
+            } else {
+                element.textContent = translation;
+            }
+        } else {
+            console.log(`No translation found for key: ${key}`);
+        }
+    });
+
+    // For the title tag
+    const titleElement = document.querySelector('title');
+    if (titleElement) {
+        let translatedTitle = document.title;
+        const matches = translatedTitle.match(/__MSG_(\w+)__/g);
+        if (matches) {
+            matches.forEach(match => {
+                const key = match.replace(/__/g, '').replace('MSG_', '');
+                const translated = chrome.i18n.getMessage(key);
+                if (translated) {
+                    translatedTitle = translatedTitle.replace(match, translated);
+                }
+            });
+            document.title = translatedTitle;
+        }
+    }
+}
+*/
 
 document.addEventListener('DOMContentLoaded', function () {
+    // applyTranslations(); // No longer needed, i18n-fix.js handles it.
     // DOM Elements
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
@@ -94,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
             updateUIWithSettings(settings);
             applyTheme(settings);
 
-            showStatus('Settings loaded successfully.', 'success');
+            showStatus(chrome.i18n.getMessage('settingsLoaded'), 'success');
         });
     }
 
@@ -168,11 +210,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         chrome.storage.sync.set({ settings: newSettings }, () => {
             if (chrome.runtime.lastError) {
-                showStatus('Error saving settings: ' + chrome.runtime.lastError.message, 'error');
+                showStatus(chrome.i18n.getMessage('errorSavingSettings') + ': ' + chrome.runtime.lastError.message, 'error');
                 return;
             }
 
-            showStatus('Settings saved successfully!', 'success');
+            showStatus(chrome.i18n.getMessage('settingsSaved'), 'success');
             applyTheme(newSettings);
 
             // Broadcast update
@@ -183,21 +225,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Broadcast settings to all contexts
     function broadcastSettings(settings) {
         chrome.runtime.sendMessage({ action: 'settingsUpdated', settings });
-
-        chrome.tabs.query({}, (tabs) => {
-            tabs.forEach(tab => {
-                chrome.tabs.sendMessage(tab.id, { action: 'settingsUpdated', settings }, () => {});
-            });
-        });
+   
     }
 
     // Reset to defaults
     function resetSettings() {
-        if (confirm('Are you sure you want to reset all settings to default?')) {
+    if (confirm(chrome.i18n.getMessage('confirmResetSettings'))) {
             chrome.storage.sync.set({ settings: defaultSettings }, () => {
                 updateUIWithSettings(defaultSettings);
                 applyTheme(defaultSettings);
-                showStatus('Settings reset to defaults.', 'success');
+                showStatus(chrome.i18n.getMessage('settingsReset'), 'success');
                 broadcastSettings(defaultSettings);
             });
         }
@@ -217,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
             a.click();
 
             URL.revokeObjectURL(url);
-            showStatus('Settings exported successfully.', 'success');
+            showStatus(chrome.i18n.getMessage('settingsExported'), 'success');
         });
     }
 
@@ -245,11 +282,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 chrome.storage.sync.set({ settings: imported }, () => {
                     updateUIWithSettings(imported);
                     applyTheme(imported);
-                    showStatus('Settings imported successfully.', 'success');
+                    showStatus(chrome.i18n.getMessage('settingsImported'), 'success');
                     broadcastSettings(imported);
                 });
             } catch (err) {
-                showStatus('Invalid settings file: ' + err.message, 'error');
+                showStatus(chrome.i18n.getMessage('invalidSettingsFile') + ': ' + err.message, 'error');
             }
         };
         reader.readAsText(file);
@@ -257,12 +294,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Clear all data
     function clearAllData() {
-        if (confirm('Are you sure you want to clear ALL data? This cannot be undone.')) {
+    if (confirm(chrome.i18n.getMessage('confirmClearAllData'))) {
             chrome.storage.sync.clear(() => {
                 chrome.storage.local.clear(() => {
                     updateUIWithSettings(defaultSettings);
                     applyTheme(defaultSettings);
-                    showStatus('All data cleared.', 'success');
+                    showStatus(chrome.i18n.getMessage('allDataCleared'), 'success');
                     broadcastSettings(defaultSettings);
                 });
             });
@@ -278,12 +315,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         'Sync:\n' + JSON.stringify(sync, null, 2) +
                         '\n\nLocal:\n' + JSON.stringify(local, null, 2);
                     debugInfo.classList.remove('hidden');
-                    debugButton.textContent = 'Hide Debug Info';
+                    debugButton.textContent = chrome.i18n.getMessage('hideDebugInfo');
                 });
             });
         } else {
             debugInfo.classList.add('hidden');
-            debugButton.textContent = 'Show Debug Info';
+            debugButton.textContent = chrome.i18n.getMessage('showDebugInfo');
         }
     });
 
@@ -299,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Test Notification
     testNotificationBtn?.addEventListener('click', () => {
         chrome.runtime.sendMessage({ action: 'createTestNotification' });
-        showStatus('Test notification sent!', 'success');
+    showStatus(chrome.i18n.getMessage('testNotificationSent'), 'success');
     });
 
     // Status message
@@ -333,6 +370,38 @@ document.addEventListener('DOMContentLoaded', function () {
                     applyTheme(settings);
                     broadcastSettings({ ...settings, darkMode: media.matches });
                 }
+            });
+        });
+
+        // Listen for manual theme toggle
+        syncWithSystem.addEventListener('change', () => {
+            chrome.storage.sync.get(['settings'], (result) => {
+                const settings = { ...defaultSettings, ...(result.settings || {}) };
+                settings.syncWithSystem = syncWithSystem.checked;
+                // If enabling sync, update darkMode to match system
+                if (settings.syncWithSystem) {
+                    settings.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                }
+                chrome.storage.sync.set({ settings }, () => {
+                    applyTheme(settings);
+                    broadcastSettings(settings);
+                });
+            });
+        });
+    }
+
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('change', () => {
+            chrome.storage.sync.get(['settings'], (result) => {
+                const settings = { ...defaultSettings, ...(result.settings || {}) };
+                settings.darkMode = darkModeToggle.checked;
+                // If user toggles darkMode manually, disable syncWithSystem
+                settings.syncWithSystem = false;
+                if (syncWithSystem) syncWithSystem.checked = false;
+                chrome.storage.sync.set({ settings }, () => {
+                    applyTheme(settings);
+                    broadcastSettings(settings);
+                });
             });
         });
     }

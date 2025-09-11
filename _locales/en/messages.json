@@ -1,0 +1,733 @@
+{
+  "extensionName": {
+    "message": "ShopSmart Pro",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Enhances your shopping experience on Amazon and eBay with price tracking, comparisons, and deal alerts.",
+    "description": "The description of the extension."
+  },
+  "sidePanelTitle": {
+    "message": "Side Panel",
+    "description": "The title of the side panel."
+  },
+  "settings": {
+    "message": "Settings",
+    "description": "Settings page title."
+  },
+  "help": {
+    "message": "Help",
+    "description": "Help button label."
+  },
+  "about": {
+    "message": "About",
+    "description": "About button label."
+  },
+  "close": {
+    "message": "Close",
+    "description": "Close button label."
+  },
+  "save": {
+    "message": "Save",
+    "description": "Save button label."
+  },
+  "reset": {
+    "message": "Reset",
+    "description": "Reset button label."
+  },
+  "export": {
+    "message": "Export",
+    "description": "Export button label."
+  },
+  "import": {
+    "message": "Import",
+    "description": "Import button label."
+  },
+  "clear": {
+    "message": "Clear",
+    "description": "Clear button label."
+  },
+  "search": {
+    "message": "Search",
+    "description": "Search button label."
+  },
+  "searchStore": {
+    "message": "Search Store",
+    "description": "Button text for searching the store."
+  },
+  "searchEbay": {
+    "message": "Search eBay",
+    "description": "Button text for searching eBay."
+  },
+  "comparison": {
+    "message": "Comparison",
+    "description": "Comparison section title."
+  },
+  "deals": {
+    "message": "Deals",
+    "description": "Deals section title."
+  },
+  "trackedProducts": {
+    "message": "Tracked Products",
+    "description": "Tracked products section title."
+  },
+  "notifications": {
+    "message": "Notifications",
+    "description": "Notifications section title."
+  },
+  "voiceSearch": {
+    "message": "Voice Search",
+    "description": "Voice search section title."
+  },
+  "startListening": {
+    "message": "Start Listening",
+    "description": "Voice search start button."
+  },
+  "stopListening": {
+    "message": "Stop Listening",
+    "description": "Voice search stop button."
+  },
+  "listening": {
+    "message": "Listening... Speak now!",
+    "description": "Voice search listening status."
+  },
+  "gotIt": {
+    "message": "Got it! Click 'Use This' to search.",
+    "description": "Voice search result status."
+  },
+  "useThisSearch": {
+    "message": "Use This Search",
+    "description": "Button to use recognized voice search."
+  },
+  "error": {
+    "message": "Error",
+    "description": "Generic error label."
+  },
+  "success": {
+    "message": "Success",
+    "description": "Generic success label."
+  },
+  "loading": {
+    "message": "Loading...",
+    "description": "Loading status."
+  },
+  "openSidePanel": {
+    "message": "Open Side Panel",
+    "description": "Button to open the side panel."
+  },
+  "country": {
+    "message": "Country:",
+    "description": "Label for country selection."
+  },
+  "defaultCountry": {
+    "message": "Default Country:",
+    "description": "Label for default country selection."
+  },
+  "category": {
+    "message": "Category:",
+    "description": "Label for category selection."
+  },
+  "keywords": {
+    "message": "Keywords:",
+    "description": "Label for keywords input."
+  },
+  "whatAreYouLookingFor": {
+    "message": "What are you looking for?",
+    "description": "Placeholder for search input."
+  },
+  "searchTrackedProducts": {
+    "message": "Search tracked products...",
+    "description": "Placeholder for tracked products search."
+  },
+  "filterByCategory": {
+    "message": "Filter by category",
+    "description": "Label for category filter."
+  },
+  "allCategories": {
+    "message": "All Categories",
+    "description": "Option for all categories."
+  },
+  "primeOnly": {
+    "message": "Prime Only",
+    "description": "Checkbox label for Prime Only filter."
+  },
+  "freeShipping": {
+    "message": "Free Shipping",
+    "description": "Checkbox label for Free Shipping filter."
+  },
+  "maxComparisonProducts": {
+    "message": "Max Comparison Products",
+    "description": "Label for max comparison products setting."
+  },
+  "dataRetention": {
+    "message": "Data Retention",
+    "description": "Label for data retention setting."
+  },
+  "notificationFrequency": {
+    "message": "Notification Frequency",
+    "description": "Label for notification frequency setting."
+  },
+  "recentSearches": {
+    "message": "Recent Searches",
+    "description": "Section title for recent searches."
+  },
+  "activeTrackers": {
+    "message": "Active Trackers",
+    "description": "Label for active trackers count."
+  },
+  "todaysSearches": {
+    "message": "Today's Searches",
+    "description": "Label for today's searches count."
+  },
+  "trackedProductsSection": {
+    "message": "Tracked Products",
+    "description": "Tracked products section header."
+  },
+  "productTitle": {
+    "message": "Product Title",
+    "description": "Label for product title."
+  },
+  "productPrice": {
+    "message": "Product Price",
+    "description": "Label for product price."
+  },
+  "productMeta": {
+    "message": "Product Meta",
+    "description": "Label for product meta info."
+  },
+  "productShipping": {
+    "message": "Shipping",
+    "description": "Label for product shipping info."
+  },
+  "productTotal": {
+    "message": "Total",
+    "description": "Label for product total price."
+  },
+  "dealTitle": {
+    "message": "Deal Title",
+    "description": "Label for deal title."
+  },
+  "dealPrice": {
+    "message": "Deal Price",
+    "description": "Label for deal price."
+  },
+  "noRecentSearches": {
+    "message": "No recent searches",
+    "description": "Empty state for recent searches."
+  },
+  "noProductsTracked": {
+    "message": "No products tracked yet",
+    "description": "Empty state for tracked products."
+  },
+  "noProductsInComparison": {
+    "message": "No products in comparison",
+    "description": "Empty state for comparison list."
+  },
+  "getAlertsWhenPricesDrop": {
+    "message": "Get alerts when prices drop",
+    "description": "Subtitle for tracked products."
+  },
+  "testNotificationSent": {
+    "message": "Test notification sent!",
+    "description": "Status for test notification."
+  },
+  "settingsLoaded": {
+    "message": "Settings loaded successfully.",
+    "description": "Status for settings loaded."
+  },
+  "settingsSaved": {
+    "message": "Settings saved successfully!",
+    "description": "Status for settings saved."
+  },
+  "settingsReset": {
+    "message": "Settings reset to defaults.",
+    "description": "Status for settings reset."
+  },
+  "settingsExported": {
+    "message": "Settings exported successfully.",
+    "description": "Status for settings exported."
+  },
+  "settingsImported": {
+    "message": "Settings imported successfully.",
+    "description": "Status for settings imported."
+  },
+  "allDataCleared": {
+    "message": "All data cleared.",
+    "description": "Status for all data cleared."
+  },
+  "getHelpAndUserGuide": {
+    "message": "Get help and user guide",
+    "description": "Tooltip for help button."
+  },
+  "openExtensionSettings": {
+    "message": "Open extension settings",
+    "description": "Tooltip for settings button."
+  },
+  "helpAlt": {
+    "message": "Help",
+    "description": "Alt text for help icon."
+  },
+  "settingsAlt": {
+    "message": "Settings",
+    "description": "Alt text for settings icon."
+  },
+  "searchAlt": {
+    "message": "Search",
+    "description": "Alt text for search icon."
+  },
+  "microphoneAlt": {
+    "message": "Microphone",
+    "description": "Alt text for microphone icon."
+  },
+  "dealsAlt": {
+    "message": "Deals",
+    "description": "Alt text for deals icon."
+  },
+  "compareAlt": {
+    "message": "Compare",
+    "description": "Alt text for compare icon."
+  },
+  "trackedAlt": {
+    "message": "Tracked",
+    "description": "Alt text for tracked icon."
+  },
+  "errorSavingSettings": {
+    "message": "Error saving settings:",
+    "description": "Error message for saving settings."
+  },
+  "errorLoadingSettings": {
+    "message": "Error loading settings:",
+    "description": "Error message for loading settings."
+  },
+  "errorImportingSettings": {
+    "message": "Error importing settings:",
+    "description": "Error message for importing settings."
+  },
+  "confirmResetSettings": {
+    "message": "Are you sure you want to reset all settings to default?",
+    "description": "Confirmation for resetting settings."
+  },
+  "confirmClearAllData": {
+    "message": "Are you sure you want to clear ALL data? This cannot be undone.",
+    "description": "Confirmation for clearing all data."
+  },
+  "pleaseEnterSearchTerm": {
+    "message": "Please enter a search term",
+    "description": "Prompt for empty search input."
+  },
+  "invalidSettingsFile": {
+    "message": "Invalid settings file:",
+    "description": "Error for invalid settings file."
+  },
+  "extensionSettings": { "message": "Extension Settings", "description": "Title for the settings page" },
+  "general": { "message": "General", "description": "General settings tab" },
+  "advanced": { "message": "Advanced", "description": "Advanced settings tab" },
+  "amazonCanada": { "message": "Amazon Canada", "description": "Amazon Canada" },
+  "amazonUSA": { "message": "Amazon USA", "description": "Amazon USA" },
+  "amazonUK": { "message": "Amazon UK", "description": "Amazon UK" },
+  "amazonGermany": { "message": "Amazon Germany", "description": "Amazon Germany" },
+  "amazonFrance": { "message": "Amazon France", "description": "Amazon France" },
+  "amazonItaly": { "message": "Amazon Italy", "description": "Amazon Italy" },
+  "amazonSpain": { "message": "Amazon Spain", "description": "Amazon Spain" },
+  "amazonJapan": { "message": "Amazon Japan", "description": "Amazon Japan" },
+  "amazonAustralia": { "message": "Amazon Australia", "description": "Amazon Australia" },
+  "amazonBrazil": { "message": "Amazon Brazil", "description": "Amazon Brazil" },
+  "amazonMexico": { "message": "Amazon Mexico", "description": "Amazon Mexico" },
+  "amazonNetherlands": { "message": "Amazon Netherlands", "description": "Amazon Netherlands" },
+  "defaultCategory": { "message": "Default Category", "description": "Label for default category setting" },
+  "autoRedirect": { "message": "Auto-redirect to Amazon", "description": "Label for auto-redirect setting" },
+  "autoRedirectDesc": { "message": "Automatically redirect when searching from popup", "description": "Description for auto-redirect setting" },
+  "saveSearchHistory": { "message": "Save search history", "description": "Label for save search history setting" },
+  "saveSearchHistoryDesc": { "message": "Remember your recent searches", "description": "Description for save search history setting" },
+  "categoryCdsAndVinyl": { "message": "CDs & Vinyl", "description": "Category name" },
+  "categoryComputers": { "message": "Computers", "description": "Category name" },
+  "categoryGardenAndOutdoor": { "message": "Garden & Outdoor", "description": "Category name" },
+  "categoryPrimeVideo": { "message": "Prime Video", "description": "Category name" },
+  "categoryShoes": { "message": "Shoes", "description": "Category name" },
+  "categoryAllDepartments": { "message": "All Departments", "description": "Category name" },
+  "categoryAlexaSkills": { "message": "Alexa Skills", "description": "Category name" },
+  "categoryAmazonDevices": { "message": "Amazon Devices", "description": "Category name" },
+  "categoryAmazonWarehouseDeals": { "message": "Amazon Warehouse Deals", "description": "Category name" },
+  "categoryAutomotive": { "message": "Automotive", "description": "Category name" },
+  "categoryBaby": { "message": "Baby", "description": "Category name" },
+  "categoryBeauty": { "message": "Beauty", "description": "Category name" },
+  "categoryBooks": { "message": "Books", "description": "Category name" },
+  "categoryElectronics": { "message": "Electronics", "description": "Category name" },
+  "categoryGiftCards": { "message": "Gift Cards", "description": "Category name" },
+  "categoryGrocery": { "message": "Grocery", "description": "Category name" },
+  "categoryHandmade": { "message": "Handmade", "description": "Category name" },
+  "categoryJewelry": { "message": "Jewelry", "description": "Category name" },
+  "categoryKindleStore": { "message": "Kindle Store", "description": "Category name" },
+  "categoryLuxuryBeauty": { "message": "Luxury Beauty", "description": "Category name" },
+  "categoryMusic": { "message": "Music", "description": "Category name" },
+  "categoryMusicalInstruments": { "message": "Musical Instruments", "description": "Category name" },
+  "categoryOfficeProducts": { "message": "Office Products", "description": "Category name" },
+  "categoryPetSupplies": { "message": "Pet Supplies", "description": "Category name" },
+  "categorySoftware": { "message": "Software", "description": "Category name" },
+  "categoryVideoGames": { "message": "Video Games", "description": "Category name" },
+  "languageSpanish": { "message": "Spanish", "description": "Language name" },
+  "languageFrench": { "message": "French", "description": "Language name" },
+  "languageGerman": { "message": "German", "description": "Language name" },
+  "languageItalian": { "message": "Italian", "description": "Language name" },
+  "documentation": { "message": "Documentation", "description": "Title for the documentation page" },
+  "completeGuide": { "message": "Your complete guide to mastering ShopSmart Pro.", "description": "Subtitle for the documentation page" },
+  "tableOfContents": { "message": "Table of Contents", "description": "Header for the table of contents" },
+  "welcome": { "message": "Welcome", "description": "Link to the welcome section" },
+  "gettingStarted": { "message": "Getting Started", "description": "Link to the getting started section" },
+  "features": { "message": "Features", "description": "Link to the features section" },
+  "troubleshooting": { "message": "Troubleshooting", "description": "Link to the troubleshooting section" },
+  "faq": { "message": "FAQ", "description": "Link to the FAQ section" },
+  "privacyAndSecurity": { "message": "Privacy & Security", "description": "Link to the privacy and security section" },
+  "welcomeTitle": { "message": "Welcome to ShopSmart Pro!", "description": "Main title of the welcome section" },
+  "welcomeDescription": { "message": "ShopSmart Pro is a powerful browser extension designed to enhance your online shopping experience on Amazon and eBay. This guide will walk you through its features and how to use them effectively.", "description": "Description in the welcome section" },
+  "getStartedSteps": { "message": "Follow these simple steps to get started:", "description": "Introduction to the getting started steps" },
+  "stepToolbarIcon": { "message": "Click the ShopSmart Pro icon in your browser's toolbar to open the main popup.", "description": "First step in getting started" },
+  "stepSearchBox": { "message": "Use the search box to look for products on the current site (Amazon or eBay).", "description": "Second step in getting started" },
+  "stepSelectCategories": { "message": "Select a category to narrow down your search results.", "description": "Third step in getting started" },
+  "stepSearchOrEnter": { "message": "Click 'Search Store' or press Enter to see the results.", "description": "Fourth step in getting started" },
+  "stepRightClickMenu": { "message": "Right-click on any product page to access quick actions like 'Track Price' or 'Add to Comparison'.", "description": "Fifth step in getting started" },
+  "featurePriceTracking": { "message": "Price Tracking", "description": "Title of the price tracking feature" },
+  "featurePriceTrackingDesc": { "message": "Never miss a price drop. Track any product and get notified when the price changes.", "description": "Description of the price tracking feature" },
+  "featurePriceComparison": { "message": "Product Comparison", "description": "Title of the product comparison feature" },
+  "featurePriceComparisonDesc": { "message": "Compare multiple products side-by-side. Add products from any page to your comparison list.", "description": "Description of the product comparison feature" },
+  "featureDealFinder": { "message": "Deal Finder", "description": "Title of the deal finder feature" },
+  "featureDealFinderDesc": { "message": "Discover the best deals and discounts available right now with our integrated deal finder.", "description": "Description of the deal finder feature" },
+  "featureVoiceSearch": { "message": "Voice Search", "description": "Title of the voice search feature" },
+  "featureVoiceSearchDesc": { "message": "Search for products using your voice for a hands-free experience.", "description": "Description of the voice search feature" },
+  "featureSidePanel": { "message": "Side Panel Integration", "description": "Title of the side panel feature" },
+  "featureSidePanelDesc": { "message": "Access all of ShopSmart Pro's features without leaving your current page using the convenient side panel.", "description": "Description of the side panel feature" },
+  "troubleshootingIntro": { "message": "Having issues? Here are some common problems and their solutions:", "description": "Introduction to the troubleshooting section" },
+  "troubleNotWorking": { "message": "Extension not working on a product page? Try reloading the page. If the issue persists, make sure you are on a supported Amazon or eBay domain.", "description": "Troubleshooting step 1" },
+  "troubleNoDeals": { "message": "Not seeing any deals? Deals are updated periodically. Try again later or check your connection.", "description": "Troubleshooting step 2" },
+  "troubleLogin": { "message": "Issues related to login? ShopSmart Pro does not require a login. All data is stored locally on your device.", "description": "Troubleshooting step 3" },
+  "faqWhichSites": { "message": "Which sites are supported?", "description": "FAQ question 1" },
+  "faqWhichSitesAnswer": { "message": "ShopSmart Pro currently supports Amazon and eBay domains across multiple countries.", "description": "FAQ answer 1" },
+  "faqDataSecure": { "message": "Is my data secure?", "description": "FAQ question 2" },
+  "faqDataSecureAnswer": { "message": "Yes. All your data, including tracked products and search history, is stored locally on your computer. We do not collect or sell your personal data. See our Privacy Policy for more details.", "description": "FAQ answer 2" },
+  "faqHowToUpdate": { "message": "How do I update the extension?", "description": "FAQ question 3" },
+  "faqHowToUpdateAnswer": { "message": "The extension will update automatically. You can also manually update it from your browser's extensions page.", "description": "FAQ answer 3" },
+  "privacyPolicyIntro": { "message": "We take your privacy seriously. Our extension is designed to work without collecting personal user data.", "description": "Introduction to the privacy policy section" },
+  "readFullPrivacyPolicy": { "message": "Read the full Privacy Policy", "description": "Link to the full privacy policy" },
+  "printGuide": { "message": "Print Guide", "description": "Button to print the documentation" },
+  "copyright": { "message": "© 2025 ShopSmart Pro. All rights reserved.", "description": "Copyright notice" },
+  "version": { "message": "Version 2.0.0", "description": "Extension version number" },
+  "clearHistory": { "message": "Clear History", "description": "Button to clear search history" },
+  "todaysSearchesLabel": { "message": "Today's Searches:", "description": "Label for today's searches statistics" },
+  "activeTrackersLabel": { "message": "Active Trackers:", "description": "Label for active trackers statistics" },
+  "voiceSearchTitle": { "message": "Voice Search", "description": "Title for the voice search modal" },
+  "voiceStatusInit": { "message": "Click the microphone to start listening...", "description": "Initial status for voice search" },
+  "startListeningBtn": { "message": "Start Listening", "description": "Button to start voice listening in the modal" },
+  "categoryAppsGames": { "message": "Apps & Games", "description": "Category name" },
+  "categoryClothingAccessories": { "message": "Clothing & Accessories", "description": "Category name" },
+  "categoryHealthPersonalCare": { "message": "Health & Personal Care", "description": "Category name" },
+  "categoryHomeKitchen": { "message": "Home & Kitchen", "description": "Category name" },
+  "categoryIndustrialScientific": { "message": "Industrial & Scientific", "description": "Category name" },
+  "categoryLivresEnFrancais": { "message": "Livres en français", "description": "Category name" },
+  "categoryLuggageBags": { "message": "Luggage & Bags", "description": "Category name" },
+  "categoryMoviesTV": { "message": "Movies & TV", "description": "Category name" },
+  "categoryPatioLawnGarden": { "message": "Patio, Lawn & Garden", "description": "Category name" },
+  "categoryShoesHandbags": { "message": "Shoes & Handbags", "description": "Category name" },
+  "categorySportsOutdoors": { "message": "Sports & Outdoors", "description": "Category name" },
+  "categoryToolsHomeImprovement": { "message": "Tools & Home Improvement", "description": "Category name" },
+  "categoryToysGames": { "message": "Toys & Games", "description": "Category name" },
+  "categoryWatches": { "message": "Watches", "description": "Category name" },
+  "lightningDealsBrowser": { "message": "Lightning Deals Browser" },
+  "sortBy": { "message": "Sort By:" },
+  "highestDiscount": { "message": "Highest Discount" },
+  "refreshDeals": { "message": "Refresh Deals" },
+  "activeDeals": { "message": "Active Deals" },
+  "totalSavings": { "message": "Total Savings" },
+  "avgDiscount": { "message": "Avg. Discount" },
+  "dealAlerts": { "message": "Deal Alerts" },
+  "enableDealNotifications": { "message": "Enable Deal Notifications" },
+  "playSoundForDeals": { "message": "Play Sound for Deals" },
+  "notifyFor": { "message": "Notify For:" },
+  "electronics": { "message": "Electronics" },
+  "home": { "message": "Home" },
+  "books": { "message": "Books" },
+  "fashion": { "message": "Fashion" },
+  "affiliateTagNotice": { "message": "Some deals may include an affiliate tag." },
+  "supportExtensionNotice": { "message": "This helps support the extension." },
+  "lowestPrice": { "message": "Lowest Price" },
+  "endingSoonest": { "message": "Ending Soonest" },
+  "loadingDeals": { "message": "Loading deals..." },
+  "productComparisonTitle": { "message": "🛒 Product Comparison - ShopSmart Pro" },
+  "comparePricesRatingsFeatures": { "message": "Compare prices, ratings, and features at a glance" },
+  "noProductsAddedYet": { "message": "🔍 No products added yet." },
+  "clickCompareToAdd": { "message": "Click “Compare” on any product listing to add items here." },
+  "loadSavedComparison": { "message": "Load a saved comparison" },
+  "loadSavedComparisonOption": { "message": "💾 Load Saved Comparison" },
+  "deleteSelectedList": { "message": "Delete selected list" },
+  "listNamePlaceholder": { "message": "e.g., My Home Office Setup" },
+  "nameThisComparisonList": { "message": "Name this comparison list" },
+  "saveList": { "message": "💾 Save List" },
+  "exportToCsv": { "message": "📤 Export to CSV" },
+  "shareLink": { "message": "🔗 Share Link" },
+  "clearAll": { "message": "🗑️ Clear All" },
+  "productComparison": { "message": "Product Comparison" },
+  "selectProductsToCompare": { "message": "Select products to compare" },
+  "clickCompareOnListing": { "message": "Click \"Compare\" on any product listing" },
+  "linkCopiedToClipboard": { "message": "🔗 Comparison link copied to clipboard!" },
+  "couldNotCopyLink": { "message": "❌ Could not copy link. Please try again." },
+  "trackingButtonText": { "message": "✅ Tracking" },
+  "failedToLoadSavedProducts": { "message": "Failed to load saved products" },
+  "failedToSaveProducts": { "message": "Failed to save products" },
+  "tooManyProductsWarning": { "message": "⚠️ Too Many Products" },
+  "tooManyProductsHint": { "message": "For best experience, keep comparisons under 5 products." },
+  "viewBtn": { "message": "View" },
+  "trackBtn": { "message": "Track" },
+  "removeBtn": { "message": "Remove" },
+  "featureComparison": { "message": "📊 Feature Comparison" },
+  "featureHeader": { "message": "Feature" },
+  "productHeader": { "message": "Product $1", "placeholders": { "1": { "content": "$1" } } },
+  "priceFeature": { "message": "💰 Price" },
+  "ratingFeature": { "message": "⭐ Rating" },
+  "noProductsToExport": { "message": "No products to export." },
+  "csvTitle": { "message": "Title" },
+  "csvPrice": { "message": "Price" },
+  "csvRating": { "message": "Rating" },
+  "csvUrl": { "message": "URL" },
+  "savedAs": { "message": "✅ Saved as \"$1\"", "placeholders": { "1": { "content": "$1" } } },
+  "confirmDeleteList": { "message": "Delete saved list \"$1\"?", "placeholders": { "1": { "content": "$1" } } },
+  "listDeleted": { "message": "✅ List \"$1\" deleted.", "placeholders": { "1": { "content": "$1" } } },
+  "noDealsFound": {
+    "message": "No deals found for the selected filters.",
+    "description": "Message shown when no deals match the current filters."
+  },
+  "viewDeal": {
+    "message": "View Deal",
+    "description": "Button text to view a deal."
+  },
+  "track": {
+    "message": "🔔 Track",
+    "description": "Button text to start tracking a deal."
+  },
+  "tracking": {
+    "message": "✅ Tracking",
+    "description": "Button text shown after a deal is being tracked."
+  },
+  "searchingAmazon": {
+    "message": "🔍 Searching Amazon...",
+    "description": "Temporary message shown when the user clicks 'View Deal'."
+  },
+  "failedToLoadDeals": {
+    "message": "Failed to load deals. Please try again.",
+    "description": "Error message when the deals API fails."
+  },
+  "tryAgain": {
+    "message": "Try Again",
+    "description": "Button text to retry a failed action."
+  },
+  "hotDealAlert": {
+    "message": "🔥 Hot Deal Alert!",
+    "description": "Title of the notification for a new hot deal."
+  },
+  "priceAlertsActive": {
+    "message": "Price Alerts Active",
+    "description": "Text indicating that price alerts are active."
+  },
+  "updatesEvery6Hours": {
+    "message": "Updates every 6 hours",
+    "description": "Text indicating how often price data is updated."
+  },
+  "enableDarkMode": {
+    "message": "Enable Dark Mode",
+    "description": "Label for dark mode toggle."
+  },
+  "enableDarkModeDesc": {
+    "message": "Use dark theme across all ShopSmart Pro interfaces",
+    "description": "Description for dark mode toggle."
+  },
+  "syncWithSystem": {
+    "message": "Sync with system appearance",
+    "description": "Label for sync with system toggle."
+  },
+  "syncWithSystemDesc": {
+    "message": "Automatically follow your device's light/dark mode",
+    "description": "Description for sync with system toggle."
+  },
+  "affiliateInformation": {
+    "message": "Affiliate Information",
+    "description": "Title for affiliate information section."
+  },
+  "affiliateInformationDesc": {
+    "message": "Yes! The extension is completely free. It's supported through affiliate program, which doesn't cost you anything extra.",
+    "description": "Description for affiliate information section."
+  },
+  "enableAllAlerts": {
+    "message": "Enable all alerts",
+    "description": "Label for enabling all notifications."
+  },
+  "enableAllAlertsDesc": {
+    "message": "Allow price drops, deals, and coupon notifications",
+    "description": "Description for enabling all notifications."
+  },
+  "priceDropAlerts": {
+    "message": "Price drop alerts",
+    "description": "Label for price drop alerts."
+  },
+  "priceDropAlertsDesc": {
+    "message": "Get notified when tracked products drop in price",
+    "description": "Description for price drop alerts."
+  },
+  "dealNotifications": {
+    "message": "Deal notifications",
+    "description": "Label for deal notifications."
+  },
+  "dealNotificationsDesc": {
+    "message": "Receive notifications for lightning deals",
+    "description": "Description for deal notifications."
+  },
+  "couponAlerts": {
+    "message": "Coupon alerts",
+    "description": "Label for coupon alerts."
+  },
+  "couponAlertsDesc": {
+    "message": "Notify when coupons are available for products",
+    "description": "Description for coupon alerts."
+  },
+  "instant": {
+    "message": "Instant",
+    "description": "Option for instant notifications."
+  },
+  "hourlyDigest": {
+    "message": "Hourly Digest",
+    "description": "Option for hourly notification digest."
+  },
+  "dailyDigest": {
+    "message": "Daily Digest",
+    "description": "Option for daily notification digest."
+  },
+  "playSoundForAlerts": {
+    "message": "Play sound for alerts",
+    "description": "Label for playing sound for alerts."
+  },
+  "playSoundForAlertsDesc": {
+    "message": "Play a short sound when any notification appears",
+    "description": "Description for playing sound for alerts."
+  },
+  "helpAndDocumentation": {
+    "message": "Help & Documentation",
+    "description": "Button text for help and documentation."
+  },
+  "testNotification": {
+    "message": "Test Notification",
+    "description": "Button text for testing notifications."
+  },
+  "testNotificationDesc": {
+    "message": "Send a test alert to verify sound and notifications",
+    "description": "Description for testing notifications."
+  },
+  "enhancePages": {
+    "message": "Enhance pages",
+    "description": "Label for enhancing pages."
+  },
+  "enhancePagesDesc": {
+    "message": "Add ShopSmart Pro features to Amazon pages",
+    "description": "Description for enhancing pages."
+  },
+  "voiceSearchDesc": {
+    "message": "Enable voice search functionality",
+    "description": "Description for enabling voice search."
+  },
+  "usageAnalytics": {
+    "message": "Usage analytics",
+    "description": "Label for usage analytics."
+  },
+  "usageAnalyticsDesc": {
+    "message": "Help improve ShopSmart Pro by sharing anonymous usage data",
+    "description": "Description for usage analytics."
+  },
+  "2products": {
+    "message": "2 products",
+    "description": "Option for 2 products in comparison."
+  },
+  "3products": {
+    "message": "3 products",
+    "description": "Option for 3 products in comparison."
+  },
+  "4products": {
+    "message": "4 products",
+    "description": "Option for 4 products in comparison."
+  },
+  "5products": {
+    "message": "5 products",
+    "description": "Option for 5 products in comparison."
+  },
+  "6products": {
+    "message": "6 products",
+    "description": "Option for 6 products in comparison."
+  },
+  "7days": {
+    "message": "7 days",
+    "description": "Option for 7 days data retention."
+  },
+  "14days": {
+    "message": "14 days",
+    "description": "Option for 14 days data retention."
+  },
+  "30days": {
+    "message": "30 days",
+    "description": "Option for 30 days data retention."
+  },
+  "60days": {
+    "message": "60 days",
+    "description": "Option for 60 days data retention."
+  },
+  "90days": {
+    "message": "90 days",
+    "description": "Option for 90 days data retention."
+  },
+  "180days": {
+    "message": "180 days",
+    "description": "Option for 180 days data retention."
+  },
+  "1year": {
+    "message": "1 year",
+    "description": "Option for 1 year data retention."
+  },
+  "usageStatistics": {
+    "message": "Usage statistics",
+    "description": "Label for usage statistics."
+  },
+  "usageStatisticsDesc": {
+    "message": "Share anonymous usage statistics to help improve the extension",
+    "description": "Description for usage statistics."
+  },
+  "errorReporting": {
+    "message": "Error reporting",
+    "description": "Label for error reporting."
+  },
+  "errorReportingDesc": {
+    "message": "Automatically report errors to help fix bugs",
+    "description": "Description for error reporting."
+  },
+  "debugInformation": {
+    "message": "Debug Information",
+    "description": "Title for debug information section."
+  },
+  "showDebugInfo": {
+    "message": "Show Debug Info",
+    "description": "Button text to show debug info."
+  },
+  "saveSettings": {
+    "message": "Save Settings",
+    "description": "Button text to save settings."
+  },
+  "resetToDefaults": {
+    "message": "Reset to Defaults",
+    "description": "Button text to reset settings."
+  },
+  "exportSettings": {
+    "message": "Export Settings",
+    "description": "Button text to export settings."
+  },
+  "importSettings": {
+    "message": "Import Settings",
+    "description": "Button text to import settings."
+  },
+  "clearAllData": {
+    "message": "Clear All Data",
+    "description": "Button text to clear all data."
+  }
+}
