@@ -91,3 +91,62 @@ MIT License - see LICENSE file for details
 
 This extension is not affiliated with or endorsed by any specific retailer. All trademarks are property of their respective owners.
 # ShopSmartPro
+
+# 🛒 ShopSmart Pro
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/okhhadlbdbncnikoknfmdlnfmgdffdap.svg)](https://chromewebstore.google.com/detail/shopsmart-pro/okhhadlbdbncnikoknfmdlnfmgdffdap?authuser=0&hl=en)
+[![Firefox Add-on](https://img.shields.io/amo/v/shopsmart-pro.svg)](https://addons.mozilla.org/en-US/firefox/addon/shopsmart-pro/)
+[![Edge Add-on](https://img.shields.io/badge/Edge%20Add--on-ShopSmart%20Pro-blue?logo=microsoft-edge)](https://microsoftedge.microsoft.com/addons/detail/shopsmart-pro/lhdgahcpgepnenoeodchhagphjeodgec)
+
+**Your ultimate shopping companion** — ShopSmart Pro enhances your Amazon, eBay, and other e-commerce experiences with advanced search, price tracking, deal alerts, and smart product comparisons. Save time and money while shopping smarter!
+
+> Built by Mike — because nobody should miss a great deal again.
+
+---
+
+## ✨ Key Features
+
+- **Smart Search**: Instantly search across product categories or right-click any text to look it up.
+- **Price Tracking**: Get automatic alerts when prices drop + view price history charts.
+- **Deal Browser**: Discover flash sales, filter by discount %, and get “ending soon” notifications.
+- **Product Comparison**: Side-by-side feature tables and saved product tracking.
+- **Voice Search**: Hands-free, natural-language shopping—perfect for mobile.
+- **Search Analytics**: Review your history, analyze habits, and export data.
+- **Smart Alerts**: Custom notifications for price drops, coupons, and deal availability.
+- **Global Support**: Works with Amazon (US, UK, DE, FR, IT, ES, JP, CA, AU, BR, MX, NL), eBay, and more.
+- **Privacy First**:  
+  🔒 No personal data collected  
+  💾 All data stored locally  
+  📜 Transparent MIT license & privacy policy
+
+---
+
+## 📦 Install ShopSmart Pro
+
+- **Chrome**: [Install from Chrome Web Store](https://chromewebstore.google.com/detail/shopsmart-pro/okhhadlbdbncnikoknfmdlnfmgdffdap?authuser=0&hl=en)
+- **Firefox**: [Install from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/shopsmart-pro/)
+- **Edge**: [Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/shopsmart-pro/lhdgahcpgepnenoeodchhagphjeodgec)
+
+✅ Works on **desktop & Firefox for Android**  
+✅ Free to use — supported by affiliate commissions (at no extra cost to you!)
+
+---
+
+## 🛠️ Development & Contribution
+
+This extension is actively maintained and updated. While the core is not currently open-source, feedback and bug reports are welcome!
+
+To report an issue or suggest a feature, please contact the developer through the respective store pages.
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**.  
+See [LICENSE](LICENSE) for details (if included in repo) or refer to the [Firefox Add-on page](https://addons.mozilla.org/en-US/firefox/addon/shopsmart-pro/) for licensing info.
+
+---
+
+Made with ❤️ by **Mike**  
+Transform your shopping experience today! ✨
